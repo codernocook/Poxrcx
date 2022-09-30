@@ -3,7 +3,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 const token = process.env.token; //"MTAyMzU4NTU5MjE1MzQ3MzEyNQ.G9ooDD.lC8CxSEA3qEArrtJeqakoAcKA_R4HH6ptyZppE";
 const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix; //"./";
-const Website = require(`./Website`);
+const Website = require(`./WebServiceRunner`);
 
 function executefile(filerequire, argumentsend, messagesend) {
     if (require(`./commandmodule/${filerequire}`)) {
