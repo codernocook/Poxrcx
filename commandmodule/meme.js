@@ -24,6 +24,16 @@ module.exports = {
             18: "https://tenor.com/view/blippi-blippi-meme-ip-address-ip-address-meme-i-have-your-ip-address-gif-25511125",
             19: "https://tenor.com/view/hamster-meme-staring-hd-watching-gif-23055924",
             20: "https://tenor.com/view/meme-downloading-bing-gif-24764671",
+            21: "https://tenor.com/view/subscribe-talking-to-wall-funny-meme-gif-23076218",
+            22: "https://tenor.com/view/slander-slander-meme-meta-gif-26062572",
+            23: "https://tenor.com/view/ip-grabber-meme-black-dude-talking-slander-meme-slander-gif-24119544",
+            24: "https://tenor.com/view/tyler1-stickman-stickman-animators-slander-gif-26430317",
+            25: "https://i.redd.it/vjw7lcxamzq91.gif",
+            26: "https://tenor.com/view/meme-gif-24148823",
+            27: "https://tenor.com/view/itzgrimm-gif-22887058",
+            28: "https://tenor.com/view/sus-gif-22065664",
+            29: "https://tenor.com/view/logging-off-discord-discord-meme-lang-meme-lang-gif-25328151",
+            30: "https://tenor.com/view/wildfireuv-gif-26390683",
         };
         message.channel.send(`${memetable[randommeme]}`);
     }
