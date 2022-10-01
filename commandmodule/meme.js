@@ -2,7 +2,7 @@ module.exports = {
     name: 'Meme',
     description: "Random a meme and send them in channel!",
     execute(argument, message, EmbedBuilder) {
-        const randommeme = Math.floor(Math.random() * 20) + 1;
+        const randommeme = Math.floor(Math.random() * 20) + (Math.floor(Math.random() * 5) + 1);
         const memetable = {
             1: "https://tenor.com/view/walter-white-falling-fast-gif-18043850",
             2: "https://tenor.com/view/who-asked-me-trying-to-find-who-asked-spongebob-spunch-bob-gif-22526294",
@@ -33,7 +33,12 @@ module.exports = {
             27: "https://tenor.com/view/itzgrimm-gif-22887058",
             28: "https://tenor.com/view/sus-gif-22065664",
             29: "https://tenor.com/view/logging-off-discord-discord-meme-lang-meme-lang-gif-25328151",
-            30: "https://tenor.com/view/wildfireuv-gif-26390683",
+            30: "https://cdn.discordapp.com/attachments/964167867031498875/1025770842409418752/memedark3.png",
+            31: "https://cdn.discordapp.com/attachments/964167867031498875/1025770389416185966/memedark2.png",
+            32: "https://cdn.discordapp.com/attachments/964167867031498875/1025770366150393906/memedark1.png",
+            33: "https://tenor.com/view/wildfireuv-gif-26390683",
+            34: "https://i.redd.it/p5owm1ifq0r91.jpg",
+            35: "https://i.redd.it/dgyt76bgt4r91.png",
         };
         message.channel.send(`${memetable[randommeme]}`);
     }
