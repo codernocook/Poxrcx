@@ -38,6 +38,9 @@ client.on("messageCreate", (message) => {
     if (command === "ban") {
         executefile(`${command}`, argument, message)
     }
+    if (command === "unban") {
+        executefile(`${command}`, argument, message)
+    }
     if (command === "timeout") {
         executefile(`${command}`, argument, message)
     }
