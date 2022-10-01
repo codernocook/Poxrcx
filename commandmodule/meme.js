@@ -2,7 +2,7 @@ module.exports = {
     name: 'Meme',
     description: "Random a meme and send them in channel!",
     execute(argument, message, EmbedBuilder) {
-        const randommeme = Math.floor(Math.random() * 20) + 1;
+        const randommeme = Math.floor(Math.random() * 30) + 1;
         const memetable = {
             1: "https://tenor.com/view/walter-white-falling-fast-gif-18043850",
             2: "https://tenor.com/view/who-asked-me-trying-to-find-who-asked-spongebob-spunch-bob-gif-22526294",
