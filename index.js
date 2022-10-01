@@ -47,6 +47,9 @@ client.on("messageCreate", (message) => {
     if (command === "rat") {
         executefile(`${command}`, argument, message)
     }
+    if (command === "meme") {
+        executefile(`${command}`, argument, message)
+    }
 })
 
 client.on('interactionCreate', async interaction => {
