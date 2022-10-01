@@ -6,7 +6,7 @@ const prefix = process.env.prefix; //"./";
 
 function executefile(filerequire, argumentsend, messagesend) {
     if (require(`./commandmodule/${filerequire}`)) {
-        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend)
+        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder)
     }
 }
 
@@ -27,22 +27,25 @@ client.on("messageCreate", (message) => {
     //command
 
     if (command === "help") {
-        executefile(`${command}`, argument, message, EmbedBuilder)
+        executefile(`${command}`, argument, message)
     }
     if (command === "ping") {
-        executefile(`${command}`, argument, message, EmbedBuilder)
+        executefile(`${command}`, argument, message)
     }
     if (command === "kick") {
-        executefile(`${command}`, argument, message, EmbedBuilder)
+        executefile(`${command}`, argument, message)
     }
     if (command === "ban") {
-        executefile(`${command}`, argument, message, EmbedBuilder)
+        executefile(`${command}`, argument, message)
     }
     if (command === "timeout") {
-        executefile(`${command}`, argument, message, EmbedBuilder)
+        executefile(`${command}`, argument, message)
     }
     if (command === "annoy") {
-        executefile(`${command}`, argument, message, EmbedBuilder)
+        executefile(`${command}`, argument, message)
+    }
+    if (command === "rat") {
+        executefile(`${command}`, argument, message)
     }
 })
 
