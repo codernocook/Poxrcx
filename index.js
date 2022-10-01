@@ -27,22 +27,22 @@ client.on("messageCreate", (message) => {
     //command
 
     if (command === "help") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, EmbedBuilder)
     }
     if (command === "ping") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, EmbedBuilder)
     }
     if (command === "kick") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, EmbedBuilder)
     }
     if (command === "ban") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, EmbedBuilder)
     }
     if (command === "timeout") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, EmbedBuilder)
     }
     if (command === "annoy") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, EmbedBuilder)
     }
 })
 
