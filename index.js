@@ -4,9 +4,9 @@ const token = process.env.token; //"MTAyMzU4NTU5MjE1MzQ3MzEyNQ.G9ooDD.lC8CxSEA3q
 const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix; //"./";
 
-function executefile(filerequire, argumentsend, messagesend, messagesendtype) {
+function executefile(filerequire, argumentsend, messagesend) {
     if (require(`./commandmodule/${filerequire}`)) {
-        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, messagesendtype)
+        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder)
     }
 }
 
@@ -27,31 +27,31 @@ client.on("messageCreate", (message) => {
     //command
 
     if (command === "help") {
-        executefile(`${command}`, argument, message, "command")
+        executefile(`${command}`, argument, message)
     }
     if (command === "ping") {
-        executefile(`${command}`, argument, message, "command")
+        executefile(`${command}`, argument, message)
     }
     if (command === "kick") {
-        executefile(`${command}`, argument, message, "command")
+        executefile(`${command}`, argument, message)
     }
     if (command === "ban") {
-        executefile(`${command}`, argument, message, "command")
+        executefile(`${command}`, argument, message)
     }
     if (command === "unban") {
-        executefile(`${command}`, argument, message, "command")
+        executefile(`${command}`, argument, message)
     }
     if (command === "timeout") {
-        executefile(`${command}`, argument, message, "command")
+        executefile(`${command}`, argument, message)
     }
     if (command === "annoy") {
-        executefile(`${command}`, argument, message, "command")
+        executefile(`${command}`, argument, message)
     }
     if (command === "rat") {
-        executefile(`${command}`, argument, message, "command")
+        executefile(`${command}`, argument, message)
     }
     if (command === "meme") {
-        executefile(`${command}`, argument, message, "command")
+        executefile(`${command}`, argument, message)
     }
 })
 
@@ -63,31 +63,31 @@ client.on('interactionCreate', (interaction) => {
     const argument = {}
 
 	if (commandinteraction === "help") {
-        executefile(`${command}`, argument, interaction, "interaction")
+        executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "ping") {
-        executefile(`${command}`, argument, interaction, "interaction")
+        executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "kick") {
-        executefile(`${command}`, argument, interaction, "interaction")
+        executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "ban") {
-        executefile(`${command}`, argument, interaction, "interaction")
+        executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "unban") {
-        executefile(`${command}`, argument, interaction, "interaction")
+        executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "timeout") {
-        executefile(`${command}`, argument, interaction, "interaction")
+        executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "annoy") {
-        executefile(`${command}`, argument, interaction, "interaction")
+        executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "rat") {
-        executefile(`${command}`, argument, interaction, "interaction")
+        executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "meme") {
-        executefile(`${command}`, argument, interaction, "interaction")
+        executefile(`${command}`, argument, interaction)
     }
 });
 
