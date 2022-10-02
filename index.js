@@ -55,14 +55,38 @@ client.on("messageCreate", (message) => {
     }
 })
 
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', (interaction) => {
 	if (!interaction.isChatInputCommand()) return;
+    const { commandinteraction } = interaction;
+    const argument = {}
 
-	const { commandName } = interaction;
-
-	if (commandName === 'ping') {
-		await interaction.reply('Pong!');
-	}
+	if (commandinteraction === "help") {
+        executefile(`${command}`, argument, interaction, "interaction")
+    }
+    if (commandinteraction === "ping") {
+        executefile(`${command}`, argument, interaction, "interaction")
+    }
+    if (commandinteraction === "kick") {
+        executefile(`${command}`, argument, interaction, "interaction")
+    }
+    if (commandinteraction === "ban") {
+        executefile(`${command}`, argument, interaction, "interaction")
+    }
+    if (commandinteraction === "unban") {
+        executefile(`${command}`, argument, interaction, "interaction")
+    }
+    if (commandinteraction === "timeout") {
+        executefile(`${command}`, argument, interaction, "interaction")
+    }
+    if (commandinteraction === "annoy") {
+        executefile(`${command}`, argument, interaction, "interaction")
+    }
+    if (commandinteraction === "rat") {
+        executefile(`${command}`, argument, interaction, "interaction")
+    }
+    if (commandinteraction === "meme") {
+        executefile(`${command}`, argument, interaction, "interaction")
+    }
 });
 
 client.login(token)
