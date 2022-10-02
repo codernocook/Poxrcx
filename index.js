@@ -4,9 +4,9 @@ const token = process.env.token; //"MTAyMzU4NTU5MjE1MzQ3MzEyNQ.G9ooDD.lC8CxSEA3q
 const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix; //"./";
 
-function executefile(filerequire, argumentsend, messagesend) {
+function executefile(filerequire, argumentsend, messagesend, messagesendtype) {
     if (require(`./commandmodule/${filerequire}`)) {
-        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder)
+        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, messagesendtype)
     }
 }
 
@@ -27,36 +27,38 @@ client.on("messageCreate", (message) => {
     //command
 
     if (command === "help") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, "command")
     }
     if (command === "ping") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, "command")
     }
     if (command === "kick") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, "command")
     }
     if (command === "ban") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, "command")
     }
     if (command === "unban") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, "command")
     }
     if (command === "timeout") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, "command")
     }
     if (command === "annoy") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, "command")
     }
     if (command === "rat") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, "command")
     }
     if (command === "meme") {
-        executefile(`${command}`, argument, message)
+        executefile(`${command}`, argument, message, "command")
     }
 })
 
 client.on('interactionCreate', (interaction) => {
-	if (!interaction.isChatInputCommand()) return;
+    client.guilds.cache.get(interaction.guild.id).commands.create({name: "ping", description: "Reply with pong!"})
+    client.guilds.cache.get(interaction.guild.id).commands.create({name: "help", description: "Show the help info!"})
+    if (!interaction.isChatInputCommand()) return;
     const { commandinteraction } = interaction;
     const argument = {}
 
