@@ -11,7 +11,7 @@ function executefile(filerequire, argumentsend, messagesend, messagesendtype) {
 }
 
 client.on("ready", () => {
-    client.user.setActivity('./help', { type: ActivityType.Watching });
+    client.user.setActivity('./help', { type: ActivityType.Playing });
     console.log("Running Discord bot")
 })
 
