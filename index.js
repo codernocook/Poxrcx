@@ -47,6 +47,9 @@ client.on("messageCreate", (message) => {
     if (command === "annoy") {
         executefile(`${command}`, argument, message)
     }
+    if (command === "kill") {
+        executefile(`${command}`, argument, message)
+    }
     if (command === "rat") {
         executefile(`${command}`, argument, message)
     }
@@ -62,7 +65,7 @@ client.on('interactionCreate', (interaction) => {
     const { commandinteraction } = interaction;
     const argument = {}
 
-	if (commandinteraction === "help") {
+    if (commandinteraction === "help") {
         executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "ping") {
@@ -75,12 +78,15 @@ client.on('interactionCreate', (interaction) => {
         executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "unban") {
-        executefile(`${command}`, argument, interaction)
+        executefile(`${command}`, argument, interaction,)
     }
     if (commandinteraction === "timeout") {
         executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "annoy") {
+        executefile(`${command}`, argument, interaction)
+    }
+    if (commandinteraction === "kill") {
         executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "rat") {
