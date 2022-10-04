@@ -41,7 +41,10 @@ client.on("messageCreate", (message) => {
     if (command === "unban") {
         executefile(`${command}`, argument, message)
     }
-    if (command === "timeout") {
+    if (command === "mute") {
+        executefile(`${command}`, argument, message)
+    }
+    if (command === "unmute") {
         executefile(`${command}`, argument, message)
     }
     if (command === "annoy") {
@@ -78,9 +81,12 @@ client.on('interactionCreate', (interaction) => {
         executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "unban") {
-        executefile(`${command}`, argument, interaction,)
+        executefile(`${command}`, argument, interaction)
     }
-    if (commandinteraction === "timeout") {
+    if (commandinteraction === "mute") {
+        executefile(`${command}`, argument, interaction)
+    }
+    if (commandinteraction === "unmute") {
         executefile(`${command}`, argument, interaction)
     }
     if (commandinteraction === "annoy") {
