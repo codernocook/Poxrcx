@@ -13,12 +13,13 @@ module.exports = {
             if (message.member === mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't unmute yourself!`).setColor(`Red`)] })
             if (!message.member.permissions.has("Administrator")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to unmute this user!`).setColor(`Red`)] })
             //if (!message.guild) return message.channel.send("I don't have permission to time out people please enable it!")
+            if (mentioneduser.roles.highest.position > message.author.roles.highest.position) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to use this command!`).setColor(`Red`)] });
 
             const parsedtime = parsetime(argument[1])
             let reason = argument.slice(1).join(" ") || 'No reason given.'
 
             mentioneduser.timeout(parsedtime, reason).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't unmute user ${mentioneduser}`).setColor(`Red`)] })});
     
-            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`:white_check_mark: User ${mentioneduser} was unmuted.`).setColor(`Green`)] })
+            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was unmuted.`).setColor(`Green`)] })
     }
 }
