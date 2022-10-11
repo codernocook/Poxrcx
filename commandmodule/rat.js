@@ -4,10 +4,9 @@ module.exports = {
     execute(argument, message, EmbedBuilder) {
         const member = message.mentions.members.first() || message.guild.members.cache.get(argument[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === argument.slice(0).join(" ") || x.user.username === argument[0])
         if (member) {
-            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`:white_check_mark: User ${member} got hacked, i also installed a rat in their computer, i sent ${member} information to everyone`).setColor(`Green`)] })
+            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${member} got hacked, i also installed a rat in their computer, i sent ${member} information to everyone`).setColor(`Green`)] })
         }else {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Failed to hack this user!`).setColor(`Red`)] })
         }
-        //message.channel.send(`Pong with 0 ping!`)
     }
 }
