@@ -1,6 +1,6 @@
 module.exports = {
     name: 'Rat',
-    description: "install a rat in their computer/phone.",
+    description: "Install a rat in their computer/phone.",
     execute(argument, message, EmbedBuilder) {
         const member = message.mentions.members.first();
         if (member) {
