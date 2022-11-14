@@ -26,7 +26,7 @@ module.exports = {
         for (const memecounter of memearray) {
             memecounted++
         }
-        const randommeme = randomIntFromInterval(0, memecounted);
+        const randommeme = randomIntFromInterval(1, memecounted);
         message.channel.send(`${memearray[randommeme]}`);
     }
 }
