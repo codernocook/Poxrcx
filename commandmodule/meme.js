@@ -38,7 +38,7 @@ module.exports = {
             12: "https://preview.redd.it/1tbusp9zctz91.png?width=640&crop=smart&auto=webp&s=435a1d329b23312990d397e22132b026f9c540b9",
         }
         const memecounted = 12
-        const randommeme = arraymemesend(1, memecounted, memecounted + 5);
-        message.channel.send(`${memearray[randommeme]}`);
+        const randommeme = arraymemesend(1, memecounted, memecounted);
+        message.channel.send(`${memearray[randommeme.max]}`);
     }
 }
