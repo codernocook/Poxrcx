@@ -4,7 +4,6 @@ const token = process.env.token; //"MTAyMzU4NTU5MjE1MzQ3MzEyNQ.G9ooDD.lC8CxSEA3q
 const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix; //"./";
 let commandcooldown = new Set();
-let cooldownsleep = async (ms) => await new Promise(r => setTimeout(r,ms));
 
 function executefile(filerequire, argumentsend, messagesend) {
     if (require(`./commandmodule/${filerequire}`)) {
@@ -24,7 +23,8 @@ client.on("messageCreate", async (message) => {
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord send message.
         commandcooldown.add(message.author.id);
         //Run the command checker
-        await cooldownsleep(100)
+        let cooldownsleep = async (ms) => await new Promise(r => setTimeout(r,ms));
+        await cooldownsleep(250)
         const args = message.content.slice(prefix.length).split(/ +/);
         const command = args.shift().toLowerCase();
         const messaggearray = message.content.split(" ");
