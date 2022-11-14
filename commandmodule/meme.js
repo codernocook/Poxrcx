@@ -10,7 +10,7 @@ module.exports = {
         const memecounted = 0;
         // start calculate how many meme in the array.
         for (const memecounter of memetable) {
-            if (memecounter === 0) memecounted++;
+            memecounted++
         }
         const randommeme = randomIntFromInterval(0, memecounted);
         message.channel.send(`${memetable[randommeme]}`);
