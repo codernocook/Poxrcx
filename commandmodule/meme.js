@@ -2,24 +2,8 @@ module.exports = {
     name: 'Meme',
     description: "Get a random meme!",
     execute(argument, message, EmbedBuilder) {
-        function rand(min, max){
-            return (Math.floor(Math.pow(10,14)*Math.random()*Math.random())%(max-min+1))+min;
-        }
-        
-        // testing rand
-        function arraymemesend(min, max, rolls) {
-            let roll = 0, n = 0;
-            let counts = {};
-            
-            for(let i = min; i <= max; i++){
-                counts[i]=0
-            }
-        
-            while (roll < rolls){
-                roll++;
-                counts[rand(min,max)]++;
-            }
-            return counts;
+        function randomIntFromInterval(min, max) { // min and max included
+            return Math.floor(Math.random() * (max - min + 1) + min)
         }
 
         const memearray = {
@@ -37,8 +21,8 @@ module.exports = {
             11: "https://preview.redd.it/vwu2khov5xz91.gif?width=640&format=mp4&s=b535853efada9541afa2920e86c110598bb7c510",
             12: "https://preview.redd.it/1tbusp9zctz91.png?width=640&crop=smart&auto=webp&s=435a1d329b23312990d397e22132b026f9c540b9",
         }
-        const memecounted = 12
-        const randommeme = arraymemesend(1, memecounted, memecounted);
-        message.channel.send(`${memearray[randommeme.max]}`);
+        const memecounted = 12;
+        const randommeme = randomIntFromInterval(1, memecounted);
+        message.channel.send(`${memearray[randommeme]}`);
     }
 }
