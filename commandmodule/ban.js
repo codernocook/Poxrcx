@@ -20,6 +20,6 @@ module.exports = {
             let reason = argument.slice(1).join(" ") || 'No reason given.'
             // Start banning
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Banned user ${mentioneduser} for ${reason}.`).setColor(`Green`)] })
-            mentioneduser.ban({ reason: `${argument[1]}` }).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't ban this user, maybe my discord bot position is too low.`).setColor(`Red`)] })})
+            mentioneduser.ban({ reason: `${argument[1]}` }).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't ban this user, maybe my role position is too low.`).setColor(`Red`)] })})
     }
 }
