@@ -10,9 +10,16 @@ module.exports = {
             if (message.member === mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't ban yourself!`).setColor(`Red`)] })
             if (!mentioneduser.bannable) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't ban the owner and moderator!`).setColor(`Red`)] })
 
-            let reason = argument.slice(1).join(" ") || 'No reason given'
+            //Check position to not abuse or exploit
+            const mentioneduserposition = mentioneduser.roles.highest.position
+            const authorsendposition = message.author.roles.highest.position
 
-            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`:white_check_mark: Banned user ${mentioneduser} for ${reason}.`).setColor(`Green`)] })
-            mentioneduser.ban({ reason: `${argument[1]}` }).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't ban this user.`).setColor(`Red`)] })})
+            if (!mentioneduserposition > authorsendposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
+
+            // Checking if reason value is filled or not
+            let reason = argument.slice(1).join(" ") || 'No reason given'
+            // Start banning
+            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Banned user ${mentioneduser} for ${reason}.`).setColor(`Green`)] })
+            mentioneduser.ban({ reason: `${argument[1]}` }).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't ban this user, maybe my discord bot position is too low.`).setColor(`Red`)] })})
     }
 }
