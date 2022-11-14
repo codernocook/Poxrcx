@@ -21,11 +21,7 @@ module.exports = {
             11: "https://preview.redd.it/vwu2khov5xz91.gif?width=640&format=mp4&s=b535853efada9541afa2920e86c110598bb7c510",
             12: "https://preview.redd.it/1tbusp9zctz91.png?width=640&crop=smart&auto=webp&s=435a1d329b23312990d397e22132b026f9c540b9",
         }
-        const memecounted = 0;
-        // start calculate how many meme in the array.
-        for (const memecounter of memearray) {
-            memecounted++
-        }
+        const memecounted = 12
         const randommeme = randomIntFromInterval(1, memecounted);
         message.channel.send(`${memearray[randommeme]}`);
     }
