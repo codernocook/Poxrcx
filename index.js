@@ -23,50 +23,50 @@ client.on("messageCreate", async (message) => {
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord send message.
         commandcooldown.add(message.author.id);
         //Run the command checker
-        let cooldownsleep = async (ms) => await new Promise(r => setTimeout(r,ms));
-        await cooldownsleep(250)
-        const args = message.content.slice(prefix.length).split(/ +/);
-        const command = args.shift().toLowerCase();
-        const messaggearray = message.content.split(" ");
-        const argument = messaggearray.slice(1);
-        const cmd = messaggearray[0];
+        setTimeout(() => {
+            const args = message.content.slice(prefix.length).split(/ +/);
+            const command = args.shift().toLowerCase();
+            const messaggearray = message.content.split(" ");
+            const argument = messaggearray.slice(1);
+            const cmd = messaggearray[0];
 
-        //command
+            //command
 
-        if (command === "help") {
-            executefile(`${command}`, argument, message)
-        }
-        if (command === "ping") {
-            executefile(`${command}`, argument, message)
-        }
-        if (command === "kick") {
-            executefile(`${command}`, argument, message)
-        }
-        if (command === "ban") {
-            executefile(`${command}`, argument, message)
-        }
-        if (command === "unban") {
-            executefile(`${command}`, argument, message)
-        }
-        if (command === "mute") {
-            executefile(`${command}`, argument, message)
-        }
-        if (command === "unmute") {
-            executefile(`${command}`, argument, message)
-        }
-        if (command === "annoy") {
-            executefile(`${command}`, argument, message)
-        }
-        if (command === "kill") {
-            executefile(`${command}`, argument, message)
-        }
-        if (command === "rat") {
-            executefile(`${command}`, argument, message)
-        }
-        if (command === "meme") {
-            executefile(`${command}`, argument, message)
-        }
-        commandcooldown.delete(message.author.id);
+            if (command === "help") {
+                executefile(`${command}`, argument, message)
+            }
+            if (command === "ping") {
+                executefile(`${command}`, argument, message)
+            }
+            if (command === "kick") {
+                executefile(`${command}`, argument, message)
+            }
+            if (command === "ban") {
+                executefile(`${command}`, argument, message)
+            }
+            if (command === "unban") {
+                executefile(`${command}`, argument, message)
+            }
+            if (command === "mute") {
+                executefile(`${command}`, argument, message)
+            }
+            if (command === "unmute") {
+                executefile(`${command}`, argument, message)
+            }
+            if (command === "annoy") {
+                executefile(`${command}`, argument, message)
+            }
+            if (command === "kill") {
+                executefile(`${command}`, argument, message)
+            }
+            if (command === "rat") {
+                executefile(`${command}`, argument, message)
+            }
+            if (command === "meme") {
+                executefile(`${command}`, argument, message)
+            }
+            commandcooldown.delete(message.author.id);
+        }, 500);
     }
 })
 
