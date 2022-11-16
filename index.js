@@ -18,13 +18,14 @@ client.on("ready", () => {
 
 client.on("messageCreate", async (message) => {
     if(commandcooldown.has(toString(message.author.id))) {
+        if (!message.content.startsWith(prefix) || message.author.bot) return; // check again if bot send message to themself
         return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
     } else {
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
         // Add delay
         commandcooldown.add(toString(message.author.id));
         //Run the command checker
-        const args = message.content.slice(prefix.length).split(/ +/);
+            const args = message.content.slice(prefix.length).split(/ +/);
             const command = args.shift().toLowerCase();
             const messaggearray = message.content.split(" ");
             const argument = messaggearray.slice(1);
