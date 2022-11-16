@@ -56,6 +56,9 @@ client.on("messageCreate", async (message) => {
             if (command === "unmute") {
                 executefile(`${command}`, argument, message)
             }
+            if (command === "stats") {
+                executefile(`${command}`, argument, message)
+            }
             if (command === "annoy") {
                 executefile(`${command}`, argument, message)
             }

@@ -15,10 +15,12 @@ module.exports = {
             if (message.member === mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't mute yourself.`).setColor(`Red`)] })
 
              //Check position to not abuse or exploit
-            const mentioneduserposition = mentioneduser.roles.highest.position
-            const authorsendposition = message.author.roles.highest.position
-
-            if (mentioneduserposition > authorsendposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
+             const mentioneduserposition = mentioneduser.roles.highest.position
+             const authorsendposition = client.guilds.cache.find(usercommand => usercommand.roles.highest.permissions)
+             const botposition = message.guild.members.me
+     
+             if (botposition < mentioneduserposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })
+             if (mentioneduserposition > authorsendposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
 
             const parsedtime = parsetime(argument[1])
             let reason = argument.slice(1).join(" ") || 'No reason given.'

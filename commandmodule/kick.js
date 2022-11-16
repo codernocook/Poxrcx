@@ -8,9 +8,11 @@ module.exports = {
         if (member.permissions.has("Administrator")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to kick this user!`).setColor(`Red`)] })
 
         //Check position to not abuse or exploit
-        const mentioneduserposition = Number(member.roles.highest.position)
-        const authorsendposition = Number(message.author.roles.highest.position)
+        const mentioneduserposition = member.roles.highest.position
+        const authorsendposition = client.guilds.cache.find(usercommand => usercommand.roles.highest.permissions)
+        const botposition = message.guild.members.me
 
+        if (botposition < mentioneduserposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })
         if (mentioneduserposition > authorsendposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
 
         let reason = argument.slice(2).join(" ") || 'No reason given.'
