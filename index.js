@@ -18,7 +18,7 @@ client.on("ready", () => {
 
 client.on("messageCreate", async (message) => {
     if(commandcooldown.has(toString(message.author.id))) {
-        message.channel.send("Wah slow down you are too fast!");
+        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
     } else {
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord send message.
         commandcooldown.add(toString(message.author.id));
