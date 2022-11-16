@@ -21,8 +21,6 @@ client.on("messageCreate", async (message) => {
         return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
     } else {
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
-        // Check again
-        if(commandcooldown.has(toString(message.author.id))) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] });
         // Add delay
         commandcooldown.add(toString(message.author.id));
         //Run the command checker
