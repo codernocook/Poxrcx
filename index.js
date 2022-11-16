@@ -69,7 +69,7 @@ client.on("messageCreate", async (message) => {
         // remove timeout
         setTimeout(() => {
             commandcooldown.delete(toString(message.author.id));
-        }, 800);
+        }, 1000);
     }
 })
 
