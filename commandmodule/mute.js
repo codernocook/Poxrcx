@@ -18,7 +18,7 @@ module.exports = {
             const mentioneduserposition = mentioneduser.roles.highest.position
             const authorsendposition = message.author.roles.highest.position
 
-            if (!mentioneduserposition > authorsendposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
+            if (mentioneduserposition > authorsendposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
 
             const parsedtime = parsetime(argument[1])
             let reason = argument.slice(1).join(" ") || 'No reason given.'
