@@ -17,11 +17,11 @@ client.on("ready", () => {
 })
 
 client.on("messageCreate", async (message) => {
-    if(commandcooldown.has(message.author.id)) {
+    if(commandcooldown.has(toString(message.author.id))) {
         message.channel.send("Wah slow down you are too fast!");
     } else {
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord send message.
-        commandcooldown.add(message.author.id);
+        commandcooldown.add(toString(message.author.id));
         //Run the command checker
         setTimeout(() => {
             const args = message.content.slice(prefix.length).split(/ +/);
@@ -65,7 +65,7 @@ client.on("messageCreate", async (message) => {
             if (command === "meme") {
                 executefile(`${command}`, argument, message)
             }
-            commandcooldown.delete(message.author.id);
+            commandcooldown.delete(toString(message.author.id));
         }, 500);
     }
 })
