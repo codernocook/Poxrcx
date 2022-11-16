@@ -3,7 +3,7 @@ const { default: parse } = require('parse-duration');
 module.exports = {
     name: 'Mute',
     description: "Mute someone from the server!",
-    execute(argument, message, EmbedBuilder) {
+    execute(argument, message, EmbedBuilder, client) {
         if (!argument[0]) return  message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild user.`).setColor(`Red`)] })
         if (!argument[1]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing mute duration!`).setColor(`Red`)] })
             const mentioneduser = message.mentions.members.first();

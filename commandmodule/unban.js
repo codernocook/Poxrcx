@@ -1,7 +1,7 @@
 module.exports = {
     name: 'Unban',
     description: "Unban someone from the server!",
-    execute(argument, message, EmbedBuilder) {
+    execute(argument, message, EmbedBuilder, client) {
         if (!argument[0]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild User!`).setColor(`Red`)] })
             const mentioneduser = argument[0]
             if (!mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild User!`).setColor(`Red`)] })

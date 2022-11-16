@@ -1,7 +1,7 @@
 module.exports = {
     name: 'Kill',
     description: "Kill user",
-    execute(argument, message, EmbedBuilder) {
+    execute(argument, message, EmbedBuilder, client) {
         if (!argument[0]) message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Target!`).setColor(`Red`)] })
             const mentioneduser = message.mentions.members.first() || message.guild.members.cache.get(argument[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === argument.slice(0).join(" ") || x.user.username === argument[0])
             if (!mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Target!`).setColor(`Red`)] })

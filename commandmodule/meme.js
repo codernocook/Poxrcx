@@ -1,7 +1,7 @@
 module.exports = {
     name: 'Meme',
     description: "Get a random meme!",
-    execute(argument, message, EmbedBuilder) {
+    execute(argument, message, EmbedBuilder, client) {
         function randomIntFromInterval(min, max) { // min and max included
             return Math.floor(Math.random() * (max - min + 1) + min)
         }

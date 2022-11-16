@@ -1,7 +1,7 @@
 module.exports = {
     name: 'Ping',
     description: "Reply with pong!",
-    execute(argument, message, EmbedBuilder) {
+    execute(argument, message, EmbedBuilder, client) {
         message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Bot ping is: 0`).setColor(`Green`)] }).then(messageget => {
             const ping = messageget.createdTimestamp - message.createdTimestamp;
             messageget.edit({ embeds: [new EmbedBuilder().setDescription(`Bot ping is: ${ping}`).setColor(`Green`)] })

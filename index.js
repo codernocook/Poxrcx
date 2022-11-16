@@ -7,7 +7,7 @@ let commandcooldown = new Set();
 
 function executefile(filerequire, argumentsend, messagesend) {
     if (require(`./commandmodule/${filerequire}`)) {
-        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder)
+        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client)
     }
 }
 
