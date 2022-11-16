@@ -20,11 +20,13 @@ client.on("messageCreate", async (message) => {
     if(commandcooldown.has(toString(message.author.id))) {
         return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
     } else {
-        if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord send message.
+        if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
+        // Check again
+        if(commandcooldown.has(toString(message.author.id))) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] });
+        // Add delay
         commandcooldown.add(toString(message.author.id));
         //Run the command checker
-        setTimeout(() => {
-            const args = message.content.slice(prefix.length).split(/ +/);
+        const args = message.content.slice(prefix.length).split(/ +/);
             const command = args.shift().toLowerCase();
             const messaggearray = message.content.split(" ");
             const argument = messaggearray.slice(1);
@@ -65,8 +67,10 @@ client.on("messageCreate", async (message) => {
             if (command === "meme") {
                 executefile(`${command}`, argument, message)
             }
+        // remove timeout
+        setTimeout(() => {
             commandcooldown.delete(toString(message.author.id));
-        }, 500);
+        }, 800);
     }
 })
 
