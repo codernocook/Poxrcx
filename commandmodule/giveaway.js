@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
 		.setName("Giveaway")
 		.setDescription("Start a giveway or stop a giveaway!"),
-    execute(argument, message, EmbedBuilder, client) {
+    execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (!argument[1]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing channel!`).setColor(`Red`)] })
         if (!argument[2]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing winner number!`).setColor(`Red`)] })
         if (!argument[3]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing duration!`).setColor(`Red`)] })
