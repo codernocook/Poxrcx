@@ -13,7 +13,6 @@ module.exports = {
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
-            if (!argument[0]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild user.`).setColor(`Red`)] })
             const mentioneduser = message.mentions.members.first() || message.guild.members.cache.get(argument[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === argument.slice(0).join(" ") || x.user.username === argument[0])
             const parsetime = require('parse-duration').default;
             const mspack = require('ms');
@@ -28,7 +27,7 @@ module.exports = {
             mentioneduser.timeout(parsedtime, reason).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't unmute user ${mentioneduser}`).setColor(`Red`)] })});
     
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was unmuted.`).setColor(`Green`)] })
-        } else if (typeofcommand === "interaction"){
+        } else if (typeofcommand === "interaction") {
             const mentioneduser = message.options.getMentionable("user")
             const parsetime = require('parse-duration').default;
             const mspack = require('ms');
