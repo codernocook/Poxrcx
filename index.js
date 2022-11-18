@@ -6,6 +6,7 @@ const prefix = process.env.prefix; //"./";
 let commandcooldown = new Set();
 let interactioncooldown = new Set()
 const fs = require('fs');
+const path = require('path');
 
 function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
     if (require(`./commandmodule/${filerequire}`)) {
