@@ -61,7 +61,7 @@ client.on("messageCreate", async (message) => {
             const cmd = messaggearray[0];
 
             //run the command
-            const execpath = `./commandmodule/${command}`
+            const execpath = `./commandmodule/${command}.js`
             try {
                 if (fs.existsSync(execpath)) {
                     executefile(`${command}`, argument, message, "message")
@@ -92,7 +92,7 @@ client.on('interactionCreate', async (interaction) => {
     }
     // remove user interaction timeout
     setTimeout(() => {
-        interactioncooldown.delete(toString(interaction.author.id));
+        interactioncooldown.delete(toString(interaction.user.id));
     }, 800);
 });
 
