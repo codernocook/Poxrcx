@@ -1,12 +1,23 @@
+const { SlashCommandBuilder } = require("@discordjs/builders")
+
 module.exports = {
-    name: 'Rat',
-    description: "Install a rat in their computer/phone.",
-    execute(argument, message, EmbedBuilder, client) {
+    data: new SlashCommandBuilder()
+		.setName("rat")
+		.setDescription("Install a rat in their computer/phone."),
+    execute(argument, message, EmbedBuilder, client, typeofcommand) {
         const member = message.mentions.members.first();
-        if (member) {
-            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${member} got hacked, i also installed a rat in their computer, i sent ${member} information to everyone`).setColor(`Green`)] })
-        }else {
-            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Failed to hack this user!`).setColor(`Red`)] })
+        if (typeofcommand === "message") {
+            if (member) {
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${member} got hacked, i also installed a rat in their computer, i sent ${member} information to everyone`).setColor(`Green`)] })
+            }else {
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Failed to hack this user!`).setColor(`Red`)] })
+            }
+        } else if (typeofcommand === "interaction"){
+            if (member) {
+                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${member} got hacked, i also installed a rat in their computer, i sent ${member} information to everyone`).setColor(`Green`)] })
+            }else {
+                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Failed to hack this user!`).setColor(`Red`)] })
+            }
         }
     }
 }

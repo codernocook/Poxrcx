@@ -1,7 +1,10 @@
+const { SlashCommandBuilder } = require("@discordjs/builders")
+
 module.exports = {
-    name: 'Meme',
-    description: "Get a random meme!",
-    execute(argument, message, EmbedBuilder, client) {
+    data: new SlashCommandBuilder()
+		.setName("meme")
+		.setDescription("Get a random meme!"),
+    execute(argument, message, EmbedBuilder, client, typeofcommand) {
         function randomIntFromInterval(min, max) { // min and max included
             return Math.floor(Math.random() * (max - min + 1) + min)
         }

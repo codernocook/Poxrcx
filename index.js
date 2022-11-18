@@ -4,16 +4,43 @@ const token = process.env.token; //"MTAyMzU4NTU5MjE1MzQ3MzEyNQ.G9ooDD.lC8CxSEA3q
 const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix; //"./";
 let commandcooldown = new Set();
+let interactioncooldown = new Set()
+const fs = require('fs');
 
-function executefile(filerequire, argumentsend, messagesend) {
+function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
     if (require(`./commandmodule/${filerequire}`)) {
-        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client)
+        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand)
     }
+}
+
+// List of all commands
+const commands = [];
+client.commands = new Collection();
+
+const commandsPath = path.join(__dirname, "commands");
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+for(const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = require(filePath);
+
+    client.commands.set(command.data.name, command);
+    commands.push(command.data.toJSON());
 }
 
 client.on("ready", () => {
     client.user.setActivity('./help', { type: ActivityType.Playing });
-    console.log("Running Discord bot")
+    console.log("Poxrc v3.0 started!")
+    // Deploy all interaction command when bot started
+    const guild_ids = client.guilds.cache.map(guild => guild.id);
+
+    for (const guildId of guild_ids) {
+        rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildId), {body: commands}).catch(console.error);
+    }
+
+})
+
+client.on("guildCreate", async (guildcreate) => {
+    rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildcreate.id), {body: commands}).catch(console.error);
 })
 
 client.on("messageCreate", async (message) => {
@@ -33,45 +60,14 @@ client.on("messageCreate", async (message) => {
             const argument = messaggearray.slice(1);
             const cmd = messaggearray[0];
 
-            //command
-
-            if (command === "help") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "ping") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "kick") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "ban") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "unban") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "mute") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "unmute") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "stats") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "annoy") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "kill") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "rat") {
-                executefile(`${command}`, argument, message)
-            }
-            if (command === "meme") {
-                executefile(`${command}`, argument, message)
-            }
-        // remove timeout
+            //run the command
+            const execpath = `/${command}`
+            try {
+                if (fs.existsSync(execpath)) {
+                    executefile(`${command}`, argument, message, "message")
+                }
+            } catch(err) {}
+        // remove user command timeout
         setTimeout(() => {
             commandcooldown.delete(toString(message.author.id));
         }, 800);
@@ -79,45 +75,25 @@ client.on("messageCreate", async (message) => {
 })
 
 client.on('interactionCreate', async (interaction) => {
-    client.guilds.cache.get(interaction.guild.id).commands.create({name: "ping", description: "Reply with pong!"})
-    client.guilds.cache.get(interaction.guild.id).commands.create({name: "help", description: "Show the help info!"})
     if (!interaction.isChatInputCommand()) return;
-    const { commandinteraction } = interaction;
-    const argument = {}
+    const command = client.commands.get(interaction.commandName);
+    if (!command) return
 
-    if (commandinteraction === "help") {
-        executefile(`${command}`, argument, interaction)
+    // check if the user spam to run the command
+    if (interactioncooldown.has(toString(interaction.user.id))) return;
+
+    interactioncooldown.add(toString(interaction.user.id))
+
+    try {
+        await command.execute(`${interaction.command}`, {}, interaction, "interaction");
     }
-    if (commandinteraction === "ping") {
-        executefile(`${command}`, argument, interaction)
+    catch(error) {
+        console.error(error);
     }
-    if (commandinteraction === "kick") {
-        executefile(`${command}`, argument, interaction)
-    }
-    if (commandinteraction === "ban") {
-        executefile(`${command}`, argument, interaction)
-    }
-    if (commandinteraction === "unban") {
-        executefile(`${command}`, argument, interaction)
-    }
-    if (commandinteraction === "mute") {
-        executefile(`${command}`, argument, interaction)
-    }
-    if (commandinteraction === "unmute") {
-        executefile(`${command}`, argument, interaction)
-    }
-    if (commandinteraction === "annoy") {
-        executefile(`${command}`, argument, interaction)
-    }
-    if (commandinteraction === "kill") {
-        executefile(`${command}`, argument, interaction)
-    }
-    if (commandinteraction === "rat") {
-        executefile(`${command}`, argument, interaction)
-    }
-    if (commandinteraction === "meme") {
-        executefile(`${command}`, argument, interaction)
-    }
+    // remove user interaction timeout
+    setTimeout(() => {
+        interactioncooldown.delete(toString(message.author.id));
+    }, 800);
 });
 
 client.login(token)
