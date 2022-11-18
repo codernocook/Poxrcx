@@ -2,7 +2,6 @@ const { ThreadMemberFlags } = require("discord.js")
 const { SlashCommandBuilder } = require("@discordjs/builders")
 
 module.exports = {
-    name: 'Giveaway',
     data: new SlashCommandBuilder()
 		.setName("Giveaway")
 		.setDescription("Start a giveway or stop a giveaway!"),
