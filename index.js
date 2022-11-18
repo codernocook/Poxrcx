@@ -80,12 +80,12 @@ client.on('interactionCreate', async (interaction) => {
     if (!command) return
 
     // check if the user spam to run the command
-    if (interactioncooldown.has(toString(interaction.user.id))) return;
+    if (interactioncooldown.has(toString(interaction.user.id))) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] });
 
     interactioncooldown.add(toString(interaction.user.id))
 
     try {
-        await command.execute(`${interaction.command}`, {}, interaction, "interaction");
+        await executefile(`${interaction.command}`, {}, interaction, "interaction");
     }
     catch(error) {
         console.error(error);
