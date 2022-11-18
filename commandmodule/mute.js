@@ -43,13 +43,13 @@ module.exports = {
 
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was muted.`).setColor(`Green`)] })
         } else if (typeofcommand === "interaction"){
-                const mentioneduser = interaction.options.getString("user")
+                const mentioneduser = message.options.getString("user")
                 const parsetime = require('parse-duration').default;
                 const mspack = require('ms');
                 if (!mentioneduser) return message.reply("Invaild user.")
-                if (!interaction.guild.members.cache.find(user => interaction.user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to mute user!`).setColor(`Red`)] })
+                if (!message.guild.members.cache.find(user => message.user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to mute user!`).setColor(`Red`)] })
                 //if (!message.guild) return message.reply("I don't have permission to time out people please enable it!")
-                if (interaction.guild.members.cache.find(user => interaction.user.id) === mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't mute yourself.`).setColor(`Red`)] })
+                if (message.guild.members.cache.find(user => message.user.id) === mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't mute yourself.`).setColor(`Red`)] })
 
                 //Check position to not abuse or exploit
                 const mentioneduserposition = mentioneduser.roles.highest.position
@@ -59,8 +59,8 @@ module.exports = {
                 if (botposition < mentioneduserposition) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })
                 if (mentioneduserposition > authorsendposition) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
 
-                const parsedtime = parsetime(interaction.options.getString("limit"))
-                let reason = interaction.options.getString("reason") || 'No reason given.'
+                const parsedtime = parsetime(message.options.getString("limit"))
+                let reason = message.options.getString("reason") || 'No reason given.'
 
                 if (parsedtime < mspack("1m") || parsedtime > mspack("14d")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please use vaild limit less than 14 days and more than 1 minute.`).setColor(`Red`)] });
 
