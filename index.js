@@ -85,7 +85,7 @@ client.on('interactionCreate', async (interaction) => {
     interactioncooldown.add(toString(interaction.user.id))
 
     try {
-        await executefile(`${interaction.command}`, {}, interaction, "interaction");
+        await executefile(`${interaction.commandName}`, {}, interaction, "interaction");
     }
     catch(error) {
         console.error(error);
