@@ -29,7 +29,7 @@ module.exports = {
     
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was unmuted.`).setColor(`Green`)] })
         } else if (typeofcommand === "interaction"){
-            const mentioneduser = message.options.getString("user")
+            const mentioneduser = message.options.getMentionable("user")
             const parsetime = require('parse-duration').default;
             const mspack = require('ms');
 

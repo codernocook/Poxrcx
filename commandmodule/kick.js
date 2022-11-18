@@ -35,7 +35,7 @@ module.exports = {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild user!`).setColor(`Red`)] })
             }
         } else if (typeofcommand === "interaction"){
-            const member = message.options.getString("user");
+            const member = message.options.getMentionable("user");
             if (!member) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild user!`).setColor(`Red`)] })
             if (!message.guild.members.cache.find(user => message.user.id).permissions.has("KickMembers") && !message.guild.members.cache.find(user => message.user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to kick!`).setColor(`Red`)] })
             if (member.permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to kick this user!`).setColor(`Red`)] })

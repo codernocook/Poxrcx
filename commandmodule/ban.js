@@ -33,7 +33,7 @@ module.exports = {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Banned user ${mentioneduser} for ${reason}.`).setColor(`Green`)] })
             mentioneduser.ban({ reason: `${argument[1]}` }).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't ban this user, maybe my role position is too low.`).setColor(`Red`)] })})
         } else if (typeofcommand === "interaction") {
-            const mentioneduser = message.options.getString("user");
+            const mentioneduser = message.options.getMentionable("user");
             if (!mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild User!`).setColor(`Red`)] })
             if (!message.guild.members.cache.find(user => message.user.id).permissions.has("BanMembers") && !message.guild.members.cache.find(user => message.user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to ban!`).setColor(`Red`)] })
             if (message.guild.members.cache.find(user => message.user.id) === mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't ban yourself!`).setColor(`Red`)] })

@@ -9,7 +9,7 @@ module.exports = {
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         const member = message.mentions.members.first();
-        const memberinteration = message.options.getString("user")
+        const memberinteration = message.options.getMentionable("user")
         if (typeofcommand === "message") {
             if (member) {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${member} got hacked, i also installed a rat in their computer, i sent ${member} information to everyone`).setColor(`Green`)] })

@@ -15,7 +15,7 @@ module.exports = {
             if (message.member === mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Please I don't want you to die, you are the best murder!`).setColor(`Red`)] })
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> You killed ${mentioneduser}!`).setColor(`Green`)] })
         } else if (typeofcommand === "interaction"){
-            const mentioneduser = message.options.getString("user")
+            const mentioneduser = message.options.getMentionable("user")
             if (!mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Target!`).setColor(`Red`)] })
             if (mentioneduser === message.guild.members.cache.find(user => message.user.id)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`Please I don't want you to die, you are the best murder!`).setColor(`Red`)] })
             message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> You killed ${mentioneduser}!`).setColor(`Green`)] })
