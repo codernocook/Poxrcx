@@ -23,6 +23,7 @@ const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('
 for(const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = require(filePath);
+    console.log(command.data.toJSON())
 
     client.commands.set(command.data.name, command);
     commands.push(command.data.toJSON());
@@ -37,7 +38,6 @@ client.on("ready", () => {
     for (const guildId of guild_ids) {
         rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildId), {body: commands}).catch(console.error);
     }
-
 })
 
 client.on("guildCreate", async (guildcreate) => {
