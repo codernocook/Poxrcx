@@ -6,7 +6,7 @@ module.exports = {
 		.setName("unmute")
 		.setDescription("Unmute someone from the server!")
         .addMentionableOption(option =>
-            option.setName("user").setDescription("User to ban").setRequired(true)
+            option.setName("user").setDescription("User to unmute").setRequired(true)
         )
         .addStringOption(option =>
             option.setName("reason").setDescription("Reason why you unmute this user.").setRequired(false)
@@ -38,7 +38,7 @@ module.exports = {
 
             let reason = message.options.getString("reason") || 'No reason given.'
 
-            mentioneduser.timeout(0, reason).catch(err => {message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't unmute user ${mentioneduser}`).setColor(`Red`)] })});
+            mentioneduser.timeout("0", reason).catch(err => {message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't unmute user ${mentioneduser}`).setColor(`Red`)] })});
     
             message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was unmuted.`).setColor(`Green`)] })
         }
