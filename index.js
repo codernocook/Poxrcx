@@ -24,12 +24,7 @@ for(const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = require(filePath);
 
-    try {
-        client.commands.set(command.data.data, command);
-    }
-    catch (error) {
-        console.log(filePath)
-    }
+    client.commands.set(command.data.data, command);
     commands.push(command.data.toJSON());
 }
 
