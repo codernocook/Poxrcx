@@ -4,7 +4,7 @@ module.exports = {
     data: new SlashCommandBuilder()
 		.setName("unban")
 		.setDescription("Unban someone from the server!")
-        .addMentionableOption(option =>
+        .addStringOption(option =>
             option.setName("userid").setDescription("User to unban").setRequired(true)
         )
         .addStringOption(option =>
@@ -21,7 +21,7 @@ module.exports = {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Unbanned user ${ "<@" + mentioneduser + ">"}.`).setColor(`Green`)] })
             message.guild.members.unban(mentioneduser, argument[1]).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't unban this user`).setColor(`Red`)] })})
         } else if (typeofcommand === "interaction"){
-            const mentioneduser = message.options.getMentionable("userid");
+            const mentioneduser = message.options.addStringOption("userid");
             if (!mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild User!`).setColor(`Red`)] })
             if (!message.guild.members.cache.find(user => message.user.id).permissions.has("BanMembers") && !message.guild.members.cache.find(user => message.user.id).permissions.has("Administrator")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to use this command!`).setColor(`Red`)] });
             if (message.guild.members.cache.find(user => message.user.id).user.id === mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't unban yourself!`).setColor(`Red`)] })
