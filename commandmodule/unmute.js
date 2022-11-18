@@ -4,7 +4,13 @@ const { SlashCommandBuilder } = require("@discordjs/builders")
 module.exports = {
     data: new SlashCommandBuilder()
 		.setName("unmute")
-		.setDescription("Unmute someone from the server!"),
+		.setDescription("Unmute someone from the server!")
+        .addStringOption(option =>
+            option.setName("user").setDescription("User to ban").setRequired(true)
+        )
+        .addStringOption(option =>
+            option.setName("reason").setDescription("Reason why you unmute this user.").setRequired(true)
+        ),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
             if (!argument[0]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild user.`).setColor(`Red`)] })
@@ -23,19 +29,17 @@ module.exports = {
     
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was unmuted.`).setColor(`Green`)] })
         } else if (typeofcommand === "interaction"){
-            if (!argument[0]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild user.`).setColor(`Red`)] })
-            const mentioneduser = message.mentions.members.first() || message.guild.members.cache.get(argument[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === argument.slice(0).join(" ") || x.user.username === argument[0])
+            const mentioneduser = interaction.options.getString("user")
             const parsetime = require('parse-duration').default;
             const mspack = require('ms');
 
             if (!mentioneduser) return message.reply("Invaild user.")
-            if (message.member === mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't unmute yourself!`).setColor(`Red`)] })
-            if (!message.member.permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to unmute this user!`).setColor(`Red`)] })
+            if (interaction.guild.members.cache.find(user => interaction.user.id) === mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't unmute yourself!`).setColor(`Red`)] })
+            if (!interaction.guild.members.cache.find(user => interaction.user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to unmute this user!`).setColor(`Red`)] })
 
-            const parsedtime = parsetime(argument[1])
-            let reason = argument.slice(1).join(" ") || 'No reason given.'
+            let reason = interaction.options.getString("reason") || 'No reason given.'
 
-            mentioneduser.timeout(parsedtime, reason).catch(err => {message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't unmute user ${mentioneduser}`).setColor(`Red`)] })});
+            mentioneduser.timeout(0, reason).catch(err => {message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't unmute user ${mentioneduser}`).setColor(`Red`)] })});
     
             message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was unmuted.`).setColor(`Green`)] })
         }
