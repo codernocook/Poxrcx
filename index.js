@@ -18,7 +18,7 @@ function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
 const commands = [];
 client.commands = new Collection();
 
-const commandsPath = path.join(__dirname, "commands");
+const commandsPath = path.join(__dirname, "commandmodule");
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 for(const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
