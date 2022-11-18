@@ -24,7 +24,7 @@ for(const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = require(filePath);
 
-    if (!command.data.name) console.log(filePath)
+    if (command.data.name === undefined) console.log(filePath)
     commands.push(command.data.toJSON());
 }
 
