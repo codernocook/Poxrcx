@@ -5,14 +5,14 @@ module.exports = {
     data: new SlashCommandBuilder()
 		.setName("mute")
 		.setDescription("Mute someone from the server.")
-        .addStringOption(option =>
+        .addMentionableOption(option =>
             option.setName("user").setDescription("User to mute").setRequired(true)
         )
         .addStringOption(option =>
             option.setName("limit").setDescription("How long to mute the user").setRequired(true)
         )
         .addStringOption(option =>
-            option.setName("reason").setDescription("Reason why you mute this user").setRequired(true)
+            option.setName("reason").setDescription("Reason why you mute this user").setRequired(false)
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {

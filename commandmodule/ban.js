@@ -4,11 +4,11 @@ module.exports = {
     data: new SlashCommandBuilder()
 		.setName("ban")
 		.setDescription("Ban someone from the server!")
-        .addStringOption(option =>
+        .addMentionableOption(option =>
             option.setName("user").setDescription("User to ban").setRequired(true)
         )
         .addStringOption(option =>
-            option.setName("reason").setDescription("Reason why you ban this user").setRequired(true)
+            option.setName("reason").setDescription("Reason why you ban this user").setRequired(false)
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {

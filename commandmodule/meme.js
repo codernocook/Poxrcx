@@ -26,6 +26,10 @@ module.exports = {
         }
         const memecounted = 12;
         const randommeme = randomIntFromInterval(1, memecounted);
-        message.channel.send(`${memearray[randommeme]}`);
+        if (typeofcommand === "message") {
+            message.channel.send(`${memearray[randommeme]}`);
+        } else if (typeofcommand === "interaction"){
+            message.reply(`${memearray[randommeme]}`);
+        }
     }
 }

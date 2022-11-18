@@ -4,7 +4,7 @@ module.exports = {
     data: new SlashCommandBuilder()
 		.setName("kill")
 		.setDescription("Destroy someone you hate!")
-        .addStringOption(option =>
+        .addMentionableOption(option =>
             option.setName("user").setDescription("User to kill").setRequired(true)
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
