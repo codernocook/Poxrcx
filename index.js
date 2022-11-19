@@ -5,7 +5,7 @@ const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix; //"./";
 let commandcooldown = new Set();
 let interactioncooldown = new Set();
-const afkset = new Collection();
+const afkset = new Set();
 const fs = require('fs');
 const path = require('path');
 const moment = require("moment");
@@ -66,7 +66,7 @@ client.on("messageCreate", async (message) => {
     if (!message.author.bot) {
         // Check if user not afk and send back message
 
-        if (afkset.get(toString(message.author.id))) {
+        if (afkset.has(toString(message.author.id))) {
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
                 afkset.delete(toString(message.author.id))
@@ -79,7 +79,7 @@ client.on("messageCreate", async (message) => {
         const mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            if (afkset.get(toString(mentionget.id))) {
+            if (afkset.has(toString(mentionget.id))) {
                 const [ timestamp, reason ] = afkset.get(toString(mentionget.author.id));
                 const timeago = moment(timestamp).fromNow();
 
