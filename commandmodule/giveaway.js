@@ -55,7 +55,7 @@ module.exports = {
                     channelId: channel.id,
                     guildId: message.guild.id,
                     duration: durationcalc,
-                    winners: Number(durationcalc),
+                    winners: Number(winner),
                     hostedBy: message.user.id
                 })
             } else if (message.options.getSubcommand() === "end") {
