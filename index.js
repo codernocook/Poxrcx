@@ -4,11 +4,11 @@ const token = process.env.token; //"MTAyMzU4NTU5MjE1MzQ3MzEyNQ.G9ooDD.lC8CxSEA3q
 const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix; //"./";
 let commandcooldown = new Set();
-let interactioncooldown = new Set()
-let afkset = new Collection()
+let interactioncooldown = new Set();
+let afkset = new Collection();
 const fs = require('fs');
 const path = require('path');
-const moment = require("moment")
+const moment = require("moment");
 const { GiveawaysManager } = require('discord-giveaways');
 
 
@@ -67,7 +67,12 @@ client.on("messageCreate", async (message) => {
         // Check if user not afk and send back message
         if (afkset.has(toString(message.author.id))) {
             message.channel.send(`Welcome back <@${message.author.id}>!`)
-            afkset.delete(toString(message.author.id))
+            try {
+                afkset.delete(toString(message.author.id))
+            }
+            catch (error) {
+                console.log(error)
+            }
         }
         // Respond afk message if someone mention afk user
         const mentionget = message.mentions.members.first()
@@ -127,7 +132,7 @@ client.on('interactionCreate', async (interaction) => {
         await executefile(`${interaction.commandName}`, {}, interaction, "interaction");
     }
     catch(error) {
-        console.error(error);
+        console.log(error);
     }
     // remove user interaction timeout
     setTimeout(() => {
