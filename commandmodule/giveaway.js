@@ -12,7 +12,7 @@ module.exports = {
 				.addChannelOption(option =>
 					option.setName("channel").setDescription("The channel to start the giveaway").setRequired(true)
 				)
-                .addNumberOption(option =>
+                .addIntegerOption(option =>
 					option.setName("winner").setDescription("The Winner number of the giveaway").setRequired(true)
 				)
                 .addStringOption(option =>
@@ -27,7 +27,15 @@ module.exports = {
 				.setName("end")
 				.setDescription("End a giveaway.")
 				.addStringOption(option =>
-					option.setName("giveaway").setDescription("the giveaway name you want to end").setRequired(true)
+					option.setName("message-id").setDescription("the giveaway message id you want to end").setRequired(true)
+				),
+		)
+        .addSubcommand(subcommand =>
+			subcommand
+				.setName("reroll")
+				.setDescription("Reroll winner of the giveaway.")
+				.addStringOption(option =>
+					option.setName("message-id").setDescription("the giveaway message id you want to reroll").setRequired(true)
 				),
 		),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
@@ -36,7 +44,7 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             if (message.options.getSubcommand() === "start") {
                 const channel = message.options.getChannel("channel") || message.channel;
-                const winner = message.options.getNumber("winner");
+                const winner = message.options.getInteger("winner");
                 const duration = message.options.getString("duration");
                 const name = message.options.getString("name");
     
@@ -47,23 +55,33 @@ module.exports = {
     
                 const durationcalc = parsetime(duration);
     
-                client.giveaways.startGiveaway({
-                    prize: name,
-                    channelId: channel.id,
-                    guildId: message.guild.id,
-                    duration: durationcalc,
-                    winners: Number(winner),
-                    hostedBy: message.user.id
-                })
+                // hostedBy: message.user.id
+                client.giveawaysManager
+                    .start(message.channel, {
+                        duration: durationcalc,
+                        winner,
+                        prize
+                    }).then((data) => {
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Started giveaway!`).setColor(`Green`)], ephemeral: true });
+                    })
             } else if (message.options.getSubcommand() === "end") {
-                const giveawayname = message.options.getMentionable("giveaway");
-                const giveawayend = client.giveaways.endGiveaway(giveawayname);
-
-                if (!giveawayend) {
-                    message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This giveaway has already ended.`).setColor(`Red`)] });
-                } else {
-                    message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Ended the giveaway.`).setColor(`Green`)] });
-                }
+                const messageidget = message.options.getString("message-id")
+                client.giveawaysManager.end(messageidget)
+                    .then(() => {
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Ended the giveaway.`).setColor(`Green`)] });
+                    })
+                    .catch((err) => {
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This giveaway has already ended or invaild message id.`).setColor(`Red`)], ephemeral: true })
+                    });
+            } else if (message.options.getSubcommand() === "reroll") {
+                const messageidget = message.options.getString("message-id")
+                client.giveawaysManager.reroll(messageidget)
+                    .then(() => {
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Ended the giveaway.`).setColor(`Green`)] });
+                    })
+                    .catch((err) => {
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't reroll the giveaway, maybe you put invaild message id.`).setColor(`Red`)], ephemeral: true })
+                    });
             }
         }
     }

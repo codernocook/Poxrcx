@@ -9,7 +9,7 @@ let afkset = new Collection()
 const fs = require('fs');
 const path = require('path');
 const moment = require("moment")
-const { GiveawayCreator } = require('discord-giveaway');
+const { GiveawaysManager } = require('discord-giveaways');
 
 
 function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
@@ -35,7 +35,15 @@ for(const file of commandFiles) {
 }
 
 //insert giveaway to client so it have access anywhere
-client.giveaways = new GiveawayCreator(client, 'mongodb://Itzporium:It2porium1310%40@ac-0pjqxyy-shard-00-00.j8tw5sp.mongodb.net:27017,ac-0pjqxyy-shard-00-01.j8tw5sp.mongodb.net:27017,ac-0pjqxyy-shard-00-02.j8tw5sp.mongodb.net:27017/?ssl=true&replicaSet=atlas-zmiabd-shard-0&authSource=admin&retryWrites=true&w=majority');
+client.giveaways = new GiveawaysManager(client, {
+    storage: './giveaways.json',
+    default: {
+        botsCanWin: false,
+        embedColor: '#FF0000',
+        embedColorEnd: '#000000',
+        reaction: '🎉'
+    }
+});
 
 // Run command handle
 client.on("ready", () => {
