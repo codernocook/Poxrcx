@@ -11,10 +11,9 @@ const path = require('path');
 const moment = require("moment")
 
 function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
-    if (!filerequire) return
     if (!filerequire === "afk") {
         require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand)
-    }else if (filerequire === "afk") {
+    } else {
         require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand, afkset)
     }
 }
@@ -50,7 +49,7 @@ client.on("guildCreate", async (guildcreate) => {
 
 client.on("messageCreate", async (message) => {
     // afk module
-    if (!message.author.bot && message.author) {
+    if (!message.author.bot) {
         // Check if user not afk and send back message
         if (afkset.has(toString(message.author.id))) {
             message.channel.send(`Welcome back <@${message.author.id}>!`)
