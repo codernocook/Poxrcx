@@ -57,7 +57,7 @@ module.exports = {
     
                 // hostedBy: message.user.id
                 client.giveawaysManager
-                    .start(message.channel, {
+                    .start(channel, {
                         duration: durationcalc,
                         winner,
                         prize,
