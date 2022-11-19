@@ -68,7 +68,7 @@ module.exports = {
                             drawing: 'Drawing: {timestamp}',
                             dropMessage: 'Be the first to react with 🎉 !',
                             inviteToParticipate: 'React with 🎉 to participate!',
-                            winMessage: 'Congratulations, {winners}! You won **{this.prize}**!\n{this.messageURL}',
+                            winMessage: { embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> 'Congratulations, {winners}! You won **{this.prize}**!'`).setColor(`Green`)] },
                             embedFooter: '{this.winnerCount} winner(s)',
                             noWinner: 'Giveaway cancelled, no valid participations.',
                             hostedBy: 'Hosted by: {this.hostedBy}',
