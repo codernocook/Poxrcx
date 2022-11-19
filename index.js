@@ -5,12 +5,17 @@ const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix; //"./";
 let commandcooldown = new Set();
 let interactioncooldown = new Set()
+let afkset = new Collection()
 const fs = require('fs');
 const path = require('path');
+const moment = require("moment")
 
 function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
-    if (require(`./commandmodule/${filerequire}`)) {
+    if (!filerequire) return
+    if (!filerequire === "afk") {
         require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand)
+    }else if (filerequire === "afk") {
+        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand, afkset)
     }
 }
 
@@ -44,6 +49,25 @@ client.on("guildCreate", async (guildcreate) => {
 })
 
 client.on("messageCreate", async (message) => {
+    // afk module
+    if (!message.author.bot && message.author) {
+        // Check if user not afk and send back message
+        if (afkset.get(toString(message.author.id))) {
+            message.channel.send(`Welcome back ${message.author.tag}!`)
+        }
+        // Respond afk message if someone mention afk user
+        const mentionget = message.mentions.members.first()
+
+        if (mentionget) {
+            if (afkset.get(toString(mentionget.author.id))) {
+                const [ timestamp, reason ] = afkset.get(toString(mentionget.author.id));
+                const timeago = moment(timestamp).fromNow();
+
+                message.channel.send(`${mentionget} afked for **${timeago}**.`)
+            }
+        }
+    }
+    // Check cooldown for command
     if(commandcooldown.has(toString(message.author.id))) {
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check again if bot send message to themself
         return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
@@ -75,6 +99,7 @@ client.on("messageCreate", async (message) => {
 })
 
 client.on('interactionCreate', async (interaction) => {
+    // Check cooldown for command
     if (!interaction.isChatInputCommand()) return;
     const command = client.commands.get(interaction.commandName);
     if (!command) return
