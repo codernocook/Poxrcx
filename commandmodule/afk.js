@@ -17,7 +17,7 @@ module.exports = {
                 message.user.username
             ])
             if (message.guild.members.me.roles.highest.permissions < message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
-                message.guild.members.cache.find(user => message.author.id === user.author.id).setNickname(`[AFK] ${message.author.username}`)
+                message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`[AFK] ${message.author.username}`)
             }
 
             if (reason) {
