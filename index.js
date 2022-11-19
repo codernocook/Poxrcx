@@ -66,11 +66,11 @@ client.on("messageCreate", async (message) => {
     if (!message.author.bot) {
         // Check if user not afk and send back message
         if (afkset.has(message.author.id)) {
-            if (!afkset.get(message.author.id)[Guild].id === message.guildId) return;
+            if (!afkset.get(message.author.id)[3].id === message.guildId) return;
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
                 afkset.delete(message.author.id)
-                message.guild.members.cache.find(user => message.user.id === user.id).setNickname(`${afkset.get(message.author.id)[Author]}`)
+                message.guild.members.cache.find(user => message.user.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
             }
             catch (error) {
                 console.log(error)
@@ -81,9 +81,9 @@ client.on("messageCreate", async (message) => {
 
         if (mentionget) {
             if (afkset.has(mentionget.id)) {
-                const timeago = moment(afkset.get(mentionget.id)[TimeStamp]).fromNow();
+                const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
 
-                message.channel.send(`${mentionget.username} afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[Reason]}.`)
+                message.channel.send(`${mentionget.username} afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
             }
         }
     }

@@ -10,12 +10,12 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
             let reason = argument.join(" ");
-            afk.set(message.author.id, {
-                TimeStamp: Date.now(),
-                Reason: reason,
-                Guild: message.guild,
-                Author: message.author.username
-            })
+            afk.set(message.user.id, [
+                Date.now(),
+                reason,
+                message.guild,
+                message.user.username
+            ])
             message.guild.members.cache.find(user => message.author.id === user.author.id).setNickname(`[AFK] ${message.author.username}`)
 
             if (reason) {
@@ -25,12 +25,12 @@ module.exports = {
             }
         } else if (typeofcommand === "interaction"){
             let reason = message.options.getString("message")
-            afk.set(message.user.id, {
-                TimeStamp: Date.now(),
-                Reason: reason,
-                Guild: message.guild,
-                Author: message.user.username
-            })
+            afk.set(message.user.id, [
+                Date.now(),
+                reason,
+                message.guild,
+                message.user.username
+            ])
 
             // Checking Position when change name
             if (message.guild.members.me.roles.highest.permissions < message.guild.members.cache.find(user => message.author.id === user.author.id).roles.highest.permissions) {
