@@ -53,7 +53,7 @@ client.on("messageCreate", async (message) => {
     if (!message.author.bot && message.author) {
         // Check if user not afk and send back message
         if (afkset.get(toString(message.author.id))) {
-            message.channel.send(`Welcome back ${message.author.tag}!`)
+            message.channel.send(`Welcome back <@${message.author.id}>!`)
         }
         // Respond afk message if someone mention afk user
         const mentionget = message.mentions.members.first()
