@@ -11,10 +11,10 @@ module.exports = {
         if (typeofcommand === "message") {
             let reason = argument.join(" ");
             afk.set(message.user.id, [
-                Date.now(),
-                reason,
-                message.guild,
-                message.author.username
+                [1] = Date.now(),
+                [2] = reason,
+                [3] = message.guild,
+                [4] = message.author.username
             ])
             /* disabled the module cuz it lag
             if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
@@ -30,10 +30,10 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             let reason = message.options.getString("message")
             afk.set(message.user.id, [
-                Date.now(),
-                reason,
-                message.guild,
-                message.user.username
+                [1] = Date.now(),
+                [2] = reason,
+                [3] = message.guild,
+                [4] = message.user.username
             ])
 
             // Checking Position when change name
