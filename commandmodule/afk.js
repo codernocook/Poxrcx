@@ -25,7 +25,7 @@ module.exports = {
             }
         } else if (typeofcommand === "interaction"){
             let reason = message.options.getString("message")
-            afk.set(message.author.id, {
+            afk.set(message.user.id, {
                 TimeStamp: Date.now(),
                 Reason: reason,
                 Guild: message.guild,
