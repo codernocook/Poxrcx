@@ -13,7 +13,7 @@ module.exports = {
 				.addChannelOption(option =>
 					option.setName("channel").setDescription("The channel to start the giveaway").setRequired(true)
 				)
-                .addStringOption(option =>
+                .addNumberOption(option =>
 					option.setName("winner").setDescription("The Winner number of the giveaway").setRequired(true)
 				)
                 .addStringOption(option =>
