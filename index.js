@@ -76,11 +76,11 @@ client.on("messageCreate", async (message) => {
             }
         }
         // Respond afk message if someone mention afk user
-        const mentionget = message.mentions.members.first()
+        let mentionget = message.mentions.members.first()
 
         if (mentionget) {
             if (afkset.has(mentionget.id)) {
-                const [ timestamp, reason ] = afkset.get(mentionget.author.id);
+                const [ timestamp, reason ] = afkset.get(mentionget.id);
                 const timeago = moment(timestamp).fromNow();
 
                 message.channel.send(`${mentionget} afked for **${timeago}**.`)
