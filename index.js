@@ -64,14 +64,13 @@ client.on("guildCreate", async (guildcreate) => {
 client.on("messageCreate", async (message) => {
     // afk module
     if (!message.author.bot) {
-        const { TimeStamp, Reason, Guild, Author } = afkset.get(message.author.id); // get all the infomation about afk user
         // Check if user not afk and send back message
         if (afkset.has(message.author.id)) {
-            if (!guild.id === message.guildId) return;
+            if (!afkset.get(message.author.id)[Guild].id === message.guildId) return;
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
                 afkset.delete(message.author.id)
-                message.guild.members.cache.find(user => message.user.id === user.id).setNickname(`${oldusername}`)
+                message.guild.members.cache.find(user => message.user.id === user.id).setNickname(`${afkset.get(message.author.id)[Author]}`)
             }
             catch (error) {
                 console.log(error)
