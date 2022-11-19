@@ -114,7 +114,7 @@ client.on("messageCreate", async (message) => {
         // remove user command timeout
         setTimeout(() => {
             commandcooldown.delete(message.author.id);
-        }, 550);
+        }, 500);
     }
 })
 
@@ -138,7 +138,7 @@ client.on('interactionCreate', async (interaction) => {
     // remove user interaction timeout
     setTimeout(() => {
         interactioncooldown.delete(interaction.user.id);
-    }, 550);
+    }, 500);
 });
 
 client.login(token)

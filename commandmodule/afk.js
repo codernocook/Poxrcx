@@ -10,7 +10,7 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
             let reason = argument.join(" ");
-            afk.set(message.user.id, [ Date.now(), reason ])
+            afk.set(message.author.id, [ Date.now(), reason ])
             if (reason) {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.author.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
             } else {

@@ -79,7 +79,7 @@ module.exports = {
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Started giveaway!`).setColor(`Green`)], ephemeral: true });
                     })
                     .catch((err) => {
-                        console.error(err)
+                        console.log(err)
                         //message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something when wrong, I can't start the giveaway!`).setColor(`Red`)], ephemeral: true })
                     });
             } else if (message.options.getSubcommand() === "end") {
