@@ -76,29 +76,9 @@ module.exports = {
                         }
                     }).then((data) => {
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Started giveaway!`).setColor(`Green`)], ephemeral: true });
-                        client.giveaways.saveGiveaway(message, {
-                            duration: durationcalc,
-                            winnerCount,
-                            prize,
-                            messages: {
-                                giveaway: '🎉🎉 **GIVEAWAY** 🎉🎉',
-                                giveawayEnded: '🎉🎉 **GIVEAWAY ENDED** 🎉🎉',
-                                title: '{this.prize}',
-                                drawing: 'Drawing: {timestamp}',
-                                dropMessage: 'Be the first to react with 🎉 !',
-                                inviteToParticipate: 'React with 🎉 to participate!',
-                                winMessage: { embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> 'Congratulations, {winners}! You won **{this.prize}**!'`).setColor(`Green`)] },
-                                embedFooter: '{this.winnerCount} winner(s)',
-                                noWinner: 'Giveaway cancelled, no valid participations.',
-                                hostedBy: 'Hosted by: {this.hostedBy}',
-                                winners: 'Winner(s):',
-                                endedAt: 'Ended at'
-                            }
-                        })
                     })
                     .catch((err) => {
-                        console.log(err)
-                        //message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something when wrong, I can't start the giveaway!`).setColor(`Red`)], ephemeral: true })
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something when wrong, I can't start the giveaway!`).setColor(`Red`)], ephemeral: true })
                     });
             } else if (message.options.getSubcommand() === "end") {
                 const messageidget = message.options.getString("message-id")
