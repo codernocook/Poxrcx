@@ -21,7 +21,7 @@ module.exports = {
 
             //Check position to not abuse or exploit
             const mentioneduserposition = mentioneduser.roles.highest.position
-            const authorsendposition = client.guilds.cache.find(usercommand => usercommand.roles.highest.permissions)
+            const authorsendposition = client.guilds.cache.find(usercommand => message.author.id === usercommand.id).roles.highest.permissions
             const botposition = message.guild.members.me
     
             if (botposition < mentioneduserposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })
@@ -35,13 +35,13 @@ module.exports = {
         } else if (typeofcommand === "interaction") {
             const mentioneduser = message.options.getMentionable("user");
             if (!mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild User!`).setColor(`Red`)] })
-            if (!message.guild.members.cache.find(user => message.user.id).permissions.has("BanMembers") && !message.guild.members.cache.find(user => message.user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to ban!`).setColor(`Red`)] })
+            if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("BanMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to ban!`).setColor(`Red`)] })
             if (message.guild.members.cache.find(user => message.user.id) === mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't ban yourself!`).setColor(`Red`)] })
             if (!mentioneduser.bannable) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't ban the owner and moderator!`).setColor(`Red`)] })
 
             //Check position to not abuse or exploit
             const mentioneduserposition = mentioneduser.roles.highest.position
-            const authorsendposition = client.guilds.cache.find(usercommand => usercommand.roles.highest.permissions)
+            const authorsendposition = client.guilds.cache.find(usercommand => message.user.id === usercommand.id).roles.highest.permissions
             const botposition = message.guild.members.me
     
             if (botposition < mentioneduserposition) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })

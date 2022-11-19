@@ -43,6 +43,7 @@ module.exports = {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This command only support slash command.`).setColor(`Red`)] })
         } else if (typeofcommand === "interaction"){
             if (message.options.getSubcommand() === "start") {
+                if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("ManageEvents") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to create/stop a giveaway.`).setColor(`Red`)] })
                 const channel = message.options.getChannel("channel") || message.channel;
                 const winners = message.options.getNumber("winners");
                 const duration = message.options.getString("duration");

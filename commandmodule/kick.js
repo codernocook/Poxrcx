@@ -19,7 +19,7 @@ module.exports = {
 
             //Check position to not abuse or exploit
             const mentioneduserposition = member.roles.highest.position
-            const authorsendposition = client.guilds.cache.find(usercommand => usercommand.roles.highest.permissions)
+            const authorsendposition = client.guilds.cache.find(usercommand => message.author.id === usercommand.id).roles.highest.permissions
             const botposition = message.guild.members.me
 
             if (botposition < mentioneduserposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })
@@ -37,12 +37,12 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             const member = message.options.getMentionable("user");
             if (!member) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild user!`).setColor(`Red`)] })
-            if (!message.guild.members.cache.find(user => message.user.id).permissions.has("KickMembers") && !message.guild.members.cache.find(user => message.user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to kick!`).setColor(`Red`)] })
+            if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("KickMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to kick!`).setColor(`Red`)] })
             if (member.permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to kick this user!`).setColor(`Red`)] })
 
             //Check position to not abuse or exploit
             const mentioneduserposition = member.roles.highest.position
-            const authorsendposition = client.guilds.cache.find(usercommand => usercommand.roles.highest.permissions)
+            const authorsendposition = client.guilds.cache.find(usercommand => message.user.id === usercommand.id).roles.highest.permissions
             const botposition = message.guild.members.me
 
             if (botposition < mentioneduserposition) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })
