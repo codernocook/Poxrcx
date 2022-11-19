@@ -100,8 +100,6 @@ const giveawaySchema = new mongoose.Schema(
 // create mongodb model
 const giveawayModel = mongoose.model('giveaways', giveawaySchema);
 
-const { GiveawaysManager } = require('discord-giveaways');
-
 const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {
     // This function is called when the manager needs to get all giveaways which are stored in the database.
     async getAllGiveaways() {
