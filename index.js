@@ -5,7 +5,6 @@ const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix; //"./";
 let commandcooldown = new Set();
 let interactioncooldown = new Set();
-const afkset = new Collection();
 const fs = require('fs');
 const path = require('path');
 const moment = require("moment");
@@ -13,11 +12,8 @@ const { GiveawaysManager } = require('discord-giveaways');
 
 
 function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
-    if (!filerequire === "afk") {
-        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand)
-    } else {
-        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand, afkset)
-    }
+    if (!filerequire) return;
+    require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand)
 }
 
 // List of all commands
@@ -45,6 +41,9 @@ client.giveaways = new GiveawaysManager(client, {
     }
 });
 
+// Put afk set in the client so it will have access from anywhere
+client.afk = new Collection()
+
 // Run command handle
 client.on("ready", () => {
     client.user.setActivity('./help', { type: ActivityType.Playing });
@@ -65,10 +64,10 @@ client.on("messageCreate", async (message) => {
     // afk module
     if (!message.author.bot) {
         // Check if user not afk and send back message
-        if (afkset.find(user => message.author.id)) {
+        if (client.afk.has(toString(message.author.id))) {
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
-                afkset.delete(message.author.id)
+                client.afk.delete(toString(message.author.id))
             }
             catch (error) {
                 console.log(error)
@@ -78,8 +77,8 @@ client.on("messageCreate", async (message) => {
         const mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            if (afkset.find(user => toString(mentionget.id))) {
-                const [ timestamp, reason ] = afkset.get(toString(mentionget.author.id));
+            if (client.afk.has(toString(mentionget.id))) {
+                const [ timestamp, reason ] = client.afk.get(toString(mentionget.author.id));
                 const timeago = moment(timestamp).fromNow();
 
                 message.channel.send(`${mentionget} afked for **${timeago}**.`)
