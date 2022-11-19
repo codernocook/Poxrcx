@@ -64,7 +64,7 @@ client.on("guildCreate", async (guildcreate) => {
 client.on("messageCreate", async (message) => {
     // afk module
     if (!message.author.bot) {
-        const [ timestamp, reason, guild, oldusername ] = afkset.get(message.author.id); // get all the infomation about afk user
+        const { TimeStamp, Reason, Guild, Author } = afkset.get(message.author.id); // get all the infomation about afk user
         // Check if user not afk and send back message
         if (afkset.has(message.author.id)) {
             if (!guild.id === message.guildId) return;
@@ -79,13 +79,12 @@ client.on("messageCreate", async (message) => {
         }
         // Respond afk message if someone mention afk user
         let mentionget = message.mentions.members.first()
-        const [ timestamp1, reason1, guild1, oldusername1 ] = afkset.get(mentionget.id);
 
         if (mentionget) {
             if (afkset.has(mentionget.id)) {
-                const timeago = moment(timestamp1).fromNow();
+                const timeago = moment(afkset.get(mentionget.id)[TimeStamp]).fromNow();
 
-                message.channel.send(`${mentionget.username} afked for **${timeago}**, AFK Message: ${reason1}.`)
+                message.channel.send(`${mentionget.username} afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[Reason]}.`)
             }
         }
     }
