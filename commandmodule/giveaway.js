@@ -49,7 +49,7 @@ module.exports = {
                 const prize = message.options.getString("name");
     
                 if (!Number(winners)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild winner number.`).setColor(`Red`)] })
-                const winnernumber = Number(winners);
+                const winnerCount = Number(winners);
     
                 const parsetime = require('parse-duration').default;
                 const mspack = require('ms');
@@ -59,7 +59,7 @@ module.exports = {
                 // hostedBy: message.user.id
                 client.giveaways.start(channel, {
                         duration: durationcalc,
-                        winnernumber,
+                        winnerCount,
                         prize,
                         messages: {
                             giveaway: '🎉🎉 **GIVEAWAY** 🎉🎉',
