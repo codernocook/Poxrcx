@@ -9,6 +9,8 @@ let afkset = new Collection()
 const fs = require('fs');
 const path = require('path');
 const moment = require("moment")
+const { GiveawayCreator } = require('discord-giveaway');
+
 
 function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
     if (!filerequire === "afk") {
@@ -32,6 +34,10 @@ for(const file of commandFiles) {
     commands.push(command.data.toJSON());
 }
 
+//insert giveaway to client so it have access anywhere
+client.giveaways = new GiveawayCreator(client, 'mongodb://Itzporium:It2porium1310%40@ac-0pjqxyy-shard-00-00.j8tw5sp.mongodb.net:27017,ac-0pjqxyy-shard-00-01.j8tw5sp.mongodb.net:27017,ac-0pjqxyy-shard-00-02.j8tw5sp.mongodb.net:27017/?ssl=true&replicaSet=atlas-zmiabd-shard-0&authSource=admin&retryWrites=true&w=majority');
+
+// Run command handle
 client.on("ready", () => {
     client.user.setActivity('./help', { type: ActivityType.Playing });
     console.log("Poxrc v3.0 started!")
