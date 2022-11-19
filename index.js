@@ -87,7 +87,7 @@ client.on("messageCreate", async (message) => {
             if (afkset.has(mentionget.id)) {
                 const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
 
-                message.channel.send(`${mentionget.username} afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
+                message.channel.send(`${mentionget.user.username} afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
             }
         }
     }
