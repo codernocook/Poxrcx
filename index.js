@@ -66,10 +66,10 @@ client.on("messageCreate", async (message) => {
     if (!message.author.bot) {
         // Check if user not afk and send back message
 
-        if (afkset.has(toString(message.author.id))) {
+        if (afkset.has(message.author.id)) {
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
-                afkset.delete(toString(message.author.id))
+                afkset.delete(message.author.id)
             }
             catch (error) {
                 console.log(error)
@@ -79,8 +79,8 @@ client.on("messageCreate", async (message) => {
         const mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            if (afkset.has(toString(mentionget.id))) {
-                const [ timestamp, reason ] = afkset.get(toString(mentionget.author.id));
+            if (afkset.has(mentionget.id)) {
+                const [ timestamp, reason ] = afkset.get(mentionget.author.id);
                 const timeago = moment(timestamp).fromNow();
 
                 message.channel.send(`${mentionget} afked for **${timeago}**.`)
