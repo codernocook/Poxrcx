@@ -31,7 +31,7 @@ module.exports = {
                 Guild: message.guild,
                 Author: message.user.username
             })
-            message.guild.members.cache.find(user => message.user.id === user.id).setNickname(`[AFK] ${message.author.username}`)
+            message.guild.members.cache.find(user => message.user.id === user.id).setNickname(`[AFK] ${message.user.username}`)
 
             if (reason) {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
