@@ -11,7 +11,7 @@ module.exports = {
 				.setName("start")
 				.setDescription("Start a giveaway.")
 				.addChannelOption(option =>
-					option.setName("channel").setDescription("The channel to start the giveaway").setRequired(false)
+					option.setName("channel").setDescription("The channel to start the giveaway").setRequired(true)
 				)
                 .addStringOption(option =>
 					option.setName("winner").setDescription("The Winner number of the giveaway").setRequired(true)
