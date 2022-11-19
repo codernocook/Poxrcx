@@ -37,7 +37,7 @@ module.exports = {
         if (typeofcommand === "message") {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This command only support slash command.`).setColor(`Red`)] })
         } else if (typeofcommand === "interaction"){
-            if (interaction.options.getSubcommand() === "start") {
+            if (message.options.getSubcommand() === "start") {
                 const channel = message.options.getChannel("channel") || message.channel;
                 const winner = message.options.addNumberOption("winner");
                 const duration = message.options.getMentionable("duration");
@@ -58,7 +58,7 @@ module.exports = {
                     winners: Number(duration),
                     hostedBy: message.user.id
                 })
-            } else if (interaction.options.getSubcommand() === "end") {
+            } else if (message.options.getSubcommand() === "end") {
                 const giveawayname = message.options.getMentionable("giveaway");
                 const giveawayend = client.giveaways.endGiveaway(giveawayname);
 
