@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const moment = require("moment");
 const { GiveawaysManager } = require('discord-giveaways');
+const { data } = require('./commandmodule/afk');
 
 
 function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
@@ -42,7 +43,7 @@ client.giveaways = new GiveawaysManager(client, {
 });
 
 // Put afk set in the client so it will have access from anywhere
-client.afk = new Collection()
+client.afk = new Collection();
 
 // Run command handle
 client.on("ready", () => {
@@ -64,7 +65,7 @@ client.on("messageCreate", async (message) => {
     // afk module
     if (!message.author.bot) {
         // Check if user not afk and send back message
-        if (client.afk.has(toString(message.author.id))) {
+        if (client.afk.get(message.author.id)) {
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
                 client.afk.delete(toString(message.author.id))
@@ -77,8 +78,9 @@ client.on("messageCreate", async (message) => {
         const mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            if (client.afk.has(toString(mentionget.id))) {
-                const [ timestamp, reason ] = client.afk.get(toString(mentionget.author.id));
+            const afkdata = client.afk.get(toString(mentionget.author.id));
+            if (afkdata) {
+                const [ timestamp, reason ] = afkdata
                 const timeago = moment(timestamp).fromNow();
 
                 message.channel.send(`${mentionget} afked for **${timeago}**.`)
