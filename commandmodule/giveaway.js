@@ -77,6 +77,9 @@ module.exports = {
                     }).then((data) => {
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Started giveaway!`).setColor(`Green`)], ephemeral: true });
                     })
+                    .catch((err) => {
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something when wrong, I can't start the giveaway!`).setColor(`Red`)], ephemeral: true })
+                    });
             } else if (message.options.getSubcommand() === "end") {
                 const messageidget = message.options.getString("message-id")
                 client.giveaways.end(messageidget)
