@@ -10,7 +10,9 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
             let reason = argument.join(" ");
-            afk.set(message.author.id, [ Date.now(), reason ])
+            afk.set(message.author.id, [ Date.now(), reason, message.guild, message.author.username ])
+            message.guild.members.cache.find(user => message.author.id === user.author.id).setNickname(`[AFK] ${message.author.username}`)
+
             if (reason) {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.author.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
             } else {
@@ -18,7 +20,8 @@ module.exports = {
             }
         } else if (typeofcommand === "interaction"){
             let reason = message.options.getString("message")
-            afk.set(message.user.id, [ Date.now(), reason ])
+            afk.set(message.user.id, [ Date.now(), reason, message.guild, message.user.username ])
+            message.guild.members.cache.find(user => message.user.id === user.id).setNickname(`[AFK] ${message.author.username}`)
 
             if (reason) {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
