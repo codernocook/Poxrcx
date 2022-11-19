@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
 const { GiveawayCreator } = require('discord-giveaway');
 const { default: parse } = require('parse-duration');
-const Creator = new GiveawayCreator(client, 'mongodb://Itzporium:<It2porium1310@>@cluster0.j8tw5sp.mongodb.net/?retryWrites=true&w=majority');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -33,6 +32,7 @@ module.exports = {
 				)
 		),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
+        const Creator = new GiveawayCreator(client, 'mongodb://Itzporium:<It2porium1310@>@cluster0.j8tw5sp.mongodb.net/?retryWrites=true&w=majority');
         client.giveaways = Creator
         if (typeofcommand === "message") {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This command only support slash command.`).setColor(`Red`)] })
