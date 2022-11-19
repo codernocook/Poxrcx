@@ -40,8 +40,8 @@ module.exports = {
             if (message.options.getSubcommand() === "start") {
                 const channel = message.options.getChannel("channel") || message.channel;
                 const winner = message.options.getNumber("winner");
-                const duration = message.options.getMentionable("duration");
-                const name = message.options.getMentionable("name");
+                const duration = message.options.getString("duration");
+                const name = message.options.getString("name");
     
                 if (!Number(winner)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild winner number.`).setColor(`Red`)] })
     
