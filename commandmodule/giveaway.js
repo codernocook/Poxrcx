@@ -39,7 +39,7 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             if (message.options.getSubcommand() === "start") {
                 const channel = message.options.getChannel("channel") || message.channel;
-                const winner = message.options.addNumberOption("winner");
+                const winner = message.options.getNumber("winner");
                 const duration = message.options.getMentionable("duration");
                 const name = message.options.getMentionable("name");
     
