@@ -34,7 +34,7 @@ for(const file of commandFiles) {
     commands.push(command.data.toJSON());
 }
 
-//insert giveaway to client so it have access anywhere
+// insert giveaway to client so it have access anywhere
 client.giveaways = new GiveawaysManager(client, {
     storage: './giveaways.json',
     default: {

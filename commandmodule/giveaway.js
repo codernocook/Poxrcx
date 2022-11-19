@@ -60,7 +60,21 @@ module.exports = {
                     .start(message.channel, {
                         duration: durationcalc,
                         winner,
-                        prize
+                        prize,
+                        messages: {
+                            giveaway: '🎉🎉 **GIVEAWAY** 🎉🎉',
+                            giveawayEnded: '🎉🎉 **GIVEAWAY ENDED** 🎉🎉',
+                            title: '{this.prize}',
+                            drawing: 'Drawing: {timestamp}',
+                            dropMessage: 'Be the first to react with 🎉 !',
+                            inviteToParticipate: 'React with 🎉 to participate!',
+                            winMessage: 'Congratulations, {winners}! You won **{this.prize}**!\n{this.messageURL}',
+                            embedFooter: '{this.winnerCount} winner(s)',
+                            noWinner: 'Giveaway cancelled, no valid participations.',
+                            hostedBy: 'Hosted by: {this.hostedBy}',
+                            winners: 'Winner(s):',
+                            endedAt: 'Ended at'
+                        }
                     }).then((data) => {
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Started giveaway!`).setColor(`Green`)], ephemeral: true });
                     })
@@ -75,13 +89,10 @@ module.exports = {
                     });
             } else if (message.options.getSubcommand() === "reroll") {
                 const messageidget = message.options.getString("message-id")
-                client.giveawaysManager.reroll(messageidget)
-                    .then(() => {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Ended the giveaway.`).setColor(`Green`)] });
-                    })
-                    .catch((err) => {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't reroll the giveaway, maybe you put invaild message id.`).setColor(`Red`)], ephemeral: true })
-                    });
+                client.giveawaysManager.reroll(messageidget, {
+                    congrat: ':tada: New winner(s): {winners}! Congratulations, you won **{this.prize}**!\n{this.messageURL}',
+                    error: 'No valid participations, no new winner(s) can be chosen!'
+                })
             }
         }
     }
