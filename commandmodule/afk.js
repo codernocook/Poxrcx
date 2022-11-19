@@ -7,10 +7,10 @@ module.exports = {
         .addStringOption(option =>
             option.setName("message").setDescription("the message you want other user know.").setRequired(false)
         ),
-    execute(argument, message, EmbedBuilder, client, typeofcommand) {
+    execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
             let reason = argument.join(" ");
-            client.afk.set(toString(message.user.id), [ Date.now(), reason ])
+            afk.set(toString(message.user.id), [ Date.now(), reason ])
             if (reason) {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.author.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
             } else {
@@ -18,7 +18,7 @@ module.exports = {
             }
         } else if (typeofcommand === "interaction"){
             let reason = message.options.getString("message")
-            client.afk.set(toString(message.user.id), [ Date.now(), reason ])
+            afk.set(toString(message.user.id), [ Date.now(), reason ])
 
             if (reason) {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
