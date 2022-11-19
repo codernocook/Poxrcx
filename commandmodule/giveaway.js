@@ -12,8 +12,8 @@ module.exports = {
 				.addChannelOption(option =>
 					option.setName("channel").setDescription("The channel to start the giveaway").setRequired(true)
 				)
-                .addIntegerOption(option =>
-					option.setName("winner").setDescription("The Winner number of the giveaway").setRequired(true)
+                .addNumberOption(option =>
+					option.setName("winners").setDescription("The Winner number of the giveaway").setRequired(true)
 				)
                 .addStringOption(option =>
 					option.setName("duration").setDescription("Duration of the giveaway").setRequired(true)
@@ -44,11 +44,11 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             if (message.options.getSubcommand() === "start") {
                 const channel = message.options.getChannel("channel") || message.channel;
-                const winner = message.options.getInteger("winner");
+                const winners = message.options.getNumber("winners");
                 const duration = message.options.getString("duration");
                 const prize = message.options.getString("name");
     
-                if (!Number(winner)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild winner number.`).setColor(`Red`)] })
+                if (!Number(winners)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild winner number.`).setColor(`Red`)] })
     
                 const parsetime = require('parse-duration').default;
                 const mspack = require('ms');
@@ -58,7 +58,7 @@ module.exports = {
                 // hostedBy: message.user.id
                 client.giveaways.start(channel, {
                         duration: durationcalc,
-                        winner,
+                        winners,
                         prize,
                         messages: {
                             giveaway: '🎉🎉 **GIVEAWAY** 🎉🎉',
@@ -78,8 +78,7 @@ module.exports = {
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Started giveaway!`).setColor(`Green`)], ephemeral: true });
                     })
                     .catch((err) => {
-                        console.error(err)
-                        //message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something when wrong, I can't start the giveaway!`).setColor(`Red`)], ephemeral: true })
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something when wrong, I can't start the giveaway!`).setColor(`Red`)], ephemeral: true })
                     });
             } else if (message.options.getSubcommand() === "end") {
                 const messageidget = message.options.getString("message-id")
