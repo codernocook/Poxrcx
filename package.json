@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@discordjs/collection": "^1.2.0",
     "discord-giveaways": "^6.0.1",
     "discord.js": "^14.5.0",
     "events": "^3.3.0",
