@@ -65,10 +65,10 @@ client.on("messageCreate", async (message) => {
     // afk module
     if (!message.author.bot) {
         // Check if user not afk and send back message
-        if (afkset.find(user => toString(message.author.id))) {
+        if (afkset.find(user => message.author.id)) {
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
-                afkset.delete(toString(message.author.id))
+                afkset.delete(message.author.id)
             }
             catch (error) {
                 console.log(error)

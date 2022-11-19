@@ -18,7 +18,7 @@ module.exports = {
             }
         } else if (typeofcommand === "interaction"){
             let reason = message.options.getString("message")
-            afk.set(toString(message.user.id), [ Date.now(), reason ])
+            afk.set(message.user.id, [ Date.now(), reason ])
 
             if (reason) {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
