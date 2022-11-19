@@ -12,7 +12,7 @@ module.exports = {
             let reason = argument.slice(0).join(" ");
             afk.set(toString(message.author.id), [ Date.now(), reason ])
             if (reason) {
-                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.author.id}> You are now afk for ${reason}.`).setColor(`Green`)] })
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.author.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
             } else {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.author.id}> You are now afk.`).setColor(`Green`)] })
             }
@@ -21,7 +21,7 @@ module.exports = {
             afk.set(toString(message.user.id), [ Date.now(), reason ])
 
             if (reason) {
-                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> You are now afk for ${reason}.`).setColor(`Green`)] })
+                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
             } else {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> You are now afk.`).setColor(`Green`)] })
             }
