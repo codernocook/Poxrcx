@@ -59,8 +59,9 @@ client.on("messageCreate", async (message) => {
         const mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            if (afkset.get(toString(mentionget.author.id))) {
-                const [ timestamp, reason ] = afkset.get(toString(mentionget.author.id));
+            const afkauthorget = afkset.get(toString(mentionget.author.id));
+            if (afkauthorget) {
+                const [ timestamp, reason ] = afkauthorget;
                 const timeago = moment(timestamp).fromNow();
 
                 message.channel.send(`${mentionget} afked for **${timeago}**.`)
