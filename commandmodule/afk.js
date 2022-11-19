@@ -16,9 +16,11 @@ module.exports = {
                 message.guild,
                 message.author.username
             ])
+            /* disabled the module cuz it lag
             if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                 message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`[AFK] ${message.author.username}`)
             }
+            */
 
             if (reason) {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.author.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
@@ -35,9 +37,11 @@ module.exports = {
             ])
 
             // Checking Position when change name
+            /* disabled the module cuz it lag
             if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.user.id === user.id).roles.highest.permissions) {
                 message.guild.members.cache.find(user => message.user.id === user.id).setNickname(`[AFK] ${message.user.username}`)
             }
+            */
 
             if (reason) {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> You are now afk for \`${reason}\`.`).setColor(`Green`)] })
