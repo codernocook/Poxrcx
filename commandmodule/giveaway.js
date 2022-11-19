@@ -21,7 +21,7 @@ module.exports = {
 				)
                 .addStringOption(option =>
 					option.setName("name").setDescription("Giveaway name").setRequired(true)
-				)
+				),
 		)
         .addSubcommand(subcommand =>
 			subcommand
@@ -29,7 +29,7 @@ module.exports = {
 				.setDescription("End a giveaway.")
 				.addStringOption(option =>
 					option.setName("giveaway").setDescription("the giveaway name you want to end").setRequired(true)
-				)
+				),
 		),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         const Creator = new GiveawayCreator(client, 'mongodb://Itzporium:<It2porium1310@>@cluster0.j8tw5sp.mongodb.net/?retryWrites=true&w=majority');
