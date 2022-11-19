@@ -56,7 +56,7 @@ module.exports = {
                 const durationcalc = parsetime(duration);
     
                 // hostedBy: message.user.id
-                client.giveawaysManager.start(channel.id, {
+                client.giveaways.start(channel, {
                         duration: durationcalc,
                         winner,
                         prize,
@@ -79,7 +79,7 @@ module.exports = {
                     })
             } else if (message.options.getSubcommand() === "end") {
                 const messageidget = message.options.getString("message-id")
-                client.giveawaysManager.end(messageidget)
+                client.giveaways.end(messageidget)
                     .then(() => {
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Ended the giveaway.`).setColor(`Green`)] });
                     })
@@ -88,7 +88,7 @@ module.exports = {
                     });
             } else if (message.options.getSubcommand() === "reroll") {
                 const messageidget = message.options.getString("message-id")
-                client.giveawaysManager.reroll(messageidget, {
+                client.giveaways.reroll(messageidget, {
                     congrat: ':tada: New winner(s): {winners}! Congratulations, you won **{this.prize}**!\n{this.messageURL}',
                     error: 'No valid participations, no new winner(s) can be chosen!'
                 })
