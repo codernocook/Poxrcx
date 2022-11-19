@@ -56,8 +56,7 @@ module.exports = {
                 const durationcalc = parsetime(duration);
     
                 // hostedBy: message.user.id
-                client.giveawaysManager
-                    .start(channel, {
+                client.giveawaysManager.start(channel, {
                         duration: durationcalc,
                         winner,
                         prize,
