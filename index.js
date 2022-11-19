@@ -78,7 +78,7 @@ client.on("messageCreate", async (message) => {
         const mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            const afkdata = client.afk.get(toString(mentionget.author.id));
+            let afkdata = client.afk.get(toString(mentionget.author.id));
             if (afkdata) {
                 const [ timestamp, reason ] = afkdata
                 const timeago = moment(timestamp).fromNow();
