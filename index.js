@@ -50,18 +50,18 @@ client.on("guildCreate", async (guildcreate) => {
 
 client.on("messageCreate", async (message) => {
     // afk module
-    if (!message.author.bot) {
+    if (!message.author.bot && message.author) {
         // Check if user not afk and send back message
-        if (afkset.get(toString(message.author.id))) {
+        if (afkset.has(toString(message.author.id))) {
             message.channel.send(`Welcome back <@${message.author.id}>!`)
+            afkset.delete(toString(message.author.id))
         }
         // Respond afk message if someone mention afk user
         const mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            const afkauthorget = afkset.get(toString(mentionget.author.id));
-            if (afkauthorget) {
-                const [ timestamp, reason ] = afkauthorget;
+            if (afkset.has(toString(mentionget.author.id))) {
+                const [ timestamp, reason ] = afkset.get(toString(mentionget.author.id));
                 const timeago = moment(timestamp).fromNow();
 
                 message.channel.send(`${mentionget} afked for **${timeago}**.`)
