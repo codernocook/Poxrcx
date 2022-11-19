@@ -9,7 +9,7 @@ module.exports = {
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
-            let reason = argument.slice(2).join(" ");
+            let reason = argument.slice(0).join(" ");
             afk.set(toString(message.author.id), [ Date.now(), reason ])
             message.author.setNickname(`[AFK] ${message.author.username}`)
             if (reason) {
@@ -20,7 +20,7 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             let reason = message.options.getString("message")
             afk.set(toString(message.user.id), [ Date.now(), reason ])
-            message.guild.members.cache.find(user => interaction.user.id).setNickname(`[AFK] ${interaction.user.username}`)
+            message.guild.members.cache.find(user => message.user.id).setNickname(`[AFK] ${message.user.username}`)
 
             if (reason) {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> You are now afk for ${reason}.`).setColor(`Green`)] })
