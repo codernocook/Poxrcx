@@ -3,9 +3,8 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 const token = process.env.token; //"MTAyMzU4NTU5MjE1MzQ3MzEyNQ.G9ooDD.lC8CxSEA3qEArrtJeqakoAcKA_R4HH6ptyZppE";
 const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix; //"./";
-client.commandcooldowns = new Collection();
-client.interactioncooldowns = new Collection();
-client.COOLDOWN_SECONDS = 550;
+let commandcooldown = new Set();
+let interactioncooldown = new Set();
 let afkset = new Map();
 const fs = require('fs');
 const path = require('path');
@@ -89,15 +88,15 @@ client.on("messageCreate", async (message) => {
         }
     }
     // Check cooldown for command
-    if(client.commandcooldowns.has(message.author.id)) {
+    if(commandcooldown.has(message.author.id)) {
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check again if bot send message to themself
-        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
+        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
     } else {
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
         // Check it again if it have any mistake
-        if(client.commandcooldowns.has(message.author.id)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
+        if(commandcooldown.has(message.author.id)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
         // Add delay
-        client.commandcooldowns.set(message.author.id, true);
+        commandcooldown.add(message.author.id);
         //Run the command checker
             const args = message.content.slice(prefix.length).split(/ +/);
             const command = args.shift().toLowerCase();
@@ -114,8 +113,8 @@ client.on("messageCreate", async (message) => {
             } catch(err) {}
         // remove user command timeout
         setTimeout(() => {
-            client.commandcooldowns.delete(message.author.id);
-        }, client.COOLDOWN_SECONDS);
+            commandcooldown.delete(message.author.id);
+        }, 550);
     }
 })
 
@@ -126,9 +125,9 @@ client.on('interactionCreate', async (interaction) => {
     if (!command) return
 
     // check if the user spam to run the command
-    if (client.interactioncooldowns.has(interaction.user.id)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] });
+    if (interactioncooldown.has(interaction.user.id)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] });
 
-    client.interactioncooldowns.set(interaction.user.id, true)
+    interactioncooldown.add(interaction.user.id)
 
     try {
         await executefile(`${interaction.commandName}`, {}, interaction, "interaction");
@@ -138,8 +137,8 @@ client.on('interactionCreate', async (interaction) => {
     }
     // remove user interaction timeout
     setTimeout(() => {
-        client.interactioncooldowns.delete(interaction.user.id)
-    }, client.COOLDOWN_SECONDS);
+        interactioncooldown.delete(interaction.user.id);
+    }, 550);
 });
 
 client.login(token)
