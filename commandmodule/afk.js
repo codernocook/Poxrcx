@@ -14,9 +14,9 @@ module.exports = {
                 Date.now(),
                 reason,
                 message.guild,
-                message.user.username
+                message.author.username
             ])
-            if (message.guild.members.me.roles.highest.permissions < message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
+            if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                 message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`[AFK] ${message.author.username}`)
             }
 
@@ -35,7 +35,7 @@ module.exports = {
             ])
 
             // Checking Position when change name
-            if (message.guild.members.me.roles.highest.permissions < message.guild.members.cache.find(user => message.user.id === user.id).roles.highest.permissions) {
+            if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.user.id === user.id).roles.highest.permissions) {
                 message.guild.members.cache.find(user => message.user.id === user.id).setNickname(`[AFK] ${message.user.username}`)
             }
 

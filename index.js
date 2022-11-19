@@ -70,7 +70,7 @@ client.on("messageCreate", async (message) => {
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
                 afkset.delete(message.author.id)
-                if (message.guild.members.me.roles.highest.permissions < message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
+                if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                     message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
                 }
             }
