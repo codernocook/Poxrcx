@@ -79,7 +79,7 @@ client.on("messageCreate", async (message) => {
         }
         // Respond afk message if someone mention afk user
         let mentionget = message.mentions.members.first()
-        const [ timestamp1, reason1, guild1, oldusername1 ] = afkset.get(message.author.id);
+        const [ timestamp1, reason1, guild1, oldusername1 ] = afkset.get(mentionget.id);
 
         if (mentionget) {
             if (afkset.has(mentionget.id)) {
