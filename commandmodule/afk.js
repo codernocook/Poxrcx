@@ -10,7 +10,7 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
             let reason = argument.join(" ");
-            afk.set(message.user.id, [
+            afk.set(message.author.id, [
                 [1] = Date.now(),
                 [2] = reason,
                 [3] = message.guild,
