@@ -11,6 +11,7 @@ const path = require('path');
 const moment = require("moment");
 const { GiveawaysManager } = require('discord-giveaways');
 
+
 function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
     if (!filerequire === "afk") {
         require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand)
@@ -31,57 +32,6 @@ for(const file of commandFiles) {
 
     client.commands.set(command.data.name, command);
     commands.push(command.data.toJSON());
-}
-
-// Setup MongoDb function
-client.MongoLogin = function (DatabaseURI, DatabaseName, CollectionName) {
-    try {
-        if (!typeof(DatabaseURI) === "string") return
-        const { MongoClient } = require("mongodb");
-        const mongoClient = new MongoClient(toString(DatabaseURI));
-        mongoClient.connect();
-        const db = mongoClient.db(toString(DatabaseName));
-        const collection = db.collection(toString(CollectionName));
-        return collection;
-    }
-    catch {
-        console.log("Can't login into MongoDB")
-        return "Can't login into MongoDB"
-    }
-}
-
-client.MongoAdd = function (MongoClientDatabaseCollection, Array) {
-    try {
-        MongoClientDatabaseCollection.insertOne(Array);
-    }
-    catch {
-        console.log("Can't Add data to MongoDB")
-        return "Can't Add data to MongoDB"
-    }
-}
-
-client.MongoFind = function (MongoClientDatabaseCollection, string) {
-    try {
-        if (MongoClientDatabaseCollection.find({ string }).toArray()) {
-            return MongoClientDatabaseCollection.find({ string }).toArray();
-        } else {
-            return undefined
-        }
-    }
-    catch {
-        console.log("Can't Find a data in MongoDB")
-        return "Can't Find a data in MongoDB"
-    }
-}
-
-client.MongoDelete = function (MongoClientDatabaseCollection) {
-    try {
-        MongoClientDatabaseCollection.deleteMany({ string });
-    }
-    catch {
-        console.log("Can't Delete a data to MongoDB")
-        return "Can't Delete a data to MongoDB"
-    }
 }
 
 // insert giveaway to client so it have access anywhere
@@ -115,12 +65,11 @@ client.on("messageCreate", async (message) => {
     // afk module
     if (!message.author.bot) {
         // Check if user not afk and send back message
-        const MessageFindAuthor = client.MongoFind(client.MongoLogin(process.env.AFKDatabase, "AFKDatabase", "AFKUser"), message.author.id)
-        if (MessageFindAuthor) {
-            if (!message.guildId === MessageFindAuthor["Guild"].id) return;
+        if (afkset.has(message.author.id)) {
+            if (!afkset.get(message.author.id)[3].id === message.guildId) return;
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
-                client.MongoDelete(client.MongoLogin(process.env.AFKDatabase, "AFKDatabase", "AFKUser"), message.author.id)
+                afkset.delete(message.author.id)
                 /* Disabled because it laggy
                 if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                     message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
@@ -135,12 +84,12 @@ client.on("messageCreate", async (message) => {
         let mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            if (client.MongoFind(client.MongoLogin(process.env.AFKDatabase, "AFKDatabase", "AFKUser"), mentionget.id)) {
-                const timeago = moment(client.MongoFind(client.MongoLogin(process.env.AFKDatabase, "AFKDatabase", "AFKUser"), mentionget.id)["Time"]).fromNow();
+            if (afkset.has(mentionget.id)) {
+                const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
 
-                if (!client.MongoFind(client.MongoLogin(process.env.AFKDatabase, "AFKDatabase", "AFKUser"), mentionget.id)["AFKMessage"] === null) {
-                    message.channel.send(`${mentionget.user.username} afked for **${timeago}**, AFK Message: ${client.MongoFind(client.MongoLogin(process.env.AFKDatabase, "AFKDatabase", "AFKUser"), mentionget.id)["AFKMessage"]}.`)
-                } else if (client.MongoFind(client.MongoLogin(process.env.AFKDatabase, "AFKDatabase", "AFKUser"), mentionget.id)["AFKMessage"] === null) {
+                if (!afkset.get(mentionget.id)[2] === null) {
+                    message.channel.send(`${mentionget.user.username} afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
+                } else if (afkset.get(mentionget.id)[2] === null) {
                     message.channel.send(`${mentionget.user.username} afked for **${timeago}**.`)
                 }
             }
