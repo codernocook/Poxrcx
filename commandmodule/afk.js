@@ -9,6 +9,7 @@ module.exports = {
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
+            if (afk.has(message.author.id)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in another server.`).setColor(`Red`)] })
             let reason = argument.join(" ");
             afk.set(message.author.id, {
                 [1]: Date.now(),
@@ -28,6 +29,7 @@ module.exports = {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.author.id}> You are now afk.`).setColor(`Green`)] })
             }
         } else if (typeofcommand === "interaction"){
+            if (afk.has(message.user.id)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in another server.`).setColor(`Red`)] })
             let reason = message.options.getString("message")
             afk.set(message.user.id, {
                 [1]: Date.now(),
