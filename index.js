@@ -33,12 +33,6 @@ for(const file of commandFiles) {
     commands.push(command.data.toJSON());
 }
 
-// Add AFK Database
-const AFKDatabase = process.env.AFKDatabase
-const { MongoClient } = require("mongodb")
-const mongoClient = new MongoClient(AFKDatabase)
-mongoClient.connect()
-
 // Setup MongoDb function
 client.MongoLogin = function (DatabaseURI, DatabaseName) {
     try {
@@ -117,11 +111,11 @@ client.on("messageCreate", async (message) => {
     // afk module
     if (!message.author.bot) {
         // Check if user not afk and send back message
-        if (client.MongoFind(client.MongoLogin, message.author.id)) {
-            if (!message.guildId === client.MongoFind(client.MongoLogin, message.author.id)["Guild"].id) return;
+        if (client.MongoFind(client.MongoLogin(process.env.AFKDatabase), message.author.id)) {
+            if (!message.guildId === client.MongoFind(client.MongoLogin(process.env.AFKDatabase), message.author.id)["Guild"].id) return;
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
-                client.MongoDelete(client.MongoLogin, message.author.id)
+                client.MongoDelete(client.MongoLogin(process.env.AFKDatabase), message.author.id)
                 /* Disabled because it laggy
                 if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                     message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
@@ -136,12 +130,12 @@ client.on("messageCreate", async (message) => {
         let mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            if (client.MongoFind(client.MongoLogin, mentionget.id)) {
-                const timeago = moment(client.MongoFind(client.MongoLogin, mentionget.id)["Time"]).fromNow();
+            if (client.MongoFind(client.MongoLogin(process.env.AFKDatabase), mentionget.id)) {
+                const timeago = moment(client.MongoFind(client.MongoLogin(process.env.AFKDatabase), mentionget.id)["Time"]).fromNow();
 
-                if (!client.MongoFind(client.MongoLogin, mentionget.id)["AFKMessage"] === null) {
-                    message.channel.send(`${mentionget.user.username} afked for **${timeago}**, AFK Message: ${client.MongoFind(client.MongoLogin, mentionget.id)["AFKMessage"]}.`)
-                } else if (client.MongoFind(client.MongoLogin, mentionget.id)["AFKMessage"] === null) {
+                if (!client.MongoFind(client.MongoLogin(process.env.AFKDatabase), mentionget.id)["AFKMessage"] === null) {
+                    message.channel.send(`${mentionget.user.username} afked for **${timeago}**, AFK Message: ${client.MongoFind(client.MongoLogin(process.env.AFKDatabase), mentionget.id)["AFKMessage"]}.`)
+                } else if (client.MongoFind(client.MongoLogin(process.env.AFKDatabase), mentionget.id)["AFKMessage"] === null) {
                     message.channel.send(`${mentionget.user.username} afked for **${timeago}**.`)
                 }
             }

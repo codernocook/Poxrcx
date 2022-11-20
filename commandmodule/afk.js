@@ -10,7 +10,7 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
             let reason = argument.join(" ");
-            client.MongoAdd(client.MongoLogin, {
+            client.MongoAdd(client.MongoLogin(process.env.AFKDatabase), {
                 ["Time"]: Date.now(),
                 ["AFKMessage"]: reason,
                 ["Guild"]: message.guild,
@@ -30,7 +30,7 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             let reason = message.options.getString("message")
 
-            client.MongoAdd(client.MongoLogin, {
+            client.MongoAdd(client.MongoLogin(process.env.AFKDatabase), {
                 ["Time"]: Date.now(),
                 ["AFKMessage"]: reason,
                 ["Guild"]: message.guild,
