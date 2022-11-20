@@ -1,13 +1,14 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
-import { got } from "got"
+const fetch = require("node-fetch")
 
 module.exports = {
     data: new SlashCommandBuilder()
 		.setName("meme")
 		.setDescription("Get a random meme!"),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
-        got("https://reddit.com/r/memes/random/.json").then(response => {
-            let content = JSON.parse(response.body);
+        fetch("https://reddit.com/r/memes/random/.json").then(res => res.json()).then(json => {
+            console.log(json)
+            let content = JSON.parse(json.body);
             let permalink = content[0].data.children[0].data.permalink;
             let memeUrl = `https://reddit.com${permalink}`;
             let memeImage = content[0].data.children[0].data.url;
