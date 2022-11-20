@@ -41,7 +41,7 @@ module.exports = {
 
                 mentioneduser.timeout(parsedtime, reason).catch(err => { message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't mute ${mentioneduser}, maybe my role position is too low.`).setColor(`Red`)] }) });
 
-                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was muted.`).setColor(`Green`)] })
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was muted for **${reason}**.`).setColor(`Green`)] })
         } else if (typeofcommand === "interaction"){
                 const mentioneduser = message.options.getMentionable("user")
                 const parsetime = require('parse-duration').default;
@@ -66,7 +66,7 @@ module.exports = {
 
                 mentioneduser.timeout(parsedtime, reason).catch(err => { message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't mute ${mentioneduser}, maybe my role position is too low.`).setColor(`Red`)] }) });
 
-                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was muted.`).setColor(`Green`)] })
+                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was muted for **${reason}**.`).setColor(`Green`)] })
         }
     }
 }

@@ -30,7 +30,7 @@ module.exports = {
             // Checking if reason value is filled or not
             let reason = argument.slice(1).join(" ") || 'No reason given.'
             // Start banning
-            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Banned user ${mentioneduser} for ${reason}.`).setColor(`Green`)] })
+            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Banned user ${mentioneduser} for **${reason}**.`).setColor(`Green`)] })
             mentioneduser.ban({ reason: `${argument[1]}` }).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't ban this user, maybe my role position is too low.`).setColor(`Red`)] })})
         } else if (typeofcommand === "interaction") {
             const mentioneduser = message.options.getMentionable("user");
@@ -50,7 +50,7 @@ module.exports = {
             // Checking if reason value is filled or not
             let reason = message.options.getString("reason") || 'No reason given.'
             // Start banning
-            message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Banned user ${mentioneduser} for ${reason}.`).setColor(`Green`)] })
+            message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Banned user ${mentioneduser} for **${reason}**.`).setColor(`Green`)] })
             mentioneduser.ban({ reason: `${reason}` }).catch(err => {message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't ban this user, maybe my role position is too low.`).setColor(`Red`)] })})
         }
     }
