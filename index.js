@@ -85,13 +85,11 @@ client.on("messageCreate", async (message) => {
         let mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            console.log("mentionedget")
             if (afkset.has(mentionget.id)) {
-                console.log("mentionedget1")
                 if (Number(message.guildId) === Number(afkset.get(mentionget.id)[3].id)) {
-                    console.log("mentionedget2")
                     const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
 
+                    console.log(afkset.get(mentionget.id)[2])
                     if (!afkset.get(mentionget.id)[2] === undefined) {
                         message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
                     } else if (afkset.get(mentionget.id)[2] === undefined) {
