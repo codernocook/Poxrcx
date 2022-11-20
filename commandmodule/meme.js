@@ -15,9 +15,9 @@ module.exports = {
             let memeDownvotes = json[0].data.children[0].data.downs;
             let memeNumComments = json[0].data.children[0].data.num_comments;
             if (typeofcommand === "message") {
-                message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `:thumbsup: ${memeUpvotes} | :thumbsdown: ${memeDownvotes} | :envelope: ${memeNumComments}`}).setColor(`Blue`)] });
+                message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `👍 ${memeUpvotes} | 👎 ${memeDownvotes} | ✉️ ${memeNumComments}`}).setColor(`Blue`)] });
             } else if (typeofcommand === "interaction"){
-                message.reply({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `:thumbsup: ${memeUpvotes} | :thumbsdown: ${memeDownvotes} | :envelope: ${memeNumComments}`}).setColor(`Blue`)] });
+                message.reply({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `👍 ${memeUpvotes} | 👎 ${memeDownvotes} | ✉️ ${memeNumComments}`}).setColor(`Blue`)] });
             }
         })
     }
