@@ -7,7 +7,7 @@ module.exports = {
 		.setDescription("Get a random meme!"),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         fetch("https://reddit.com/r/memes/random/.json").then(res => res.json()).then(json => {
-            let permalink = content[0].data.children[0].data.permalink;
+            let permalink = json[0].data.children[0].data.permalink;
             let memeUrl = `https://reddit.com${permalink}`;
             let memeImage = json[0].data.children[0].data.url;
             let memeTitle = json[0].data.children[0].data.title;
