@@ -10,11 +10,11 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
             let reason = argument.join(" ");
-            client.MongoAdd(client.MongoLogin(process.env.AFKDatabase, "AFKDatabase", "AFKUser"), {
-                ["Time"]: Date.now(),
-                ["AFKMessage"]: reason,
-                ["Guild"]: message.guild,
-                ["Author"]: message.author.username
+            afk.set(message.author.id, {
+                [1]: Date.now(),
+                [2]: reason,
+                [3]: message.guild,
+                [4]: message.author.username
             })
             /* disabled the module cuz it lag
             if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
@@ -29,12 +29,11 @@ module.exports = {
             }
         } else if (typeofcommand === "interaction"){
             let reason = message.options.getString("message")
-
-            client.MongoAdd(client.MongoLogin(process.env.AFKDatabase, "AFKDatabase", "AFKUser"), {
-                ["Time"]: Date.now(),
-                ["AFKMessage"]: reason,
-                ["Guild"]: message.guild,
-                ["Author"]: message.user.username
+            afk.set(message.user.id, {
+                [1]: Date.now(),
+                [2]: reason,
+                [3]: message.guild,
+                [4]: message.user.username
             })
 
             // Checking Position when change name
