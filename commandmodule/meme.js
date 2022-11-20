@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
-import got from 'got';
+const { got } = require("got")
 
 module.exports = {
     data: new SlashCommandBuilder()
