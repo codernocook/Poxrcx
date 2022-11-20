@@ -66,7 +66,7 @@ client.on("messageCreate", async (message) => {
     if (!message.author.bot) {
         // Check if user not afk and send back message
         if (afkset.has(message.author.id)) {
-            if (!afkset.get(message.author.id)[3].id === message.guildId) return;
+            if (!message.guildId === afkset.get(message.author.id)[3].id) return;
             message.channel.send(`Welcome back <@${message.author.id}>!`)
             try {
                 afkset.delete(message.author.id)
