@@ -91,9 +91,7 @@ client.on("messageCreate", async (message) => {
 
                     console.log("test0")
                     if (afkset.get(mentionget.id)[2]) {
-                        console.log("test1")
                         message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
-                        console.log("test2")
                     } else if (!afkset.get(mentionget.id)[2]) {
                         message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
                     }
