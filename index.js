@@ -89,9 +89,9 @@ client.on("messageCreate", async (message) => {
                 if (Number(message.guildId) === Number(afkset.get(mentionget.id)[3].id)) {
                     const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
 
-                    if (!afkset.get(mentionget.id)[2] === null) {
+                    if (!afkset.get(mentionget.id)[2] === undefined) {
                         message.channel.send(`${mentionget.user.username} afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
-                    } else if (afkset.get(mentionget.id)[2] === null) {
+                    } else if (afkset.get(mentionget.id)[2] === undefined) {
                         message.channel.send(`${mentionget.user.username} afked for **${timeago}**.`)
                     }
                 }
