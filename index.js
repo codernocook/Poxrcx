@@ -62,7 +62,11 @@ client.MongoAdd = function (MongoClientDatabaseCollection, Array) {
 
 client.MongoFind = function (MongoClientDatabaseCollection, string) {
     try {
-        MongoClientDatabaseCollection.find({ string }).toArray();
+        if (MongoClientDatabaseCollection.find({ string }).toArray()) {
+            return MongoClientDatabaseCollection.find({ string }).toArray();
+        } else {
+            return undefined
+        }
     }
     catch {
         console.log("Can't Find a data in MongoDB")
