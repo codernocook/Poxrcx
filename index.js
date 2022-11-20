@@ -104,7 +104,8 @@ client.on("messageCreate", async (message) => {
         return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
     } else {
         //OwnerCommand (Only for owner)
-        if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && message.author.id === Number(process.env.ownerid)) return message.channel.send("I'm Always here!")
+        if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(process.env.ownerid)) return message.channel.send("I'm Always here!");
+        // Start normal command
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
         // Check it again if it have any mistake
         if(commandcooldown.has(message.author.id)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
