@@ -86,7 +86,7 @@ client.on("messageCreate", async (message) => {
 
         if (mentionget) {
             if (afkset.has(mentionget.id)) {
-                if (Number(message.guildId) === Number(afkset.get(message.author.id)[3].id)) {
+                if (Number(message.guildId) === Number(afkset.get(mentionget.id)[3].id)) {
                     const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
 
                     if (!afkset.get(mentionget.id)[2] === null) {
