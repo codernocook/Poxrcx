@@ -66,18 +66,19 @@ client.on("messageCreate", async (message) => {
     if (!message.author.bot) {
         // Check if user not afk and send back message
         if (afkset.has(message.author.id)) {
-            if (!Number(message.guildId) === Number(afkset.get(message.author.id)[3].id)) return;
-            message.channel.send(`Welcome back <@${message.author.id}>!`)
-            try {
-                afkset.delete(message.author.id)
-                /* Disabled because it laggy
-                if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
-                    message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
+            if (Number(message.guildId) === Number(afkset.get(message.author.id)[3].id)) {
+                message.channel.send(`Welcome back <@${message.author.id}>!`)
+                try {
+                    afkset.delete(message.author.id)
+                    /* Disabled because it laggy
+                    if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
+                        message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
+                    }
+                    */
                 }
-                */
-            }
-            catch (error) {
-                console.log(error)
+                catch (error) {
+                    console.log(error)
+                }
             }
         }
         // Respond afk message if someone mention afk user
@@ -85,12 +86,14 @@ client.on("messageCreate", async (message) => {
 
         if (mentionget) {
             if (afkset.has(mentionget.id)) {
-                const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
+                if (Number(message.guildId) === Number(afkset.get(message.author.id)[3].id)) {
+                    const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
 
-                if (!afkset.get(mentionget.id)[2] === null) {
-                    message.channel.send(`${mentionget.user.username} afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
-                } else if (afkset.get(mentionget.id)[2] === null) {
-                    message.channel.send(`${mentionget.user.username} afked for **${timeago}**.`)
+                    if (!afkset.get(mentionget.id)[2] === null) {
+                        message.channel.send(`${mentionget.user.username} afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
+                    } else if (afkset.get(mentionget.id)[2] === null) {
+                        message.channel.send(`${mentionget.user.username} afked for **${timeago}**.`)
+                    }
                 }
             }
         }
