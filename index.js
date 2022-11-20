@@ -67,7 +67,7 @@ client.on("messageCreate", async (message) => {
         // Check if user not afk and send back message
         if (afkset.has(message.author.id)) {
             if (Number(message.guildId) === Number(afkset.get(message.author.id)[3].id)) {
-                message.channel.send(`Welcome back <@${message.author.id}>!`)
+                message.channel.send(`Welcome back <@${message.author.id}>, I removed your Afk status.`)
                 try {
                     afkset.delete(message.author.id)
                     /* Disabled because it laggy
@@ -90,9 +90,9 @@ client.on("messageCreate", async (message) => {
                     const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
 
                     if (!afkset.get(mentionget.id)[2] === undefined) {
-                        message.channel.send(`${mentionget.user.username} afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
+                        message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
                     } else if (afkset.get(mentionget.id)[2] === undefined) {
-                        message.channel.send(`${mentionget.user.username} afked for **${timeago}**.`)
+                        message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
                     }
                 }
             }
