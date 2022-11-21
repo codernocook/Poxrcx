@@ -72,8 +72,8 @@ client.on("guildDelete", async (guildDelete) => {
 
 client.on("guildMemberRemove", async (guildMemberRemove) => {
     // Remove afk when a user leave the user
-    if (afkset.has(guildMemberRemove)) {
-        afkset.delete(guildMemberRemove);
+    if (afkset.has(guildMemberRemove.id)) {
+        afkset.delete(guildMemberRemove.id);
         guildMemberRemove.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> You left the server, I removed your Afk status.`).setColor(`Green`)] })
     }
 })
