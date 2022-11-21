@@ -129,7 +129,7 @@ client.on("messageCreate", async (message) => {
         // remove user command timeout
         setTimeout(() => {
             commandcooldown.delete(message.author.id);
-        }, 500);
+        }, 600);
     }
 })
 
@@ -140,7 +140,7 @@ client.on('interactionCreate', async (interaction) => {
     if (!command) return
 
     // check if the user spam to run the command
-    if (interactioncooldown.has(interaction.user.id)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] });
+    if (interactioncooldown.has(interaction.user.id)) return interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] });
 
     interactioncooldown.add(interaction.user.id)
 
@@ -153,7 +153,7 @@ client.on('interactionCreate', async (interaction) => {
     // remove user interaction timeout
     setTimeout(() => {
         interactioncooldown.delete(interaction.user.id);
-    }, 500);
+    }, 600);
 });
 
 client.login(token)
