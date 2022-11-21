@@ -61,6 +61,23 @@ client.on("guildCreate", async (guildcreate) => {
     rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildcreate.id), {body: commands}).catch(err => console.log(err));
 })
 
+client.on("guildDelete", async (guildDelete) => {
+    // Remove afk when bot leave a server!
+    for (const guilddeletemember of guildDelete.members.id) {
+        if (afkset.has(guilddeletemember)) {
+            afkset.delete(guilddeletemember)
+        }
+    }
+})
+
+client.on("guildMemberRemove", async (guildMemberRemove) => {
+    // Remove afk when a user leave the user
+    if (afkset.has(guildMemberRemove)) {
+        afkset.delete(guildMemberRemove);
+        guildMemberRemove.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> You left the server, I removed your Afk status.`).setColor(`Green`)] })
+    }
+})
+
 client.on("messageCreate", async (message) => {
     // afk module
     if (!message.author.bot) {
@@ -127,7 +144,7 @@ client.on("messageCreate", async (message) => {
         // remove user command timeout
         setTimeout(() => {
             return commandcooldown.delete(message.author.id);
-        }, 800);
+        }, 900);
     }
 })
 
@@ -151,7 +168,7 @@ client.on('interactionCreate', async (interaction) => {
     // remove user interaction timeout
     setTimeout(() => {
         interactioncooldown.delete(interaction.user.id);
-    }, 800);
+    }, 900);
 });
 
 client.login(token)
