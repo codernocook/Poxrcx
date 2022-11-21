@@ -126,7 +126,7 @@ client.on("messageCreate", async (message) => {
             } catch(err) {}
         // remove user command timeout
         setTimeout(() => {
-            commandcooldown.delete(message.author.id);
+            return commandcooldown.delete(message.author.id);
         }, 800);
     }
 })
