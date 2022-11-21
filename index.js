@@ -108,8 +108,6 @@ client.on("messageCreate", async (message) => {
         if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(process.env.ownerid)) return message.channel.send("I'm Always here!");
         // Start normal command
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
-        // Check it again if it have any mistake
-        if(commandcooldown.has(message.author.id)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
         // Add delay
         commandcooldown.add(message.author.id);
         //Run the command checker
@@ -129,7 +127,7 @@ client.on("messageCreate", async (message) => {
         // remove user command timeout
         setTimeout(() => {
             commandcooldown.delete(message.author.id);
-        }, 600);
+        }, 800);
     }
 })
 
@@ -140,7 +138,7 @@ client.on('interactionCreate', async (interaction) => {
     if (!command) return
 
     // check if the user spam to run the command
-    if (interactioncooldown.has(interaction.user.id)) return interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] });
+    if (interactioncooldown.has(interaction.user.id)) return interaction.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)], ephemeral: true });
 
     interactioncooldown.add(interaction.user.id)
 
@@ -153,7 +151,7 @@ client.on('interactionCreate', async (interaction) => {
     // remove user interaction timeout
     setTimeout(() => {
         interactioncooldown.delete(interaction.user.id);
-    }, 600);
+    }, 800);
 });
 
 client.login(token)
