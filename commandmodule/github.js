@@ -13,8 +13,8 @@ module.exports = {
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
-            let user = argument[2];
-            let repository = argument[4];
+            let user = argument[0];
+            let repository = argument[1];
 
             if (!user) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing username of the repository you want to find.`).setColor(`Red`)] });
             if (!repository) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing the repository name.`).setColor(`Red`)] });
