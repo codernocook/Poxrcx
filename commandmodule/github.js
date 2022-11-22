@@ -30,7 +30,7 @@ module.exports = {
                     let Watchers = json.watchers;
                     let Archived = json.archived;
                     let OpenIssues = json.open_issues_count;
-                    let Visibility = function() {
+                    function Visibility() {
                         if (json.visibility === false) {
                             return "false";
                         } else if (json.visibility === true) {
@@ -59,7 +59,7 @@ module.exports = {
                     let Watchers = json.watchers;
                     let Archived = json.archived;
                     let OpenIssues = json.open_issues_count;
-                    let Visibility = function() {
+                    function Visibility() {
                         if (json.visibility === false) {
                             return "false";
                         } else if (json.visibility === true) {
