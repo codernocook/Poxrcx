@@ -13,8 +13,8 @@ module.exports = {
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
-            let user = argument[1];
-            let repository = argument[2];
+            let user = argument[2];
+            let repository = argument[4];
 
             if (!user) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing username of the repository you want to find.`).setColor(`Red`)] });
             if (!repository) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing the repository name.`).setColor(`Red`)] });
@@ -30,9 +30,15 @@ module.exports = {
                     let Watchers = json.watchers;
                     let Archived = json.archived;
                     let OpenIssues = json.open_issues_count;
-                    let Visibility = json.visibility;
+                    let Visibility = function() {
+                        if (json.visibility === false) {
+                            return "false";
+                        } else if (json.visibility === true) {
+                            return "true";
+                        }
+                    }
 
-                    message.channel.send({ embeds: [new EmbedBuilder().setThumbnail(ProjectAuthorAvatar).setTitle(ProjectAuthor).setDescription(`Repository Name: ${ProjectName}\nWatchers: ${Watchers}\nOpen Issues: ${OpenIssues}\nMost Language: ${MostLanguage}\nVisibility: ${Visibility}\nArchived: ${toString(Archived)}`).setColor(`Red`)] });
+                    message.channel.send({ embeds: [new EmbedBuilder().setThumbnail(ProjectAuthorAvatar).setTitle(ProjectAuthor).setDescription(`Repository Name: ${ProjectName}\nWatchers: ${Watchers}\nOpen Issues: ${OpenIssues}\nMost Language: ${MostLanguage}\nVisibility: ${Visibility}\nArchived: ${Archived()}`).setColor(`Red`)] });
                 }
             })
         } else if (typeofcommand === "interaction"){
@@ -53,9 +59,15 @@ module.exports = {
                     let Watchers = json.watchers;
                     let Archived = json.archived;
                     let OpenIssues = json.open_issues_count;
-                    let Visibility = json.visibility;
+                    let Visibility = function() {
+                        if (json.visibility === false) {
+                            return "false";
+                        } else if (json.visibility === true) {
+                            return "true";
+                        }
+                    }
     
-                    message.reply({ embeds: [new EmbedBuilder().setThumbnail(ProjectAuthorAvatar).setTitle(ProjectAuthor).setDescription(`Repository Name: ${ProjectName}\nWatchers: ${Watchers}\nOpen Issues: ${OpenIssues}\nMost Language: ${MostLanguage}\nVisibility: ${Visibility}\nArchived: ${toString(Archived)}`).setColor(`Red`)] });
+                    message.reply({ embeds: [new EmbedBuilder().setThumbnail(ProjectAuthorAvatar).setTitle(ProjectAuthor).setDescription(`Repository Name: ${ProjectName}\nWatchers: ${Watchers}\nOpen Issues: ${OpenIssues}\nMost Language: ${MostLanguage}\nVisibility: ${Visibility}\nArchived: ${Archived()}`).setColor(`Red`)] });
                 }
             })
         }
