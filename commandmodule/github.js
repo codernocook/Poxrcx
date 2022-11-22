@@ -28,12 +28,12 @@ module.exports = {
                     let ProjectName = json.name;
                     let MostLanguage = json.language;
                     let Watchers = json.watchers;
-                    let Archived = json.archived;
                     let OpenIssues = json.open_issues_count;
-                    function Visibility() {
-                        if (json.visibility === false) {
+                    let Visibility = json.visibility;
+                    function Archived() {
+                        if (json.archived === false) {
                             return "false";
-                        } else if (json.visibility === true) {
+                        } else if (json.archived === true) {
                             return "true";
                         }
                     }
@@ -57,12 +57,12 @@ module.exports = {
                     let ProjectName = json.name;
                     let MostLanguage = json.language;
                     let Watchers = json.watchers;
-                    let Archived = json.archived;
                     let OpenIssues = json.open_issues_count;
-                    function Visibility() {
-                        if (json.visibility === false) {
+                    let Visibility = json.visibility;
+                    function Archived() {
+                        if (json.archived === false) {
                             return "false";
-                        } else if (json.visibility === true) {
+                        } else if (json.archived === true) {
                             return "true";
                         }
                     }
