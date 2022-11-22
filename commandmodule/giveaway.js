@@ -68,7 +68,7 @@ module.exports = {
                             drawing: 'Drawing: {timestamp}',
                             dropMessage: 'Be the first to react with 🎉 !',
                             inviteToParticipate: 'React with 🎉 to participate!',
-                            winMessage: { embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> 'Congratulations, {winners}! You won **{this.prize}**!'`).setColor(`Green`)] },
+                            winMessage: { embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Congratulations, {winners}! You won **{this.prize}**!`).setColor(`Green`)] },
                             embedFooter: '{this.winnerCount} winner(s)',
                             noWinner: 'Giveaway cancelled, no valid participations.',
                             hostedBy: 'Hosted by: {this.hostedBy}',
@@ -94,8 +94,9 @@ module.exports = {
             } else if (message.options.getSubcommand() === "reroll") {
                 if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("ManageEvents") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to create/stop a giveaway.`).setColor(`Red`)] })
                 const messageidget = message.options.getString("message-id")
+                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Rerolling!`).setColor(`Green`)], ephemeral: true });
                 client.giveaways.reroll(messageidget, {
-                    congrat: ':tada: New winner(s): {winners}! Congratulations, you won **{this.prize}**!\n{this.messageURL}',
+                    congrat: `<:PoxSuccess:1027083813123268618> Congratulations, {winners}! You won **{this.prize}**!`,
                     error: 'No valid participations, no new winner(s) can be chosen!'
                 })
             }
