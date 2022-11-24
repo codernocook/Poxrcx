@@ -12,6 +12,14 @@ module.exports = {
 				.addStringOption(option =>
 					option.setName("user-id").setDescription("The Userid of the User").setRequired(true)
 				),
+		)
+        .addSubcommand(subcommand =>
+			subcommand
+				.setName("experience")
+				.setDescription("Get Roblox Experience Infomation")
+				.addStringOption(option =>
+					option.setName("user-id").setDescription("The universeId of the Experience").setRequired(true)
+				),
 		),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
@@ -35,6 +43,16 @@ module.exports = {
                         message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
                     }
                 })
+            } else if (commandcalltype === "experience") {
+                fetch(`https://games.roblox.com/v1/games?universeIds=${infomation}`).then(res => res.json()).then(json => {
+                    let jsondata = json.data[0];
+
+                    if (!json["errors"]) {
+                        message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${jsondata.name}`).setDescription(`Description: \`${jsondata.description}\`\nCreator: ${jsondata.creator.name}\nEdit Permission: ${jsondata.copyingAllowed}\nPlaying: ${jsondata.playing}\nVisits: ${jsondata.visits}\nMax Players: ${jsondata.maxPlayers}\nCreated: ${jsondata.created}\nUpdate: ${jsondata.updated}\nAllow Private Server: ${jsondata.createVipServersAllowed}\nGame Avatar: ${jsondata.universeAvatarType}\nGenre: ${jsondata.genre}\nFavorite: ${jsondata.favoritedCount}`).setColor(`Blue`)] });
+                    }else {
+                        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild universeId!`).setColor(`Red`)] });
+                    }
+                })
             }
         } else if (typeofcommand === "interaction"){
             if (message.options.getSubcommand() === "user") {
@@ -53,6 +71,16 @@ module.exports = {
                         message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nOnline: ${IsOnline()}`).setColor(`Blue`)] });
                     }else {
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                    }
+                })
+            } else if (message.options.getSubcommand() === "experience") {
+                fetch(`https://games.roblox.com/v1/games?universeIds=${infomation}`).then(res => res.json()).then(json => {
+                    let jsondata = json.data[0];
+
+                    if (!json["errors"]) {
+                        message.reply({ embeds: [new EmbedBuilder().setTitle(`${jsondata.name}`).setDescription(`Description: \`${jsondata.description}\`\nCreator: ${jsondata.creator.name}\nEdit Permission: ${jsondata.copyingAllowed}\nPlaying: ${jsondata.playing}\nVisits: ${jsondata.visits}\nMax Players: ${jsondata.maxPlayers}\nCreated: ${jsondata.created}\nUpdate: ${jsondata.updated}\nAllow Private Server: ${jsondata.createVipServersAllowed}\nGame Avatar: ${jsondata.universeAvatarType}\nGenre: ${jsondata.genre}\nFavorite: ${jsondata.favoritedCount}`).setColor(`Blue`)] });
+                    }else {
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild universeId!`).setColor(`Red`)] });
                     }
                 })
             }
