@@ -16,7 +16,7 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
             const commandcalltype = argument[0]
-            let infomation = argument.slice(2).join(" ");
+            let infomation = argument.slice(1).join(" ");
             if (!infomation) return message.channel.send()
             if (commandcalltype === "user") {
                 fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
