@@ -18,14 +18,14 @@ module.exports = {
 				.setName("experience")
 				.setDescription("Get Roblox Experience Infomation")
 				.addStringOption(option =>
-					option.setName("user-id").setDescription("The universeId of the Experience").setRequired(true)
+					option.setName("universeId").setDescription("The universeId of the Experience").setRequired(true)
 				),
 		),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
             const commandcalltype = argument[0]
             let infomation = argument.slice(1).join(" ");
-            if (!infomation) return message.channel.send()
+            if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild universeId!`).setColor(`Red`)] });
             if (commandcalltype === "user") {
                 fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
                     function IsOnline() {
@@ -74,6 +74,7 @@ module.exports = {
                     }
                 })
             } else if (message.options.getSubcommand() === "experience") {
+                let infomation = message.options.getString("universeId")
                 fetch(`https://games.roblox.com/v1/games?universeIds=${infomation}`).then(res => res.json()).then(json => {
                     let jsondata = json.data[0];
 
