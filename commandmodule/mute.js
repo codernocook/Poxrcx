@@ -35,7 +35,7 @@ module.exports = {
                 if (mentioneduserposition > authorsendposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
 
                 const parsedtime = parsetime(argument[1])
-                let reason = argument.slice(1).join(" ") || 'No reason given.'
+                let reason = argument.slice(2).join(" ") || 'No reason given.'
 
                 if (parsedtime < mspack("1m") || parsedtime > mspack("14d")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please use vaild limit less than 14 days and more than 1 minute.`).setColor(`Red`)] });
 
