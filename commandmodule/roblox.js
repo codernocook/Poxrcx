@@ -32,7 +32,7 @@ module.exports = {
                     if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
                     fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
                         if (!jsononline["errors"]) {
-                            let LastOnlineMoment = new Date(jsononline.LastOnline).getMilliseconds()
+                            let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
                             fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${infomation}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
                                 if (!jsavatarthumbnail["errors"]) {
                                     if (!json["errors"]) {
@@ -68,7 +68,7 @@ module.exports = {
                     if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
                     fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
                         if (!jsononline["errors"]) {
-                            let LastOnlineMoment = new Date(jsononline.LastOnline)
+                            let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
                             fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${infomation}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
                                 if (!jsavatarthumbnail["errors"]) {
                                     if (!json["errors"]) {
