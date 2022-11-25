@@ -28,20 +28,19 @@ module.exports = {
             if (commandcalltype === "user") {
                 if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild UserId!`).setColor(`Red`)] });
                 fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
-                    function IsOnline() {
-                        if (!json) return;
-                        if (json.IsOnline === false) {
-                            return "No"
-                        }else if (json.IsOnline === true) {
-                            return "Yes"
+                    fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
+                        if (!jsononline["errors"]) {
+                            fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${infomation}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
+                                if (!jsavatarthumbnail["errors"]) {
+                                    if (!json["errors"]) {
+                                        message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nStatus: ${jsononline.LastLocation}\nLast Online: ${jsononline.LastOnline}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
+                                    }else {
+                                        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                    }
+                                }
+                            })
                         }
-                    }
-
-                    if (!json["errors"]) {
-                        message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nOnline: ${IsOnline()}`).setColor(`Blue`)] });
-                    }else {
-                        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
-                    }
+                    })
                 })
             } else if (commandcalltype === "experience") {
                 if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild universeId!`).setColor(`Red`)] });
@@ -59,20 +58,19 @@ module.exports = {
             if (message.options.getSubcommand() === "user") {
                 let infomation = message.options.getString("user-id")
                 fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
-                    function IsOnline() {
-                        if (!json) return;
-                        if (json.IsOnline === false) {
-                            return "No"
-                        }else if (json.IsOnline === true) {
-                            return "Yes"
+                    fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
+                        if (!jsononline["errors"]) {
+                            fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${infomation}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
+                                if (!jsavatarthumbnail["errors"]) {
+                                    if (!json["errors"]) {
+                                        message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nStatus: ${jsononline.LastLocation}\nLast Online: ${jsononline.LastOnline}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
+                                    }else {
+                                        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                    }
+                                }
+                            })
                         }
-                    }
-
-                    if (!json["errors"]) {
-                        message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nOnline: ${IsOnline()}`).setColor(`Blue`)] });
-                    }else {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
-                    }
+                    })
                 })
             } else if (message.options.getSubcommand() === "experience") {
                 let infomation = message.options.getString("universeid")
