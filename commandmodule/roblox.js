@@ -35,7 +35,7 @@ module.exports = {
                             function LastOnline() {
                                 if (!jsononline.LastLocation === "Offline") {
                                     return "Now"
-                                } else {
+                                } else if (jsononline.LastLocation === "Offline") {
                                     return moment(new Date(jsononline.LastOnline).getTime()).fromNow();
                                 }
                             }
@@ -77,7 +77,7 @@ module.exports = {
                             function LastOnline() {
                                 if (!jsononline.LastLocation === "Offline") {
                                     return "Now"
-                                } else {
+                                } else if (jsononline.LastLocation === "Offline") {
                                     return moment(new Date(jsononline.LastOnline).getTime()).fromNow();
                                 }
                             }
