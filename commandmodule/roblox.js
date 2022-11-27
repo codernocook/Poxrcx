@@ -11,7 +11,7 @@ module.exports = {
 				.setName("user")
 				.setDescription("Get Roblox User Infomation")
 				.addStringOption(option =>
-					option.setName("user-id").setDescription("The Userid of the User").setRequired(true)
+					option.setName("user").setDescription("The Username or Userid of the Roblox Player").setRequired(true)
 				),
 		)
         .addSubcommand(subcommand =>
@@ -26,29 +26,54 @@ module.exports = {
         if (typeofcommand === "message") {
             const commandcalltype = argument[0]
             let infomation = argument.slice(1).join(" ");
+            if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox User!`).setColor(`Red`)] });
             if (commandcalltype === "user") {
-                if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild UserId!`).setColor(`Red`)] });
-                fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
+                if (isNaN(infomation)) {
+                    fetch(`https://api.roblox.com/users/get-by-username?username=${infomation}`).then(res => res.json()).then(json => {
                     if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
-                    fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
-                        if (!jsononline["errors"]) {
-                            let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
-                            fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${infomation}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
-                                if (!jsavatarthumbnail["errors"]) {
-                                    if (!json["errors"]) {
-                                        message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
-                                    }else {
-                                        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                        let userId = json.Id
+                        fetch(`https://api.roblox.com/users/${userId}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
+                            if (!jsononline["errors"]) {
+                                let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
+                                fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
+                                    if (!jsavatarthumbnail["errors"]) {
+                                        if (!json["errors"]) {
+                                            message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
+                                        }else {
+                                            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                        }
+                                    } else {
+                                        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
                                     }
-                                } else {
-                                    return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
-                                }
-                            })
-                        } else {
-                            return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
-                        }
+                                })
+                            } else {
+                                return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                            }
+                        })
                     })
-                })
+                } else {
+                    fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
+                    if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                        fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
+                            if (!jsononline["errors"]) {
+                                let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
+                                fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${infomation}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
+                                    if (!jsavatarthumbnail["errors"]) {
+                                        if (!json["errors"]) {
+                                            message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
+                                        }else {
+                                            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                        }
+                                    } else {
+                                        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                    }
+                                })
+                            } else {
+                                return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                            }
+                        })
+                    })
+                }
             } else if (commandcalltype === "experience") {
                 if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild universeId!`).setColor(`Red`)] });
                 fetch(`https://games.roblox.com/v1/games?universeIds=${infomation}`).then(res => res.json()).then(json => {
@@ -63,28 +88,53 @@ module.exports = {
             }
         } else if (typeofcommand === "interaction"){
             if (message.options.getSubcommand() === "user") {
-                let infomation = message.options.getString("user-id")
-                fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
+                let infomation = message.options.getString("user")
+                if (isNaN(infomation)) {
+                    fetch(`https://api.roblox.com/users/get-by-username?username=${infomation}`).then(res => res.json()).then(json => {
                     if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
-                    fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
-                        if (!jsononline["errors"]) {
-                            let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
-                            fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${infomation}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
-                                if (!jsavatarthumbnail["errors"]) {
-                                    if (!json["errors"]) {
-                                        message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
-                                    }else {
-                                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                        let userId = json.Id
+                        fetch(`https://api.roblox.com/users/${userId}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
+                            if (!jsononline["errors"]) {
+                                let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
+                                fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
+                                    if (!jsavatarthumbnail["errors"]) {
+                                        if (!json["errors"]) {
+                                            message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
+                                        }else {
+                                            message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                        }
+                                    } else {
+                                        return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
                                     }
-                                } else {
-                                    return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
-                                }
-                            })
-                        } else {
-                            return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
-                        }
+                                })
+                            } else {
+                                return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                            }
+                        })
                     })
-                })
+                } else {
+                    fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
+                    if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                        fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
+                            if (!jsononline["errors"]) {
+                                let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
+                                fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${infomation}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
+                                    if (!jsavatarthumbnail["errors"]) {
+                                        if (!json["errors"]) {
+                                            message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nUserId: ${json.Id}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
+                                        }else {
+                                            message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                        }
+                                    } else {
+                                        return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                    }
+                                })
+                            } else {
+                                return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                            }
+                        })
+                    })
+                }
             } else if (message.options.getSubcommand() === "experience") {
                 let infomation = message.options.getString("universeid")
                 fetch(`https://games.roblox.com/v1/games?universeIds=${infomation}`).then(res => res.json()).then(json => {
