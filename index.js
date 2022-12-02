@@ -121,6 +121,10 @@ client.on("messageCreate", async (message) => {
     } else {
         //OwnerCommand (Only for owner)
         if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(process.env.ownerid)) return message.channel.send("I'm Always here!");
+        // Itzporium Account Death (Remove when you come back!)
+        if (message.mentions.members.first()) {
+            if (message.mentions.members.first().id === process.env.ownerid) return message.channel.send({ embeds: [new EmbedBuilder().setTitle("The death of Itzporium.").setDescription(`Don't ping him, he dead. The last thing is invite me and dispify. He will back in summer. You may forgot him, but he will never forgot you.\n\nWhy he offline?\n\`Because he must spend time to do school homework and other things.\`\nWhat if this bot Crash/Offline?\n\`Nothing will happend, bot will restart and everything will work fine!\`\nWill he respond my message?\n\`No, he may reply it in summer\`\nHave a nice day!`).setFooter({ text: "Posted 1/12/2022 | 3:30pm"}).setColor(`Blue`)] });
+        }
         // Start normal command
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
         // Add delay
