@@ -3,7 +3,7 @@ const { Poll } = require("discord.js-poll")
 
 module.exports = {
     data: new SlashCommandBuilder()
-		.setName("poll")
+        .setName("poll")
 		.setDescription("Start a poll (max 26 choices)")
         .addStringOption(option =>
             option.setName("choices").setDescription("Title + Choice 1 + Choice 2 + etc to create a poll").setRequired(true)
