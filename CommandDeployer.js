@@ -19,10 +19,7 @@ async function deployprocess(info) {
     // Register the discord command, forever
     DeployerClient.on('ready', async () => {
         await DeployerClient.bulkEditCommands([{
-            name: info["name"],
-            description: info["description"],
-            options: info["options"],
-            type: 1
+            info
         }])
     })
     DeployerClient.connect();
@@ -30,6 +27,7 @@ async function deployprocess(info) {
 
 module.exports = {
     deploy(info) {
+        console.log(info)
         deployprocess(info)
     }
 }
