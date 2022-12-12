@@ -11,7 +11,6 @@
     }
 */
 
-const { Options } = require('discord.js')
 const { CommandClient } = require('eris')
 const token = process.env.token // put the bot token here or change the env name
 const DeployerClient = new CommandClient(`Bot ${token}`, { intents: ['guilds'], maxShards: 'auto',restMode: true })
@@ -20,16 +19,14 @@ async function deployprocess(info) {
     // Register the discord command, forever
     DeployerClient.on('ready', async () => {
         await DeployerClient.bulkEditCommands([{
-            "name": info["name"],
-            "description": info["description"],
-            "options": info["options"],
-            "type": 1
+            name: info["name"],
+            description: info["description"],
+            options: info["options"],
+            type: 1
         }])
     })
     DeployerClient.connect();
 }
-
-const tokenFromStupidCommand = process.argv[2]
 
 module.exports = {
     deploy(info) {
