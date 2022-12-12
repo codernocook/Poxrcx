@@ -25,6 +25,6 @@ async function deployprocess(info) {
 
 module.exports = {
     deploy(info) {
-        console.log(info)
+        deployprocess(info)
     }
 }
