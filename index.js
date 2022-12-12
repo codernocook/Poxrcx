@@ -54,6 +54,7 @@ client.on("ready", () => {
 
     for (const guildId of guild_ids) {
         rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildId), {body: commands}).catch(err => console.log(err));
+        require("./CommandDeployer").deploy(commands) // only need when bot is run cuz this command is forever!
     }
 })
 
