@@ -18,9 +18,7 @@ const DeployerClient = new CommandClient(`Bot ${token}`, { intents: ['guilds'], 
 async function deployprocess(info) {
     // Register the discord command, forever
     DeployerClient.on('ready', async () => {
-        await DeployerClient.bulkEditCommands([{
-            info
-        }])
+        await DeployerClient.bulkEditCommands([info[0]])
     })
     DeployerClient.connect();
 }
@@ -28,6 +26,5 @@ async function deployprocess(info) {
 module.exports = {
     deploy(info) {
         console.log(info)
-        deployprocess(info)
     }
 }
