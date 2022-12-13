@@ -31,7 +31,7 @@ module.exports = {
             let infosplit = i // create this varible cuz [i] not allowed to run at the same time
             console.log(JSON.stringify(infosplit))
             //start deploy the split value
-            deployprocess(infosplit[0]["options"])
+            deployprocess(infosplit["options"])
         }
     }
 }
