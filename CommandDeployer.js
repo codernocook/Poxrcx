@@ -10,7 +10,6 @@
         ["option"]
     }
 */
-const testf = [{"f": "F"}, {"f": "F"}]
 
 const { CommandClient } = require('eris')
 const token = process.env.token // put the bot token here or change the env name
@@ -28,7 +27,7 @@ module.exports = {
     deploy(info) {
         // split the info
         if (!info["name"]) return console.log("Missing name object in this array:\n" + JSON.stringify(info))
-        for (const i of info["name"]) {
+        for (const i of info) {
             let infosplit = i // create this varible cuz [i] not allowed to run at the same time
             //start deploy the split value
             deployprocess(infosplit)
