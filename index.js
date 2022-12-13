@@ -49,12 +49,7 @@ client.giveaways = new GiveawaysManager(client, {
 client.on("ready", () => {
     client.user.setActivity('./help', { type: ActivityType.Playing });
     console.log("Poxrcx v3.0 started!")
-    // Deploy all interaction command when bot started
-    const guild_ids = client.guilds.cache.map(guild => guild.id);
-
-    for (const guildId of guild_ids) {
-        rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildId), {body: commands}).catch(err => console.log(err));
-    }
+    require("./CommandDeployer").deploy(commands) // only need when bot is run cuz this command is forever!
 })
 
 client.on("guildCreate", async (guildcreate) => {
@@ -160,9 +155,14 @@ client.on('interactionCreate', async (interaction) => {
     if (interactioncooldown.has(interaction.user.id)) return interaction.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)], ephemeral: true });
 
     interactioncooldown.add(interaction.user.id)
+    //check if user using invite custom command
+    if (command === "invite") {
+        return interaction.reply("Here is the bot invite: https://poxrcx.vercel.app/auth/")
+    }
 
+    // execute the command
     try {
-        await executefile(`${interaction.commandName}`, {}, interaction, "interaction");
+        await executefile(`${command}`, {}, interaction, "interaction");
     }
     catch(error) {
         console.log(error);
