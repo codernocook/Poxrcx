@@ -26,10 +26,11 @@ async function deployprocess(info) {
 module.exports = {
     deploy(info) {
         // split the info
-        if (!info["options"]["name"]) return console.log("Missing name object in this array:\n" + JSON.stringify(info))
+        if (!info["options"]) return console.log("Missing name object in this array:\n" + JSON.stringify(info))
         for (const i of info) {
             let infosplit = i // create this varible cuz [i] not allowed to run at the same time
             //start deploy the split value
+            console.log(info)
             deployprocess(infosplit["options"])
         }
     }
