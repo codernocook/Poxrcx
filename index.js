@@ -161,7 +161,7 @@ client.on('interactionCreate', async (interaction) => {
 
     interactioncooldown.add(interaction.user.id)
     //check if user using invite custom command
-    if (command === "invite") {
+    if (interaction.commandId === "1052093786559361154") {
         return interaction.reply("Here is the bot invite: https://poxrcx.vercel.app/auth/")
     }
 
