@@ -49,7 +49,12 @@ client.giveaways = new GiveawaysManager(client, {
 client.on("ready", () => {
     client.user.setActivity('./help', { type: ActivityType.Playing });
     console.log("Poxrcx v3.0 started!")
-    require("./CommandDeployer").deploy(commands) // only need when bot is run cuz this command is forever!
+    // Deploy all interaction command when bot started
+    const guild_ids = client.guilds.cache.map(guild => guild.id);
+
+    for (const guildId of guild_ids) {
+        rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildId), {body: commands}).catch(err => console.log(err));
+    }
 })
 
 client.on("guildCreate", async (guildcreate) => {
@@ -162,7 +167,7 @@ client.on('interactionCreate', async (interaction) => {
 
     // execute the command
     try {
-        await executefile(`${command}`, {}, interaction, "interaction");
+        await executefile(`${interaction.commandName}`, {}, interaction, "interaction");
     }
     catch(error) {
         console.log(error);
