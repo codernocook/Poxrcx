@@ -1,0 +1,8 @@
+#fly.toml is a file deploy the discord bot to fly.io
+
+app = "Poxrcx"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
