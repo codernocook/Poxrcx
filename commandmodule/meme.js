@@ -15,8 +15,10 @@ module.exports = {
             let memeDownvotes = json[0].data.children[0].data.downs;
             let memeNumComments = json[0].data.children[0].data.num_comments;
             if (typeofcommand === "message") {
+                if (!permalink || !memeUrl || !memeImage || !memeTitle || !memeUpvotes || !memeDownvotes || !memeNumComments) return message.channel.send({ embeds: [new EmbedBuilder().setDescription("<:PoxError:1025977546019450972> This meme have a bug, please try again.").setColor(`Red`)] }).catch(err => {})
                 message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `👍 ${memeUpvotes} | 👎 ${memeDownvotes} | ✉️ ${memeNumComments}`}).setColor(`Blue`)] });
             } else if (typeofcommand === "interaction"){
+                if (!permalink || !memeUrl || !memeImage || !memeTitle || !memeUpvotes || !memeDownvotes || !memeNumComments) return message.reply({ embeds: [new EmbedBuilder().setDescription("<:PoxError:1025977546019450972> This meme have a bug, please try again.").setColor(`Red`)] }).catch(err => {})
                 message.reply({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `👍 ${memeUpvotes} | 👎 ${memeDownvotes} | ✉️ ${memeNumComments}`}).setColor(`Blue`)] });
             }
         })
