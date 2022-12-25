@@ -15,11 +15,24 @@ module.exports = {
             let memeDownvotes = json[0].data.children[0].data.downs;
             let memeNumComments = json[0].data.children[0].data.num_comments;
             if (typeofcommand === "message") {
-                if (!permalink || !memeUrl || !memeImage || !memeTitle || !memeUpvotes || !memeDownvotes || !memeNumComments) return message.channel.send({ embeds: [new EmbedBuilder().setDescription("<:PoxError:1025977546019450972> This meme have a bug, please try again.").setColor(`Red`)] }).catch(err => {})
-                message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `👍 ${memeUpvotes} | 👎 ${memeDownvotes} | ✉️ ${memeNumComments}`}).setColor(`Blue`)] });
+                try {
+                    //test if the url is safe
+                    message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `👍 ${memeUpvotes} | 👎 ${memeDownvotes} | ✉️ ${memeNumComments}`}).setColor(`Blue`)] });
+                } catch (err) {
+                    //it not safe we may crash from this reddit exploit
+                    console.log(err)
+                    message.channel.send({ embeds: [new EmbedBuilder().setDescription("<:PoxError:1025977546019450972> This meme have a bug, please try again.").setColor(`Red`)] }).catch(err => {console.log(err)})
+                }
             } else if (typeofcommand === "interaction"){
-                if (!permalink || !memeUrl || !memeImage || !memeTitle || !memeUpvotes || !memeDownvotes || !memeNumComments) return message.reply({ embeds: [new EmbedBuilder().setDescription("<:PoxError:1025977546019450972> This meme have a bug, please try again.").setColor(`Red`)] }).catch(err => {})
                 message.reply({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `👍 ${memeUpvotes} | 👎 ${memeDownvotes} | ✉️ ${memeNumComments}`}).setColor(`Blue`)] });
+                try {
+                    //test if the url is safe
+                    message.reply({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `👍 ${memeUpvotes} | 👎 ${memeDownvotes} | ✉️ ${memeNumComments}`}).setColor(`Blue`)] });
+                } catch (err) {
+                    //it not safe we may crash from this reddit exploit
+                    console.log(err)
+                    message.reply({ embeds: [new EmbedBuilder().setDescription("<:PoxError:1025977546019450972> This meme have a bug, please try again.").setColor(`Red`)] }).catch(err => {console.log(err)})
+                }
             }
         })
     }
