@@ -1,9 +1,12 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
+const { SlashCommandBuilder } = require("@discordjs/builders");
+const { re } = require("mathjs");
 const rpschar = ['Rock', 'Paper', 'Scissor']
 
 function rpsgame(reqsent, botsent) {
     const req = reqsent.toLowerCase();
     const bot = botsent.toLowerCase();
+    // if the user send wrong message then return bad boy
+    if (!req === "rock" || !req === "paper" || !req === "scissor") return "Error:(1)"
     //check if req and bot is not missing
     if (!req || !bot) return
     // if the req and bot is match then we gonna return (match)
@@ -31,9 +34,17 @@ module.exports = {
             const botrpsanswer = rpschar[Math.floor(Math.random()*rpschar.length)]
             const botrpsrandom = rpsgame(argument.join(" ").trim(), botrpsanswer)
             const reqchoice = argument.join(" ").trim().charAt(0).toUpperCase() + argument.join(" ").trim().slice(1)
-
             //return if the user send wrong message
             if (!argument.join(" ").trim().toLowerCase() === "rock" || !argument.join(" ").trim().toLowerCase() === "paper" || !argument.join(" ").trim().toLowerCase() === "scissor") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your choice must be Rock, Paper or Scissor.`).setColor(`Red`)] })
+
+            // make random waiting to make bot work
+            for (let i = 0; i > 1; i++) {
+                if (botrpsrandom) {
+                    i = 0
+                }
+            }
+
+            if (botrpsrandom === "Error:(1)") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your choice must be Rock, Paper or Scissor.`).setColor(`Red`)] })
 
             if (botrpsrandom === "You win!") {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Green`)] })
@@ -49,6 +60,15 @@ module.exports = {
 
             //return if the user send wrong message
             if (!message.options.getString("choice").trim().toLowerCase() === "rock" || !message.options.getString("choice").trim().toLowerCase() === "paper" || !message.options.getString("choice").trim().toLowerCase() === "scissor") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your choice must be Rock, Paper or Scissor.`).setColor(`Red`)] })
+
+            // make random waiting to make bot work
+            for (let i = 0; i > 1; i++) {
+                if (botrpsrandom) {
+                    i = 0
+                }
+            }
+
+            if (botrpsrandom === "Error:(1)") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your choice must be Rock, Paper or Scissor.`).setColor(`Red`)] })
 
             if (botrpsrandom === "You win!") {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Green`)] })
