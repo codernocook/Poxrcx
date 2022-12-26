@@ -32,6 +32,9 @@ module.exports = {
             const botrpsrandom = rpsgame(argument.join(" ").trim(), botrpsanswer)
             const reqchoice = argument.join(" ").trim().charAt(0).toUpperCase() + argument.join(" ").trim().slice(1)
 
+            //return if the user send wrong message
+            if (!argument.join(" ").trim().toLowerCase() === "rock" || !argument.join(" ").trim().toLowerCase() === "paper" || !argument.join(" ").trim().toLowerCase() === "scissor") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your choice must be Rock, Paper or Scissor.`).setColor(`Red`)] })
+
             if (botrpsrandom === "You win!") {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Green`)] })
             } else if (botrpsrandom === "You lose!") {
@@ -43,6 +46,9 @@ module.exports = {
             const botrpsanswer = rpschar[Math.floor(Math.random()*rpschar.length)]
             const botrpsrandom = rpsgame(message.options.getString("choice").trim(), botrpsanswer)
             const reqchoice = message.options.getString("choice").trim().charAt(0).toUpperCase() + message.options.getString("choice").trim().slice(1)
+
+            //return if the user send wrong message
+            if (!message.options.getString("choice").trim().toLowerCase() === "rock" || !message.options.getString("choice").trim().toLowerCase() === "paper" || !message.options.getString("choice").trim().toLowerCase() === "scissor") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your choice must be Rock, Paper or Scissor.`).setColor(`Red`)] })
 
             if (botrpsrandom === "You win!") {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Green`)] })
