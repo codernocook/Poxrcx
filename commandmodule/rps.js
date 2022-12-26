@@ -5,8 +5,7 @@ const rpschar = ['Rock', 'Paper', 'Scissor']
 function rpsgame(reqsent, botsent) {
     const req = reqsent.toLowerCase();
     const bot = botsent.toLowerCase();
-    // if the user send wrong message then return bad boy
-    if (!req === "rock" || !req === "paper" || !req === "scissor") return "Error:(1)"
+
     //check if req and bot is not missing
     if (!req || !bot) return
     // if the req and bot is match then we gonna return (match)
@@ -44,8 +43,6 @@ module.exports = {
                 }
             }
 
-            if (botrpsrandom === "Error:(1)") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your choice must be Rock, Paper or Scissor.`).setColor(`Red`)] })
-
             if (botrpsrandom === "You win!") {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Green`)] })
             } else if (botrpsrandom === "You lose!") {
@@ -67,8 +64,6 @@ module.exports = {
                     i = 0
                 }
             }
-
-            if (botrpsrandom === "Error:(1)") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your choice must be Rock, Paper or Scissor.`).setColor(`Red`)] })
 
             if (botrpsrandom === "You win!") {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Green`)] })
