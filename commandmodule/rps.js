@@ -30,24 +30,26 @@ module.exports = {
         if (typeofcommand === "message") {
             const botrpsanswer = rpschar[Math.floor(Math.random()*rpschar.length)]
             const botrpsrandom = rpsgame(argument.join(" ").trim(), botrpsanswer)
+            const reqchoice = argument.join(" ").trim().charAt(0).toUpperCase() + argument.join(" ").trim().slice(1)
 
             if (botrpsrandom === "You win!") {
-                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: ${argument.join(" ").trim()}.\nI choose: ${botrpsanswer}.\n\n${botrpsrandom}`).setColor(`Green`)] })
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Green`)] })
             } else if (botrpsrandom === "You lose!") {
-                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: ${argument.join(" ").trim()}.\nI choose: ${botrpsanswer}.\n\n${botrpsrandom}`).setColor(`Red`)] })
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Red`)] })
             } else if (botrpsrandom === "Match!") {
-                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: ${argument.join(" ").trim()}.\nI choose: ${botrpsanswer}.\n\n${botrpsrandom}`).setColor(`Blue`)] })
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Blue`)] })
             }
         } else if (typeofcommand === "interaction"){
             const botrpsanswer = rpschar[Math.floor(Math.random()*rpschar.length)]
             const botrpsrandom = rpsgame(message.options.getString("choice").trim(), botrpsanswer)
+            const reqchoice = message.options.getString("choice").trim().charAt(0).toUpperCase() + message.options.getString("choice").trim().slice(1)
 
             if (botrpsrandom === "You win!") {
-                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: ${message.options.getString("choice").trim()}.\nI choose: ${botrpsanswer}.\n\n${botrpsrandom}`).setColor(`Green`)] })
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Green`)] })
             } else if (botrpsrandom === "You lose!") {
-                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: ${message.options.getString("choice").trim()}.\nI choose: ${botrpsanswer}.\n\n${botrpsrandom}`).setColor(`Red`)] })
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Red`)] })
             } else if (botrpsrandom === "Match!") {
-                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: ${message.options.getString("choice").trim()}.\nI choose: ${botrpsanswer}.\n\n${botrpsrandom}`).setColor(`Blue`)] })
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Blue`)] })
             }
         }
     }
