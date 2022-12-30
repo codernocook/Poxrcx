@@ -6,6 +6,7 @@
     "discord.js": "^14.6.0",
     "eris": "^0.17.1",
     "events": "^3.3.0",
+    "google-it": "^1.6.4",
     "mathjs": "^11.5.0",
     "moment": "^2.29.4",
     "mongoose": "^6.8.1",
