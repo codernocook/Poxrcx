@@ -15,16 +15,12 @@ module.exports = {
             if (searchquery && searchquery.trim() === "") {
                 return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You need a keyword to search on google.`).setColor(`Red`)] })
             }
-            const embed = new EmbedBuilder().setTitle("Google Search Results:").addField({name: `Keyword:`, value: `\`${searchquery}\``}).setColor(`Blue`)
-            googleIt({'query': searchquery, 'no-display': true, 'limit': 5}).then(results => {
-                results.forEach(function(item, index) { 
-                    embed.addField({
-                        name: `${index + 1}: ${item.title}`,
-                        value: `**${item.link}**`
-                    })
-                });
-                
-                message.channel.send({ embeds: [embed]});
+            googleIt({'query': searchquery, 'no-display': true, 'limit': 15}).then(async (results) => {
+                const searcharray = results.slice(0, 10).map((item, i) => {
+                    return `${i}: **[${item.title}](${item.link})**`
+                }).join("\n")
+
+                message.channel.send({ embeds: [new EmbedBuilder().setTitle("Google Search Results:").setDescription(`**Keyword**: \`${searchquery}\`\n\n${searcharray}`).setColor(`Blue`)]});
             }).catch(err => {
                 // any possible errors that might have occurred (like no Internet connection)
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong, maybe connection issue. Try again!`).setColor(`Red`)] })
@@ -35,19 +31,16 @@ module.exports = {
             if (searchquery && searchquery.trim() === "") {
                 return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You need a keyword to search on google.`).setColor(`Red`)] })
             }
-            const embed = new EmbedBuilder().setTitle("Google Search Results:").addField({name: `Keyword:`, value: `\`${searchquery}\``}).setColor(`Blue`)
-            googleIt({'query': searchquery, 'no-display': true, 'limit': 5}).then(results => {
-                results.forEach(function(item, index) { 
-                    embed.addField({
-                        name: `${index + 1}: ${item.title}`,
-                        value: `**${item.link}**`
-                    })
-                });
-                
-                message.reply({ embeds: [embed]});
+            googleIt({'query': searchquery, 'no-display': true, 'limit': 15}).then(async (results) => {
+                const searcharray = results.slice(0, 10).map((item, i) => {
+                    return `${i}: **[${item.title}](${item.link})**`
+                }).join("\n")
+
+                await message.reply({ embeds: [new EmbedBuilder().setTitle("Google Search Results:").setDescription(`**Keyword**: \`${searchquery}\`\n\n${searcharray}`).setColor(`Blue`)]});
             }).catch(err => {
                 // any possible errors that might have occurred (like no Internet connection)
-                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong, maybe connection issue. Try again!`).setColor(`Red`)] })
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong, maybe connection issue. Try again!`).setColor(`Red`)] })
+                console.log(err)
             });
         }
     }
