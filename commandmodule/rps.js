@@ -1,8 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { re } = require("mathjs");
 const rpschar = ['Rock', 'Paper', 'Scissor']
 
-function rpsgame(reqsent, botsent) {
+async function rpsgame(reqsent, botsent) {
     const req = reqsent.toLowerCase();
     const bot = botsent.toLowerCase();
 
@@ -28,10 +27,10 @@ module.exports = {
         .addStringOption(option =>
             option.setName("choice").setDescription("Your choice: Rock, Paper, Scissor.").setRequired(true)
         ),
-    execute(argument, message, EmbedBuilder, client, typeofcommand) {
+    async execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
-            const botrpsanswer = rpschar[Math.floor(Math.random()*rpschar.length)]
-            const botrpsrandom = rpsgame(argument.join(" ").trim(), botrpsanswer)
+            const botrpsanswer = await rpschar[Math.floor(Math.random()*rpschar.length)]
+            const botrpsrandom = await rpsgame(argument.join(" ").trim(), botrpsanswer)
             const reqchoice = argument.join(" ").trim().charAt(0).toUpperCase() + argument.join(" ").trim().slice(1)
 
             if (botrpsrandom === "You win!") {
@@ -42,8 +41,8 @@ module.exports = {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Blue`)] })
             }
         } else if (typeofcommand === "interaction"){
-            const botrpsanswer = rpschar[Math.floor(Math.random()*rpschar.length)]
-            const botrpsrandom = rpsgame(message.options.getString("choice").trim(), botrpsanswer)
+            const botrpsanswer = await rpschar[Math.floor(Math.random()*rpschar.length)]
+            const botrpsrandom = await rpsgame(message.options.getString("choice").trim(), botrpsanswer)
             const reqchoice = message.options.getString("choice").trim().charAt(0).toUpperCase() + message.options.getString("choice").trim().slice(1)
 
             if (botrpsrandom === "You win!") {
