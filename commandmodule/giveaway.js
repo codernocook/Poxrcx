@@ -38,28 +38,6 @@ module.exports = {
 					option.setName("message-id").setDescription("the giveaway message id you want to reroll").setRequired(true)
 				),
 		),
-        {
-            name: "giveaway",
-            description: "Start or end a giveaway.",
-            type: require("eris").Constants.ApplicationCommandTypes.CHAT_INPUT,
-            option: {
-                type: "SUB_COMMAND",
-                name: "start",
-                description: "Start a giveaway.",
-                option: {
-                    type: "STRING",
-                    name: "channel",
-                    description: "The channel to start the giveaway",
-                    required: true
-                },
-                option: {
-                    type: "STRING",
-                    name: "channel",
-                    description: "The channel to start the giveaway",
-                    required: true
-                }
-            }
-        },
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This command only support slash command.`).setColor(`Red`)] })
