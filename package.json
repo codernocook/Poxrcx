@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@discordjs/collection": "^1.2.0",
+    "@iamtraction/google-translate": "^2.0.1",
     "discord-chatbot": "^2.1.0",
     "discord-giveaways": "^6.0.1",
     "discord.js": "^14.6.0",
@@ -14,7 +15,6 @@
     "node-fetch": "^3.3.0",
     "node-schedule": "^2.1.0",
     "parse-duration": "^1.0.2",
-    "pretty-ms": "^8.0.0",
-    "translate-google": "^1.5.0"
+    "pretty-ms": "^8.0.0"
   }
 }
