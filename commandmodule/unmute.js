@@ -23,7 +23,8 @@ module.exports = {
 
             const parsedtime = parsetime(argument[1])
             let reason = argument.slice(1).join(" ") || 'No reason given.'
-            if (reason || reason.trim() === "") {
+            if (!reason) reason = 'No reason given.'
+            if (reason.trim() === "") {
                 reason = 'No reason given.'
             }
 
@@ -40,7 +41,8 @@ module.exports = {
             if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to unmute this user!`).setColor(`Red`)] })
 
             let reason = message.options.getString("reason") || 'No reason given.'
-            if (reason || reason.trim() === "") {
+            if (!reason) reason = 'No reason given.'
+            if (reason.trim() === "") {
                 reason = 'No reason given.'
             }
 

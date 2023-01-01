@@ -29,7 +29,8 @@ module.exports = {
 
             // Checking if reason value is filled or not
             let reason = argument.slice(1).join(" ") || 'No reason given.'
-            if (reason || reason.trim() === "") {
+            if (!reason) reason = 'No reason given.'
+            if (reason.trim() === "") {
                 reason = 'No reason given.'
             }
 
@@ -53,7 +54,8 @@ module.exports = {
 
             // Checking if reason value is filled or not
             let reason = message.options.getString("reason") || 'No reason given.'
-            if (reason || reason.trim() === "") {
+            if (!reason) reason = 'No reason given.'
+            if (reason.trim() === "") {
                 reason = 'No reason given.'
             }
             

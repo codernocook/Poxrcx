@@ -26,7 +26,8 @@ module.exports = {
             if (mentioneduserposition > authorsendposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
 
             let reason = argument.slice(1).join(" ") || 'No reason given.'
-            if (reason || reason.trim() === "") {
+            if (!reason) reason = 'No reason given.'
+            if (reason.trim() === "") {
                 reason = 'No reason given.'
             }
 
@@ -52,7 +53,8 @@ module.exports = {
             if (mentioneduserposition > authorsendposition) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
 
             let reason = message.options.getString("reason") || 'No reason given.'
-            if (reason || reason.trim() === "") {
+            if (!reason) reason = 'No reason given.'
+            if (reason.trim() === "") {
                 reason = 'No reason given.'
             }
 

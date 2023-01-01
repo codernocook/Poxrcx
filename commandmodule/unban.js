@@ -18,7 +18,8 @@ module.exports = {
             if (message.member.user.id === mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't unban yourself!`).setColor(`Red`)] })
 
             let reason = argument.slice(2).join(" ") || 'No reason given.'
-            if (reason || reason.trim() === "") {
+            if (!reason) reason = 'No reason given.'
+            if (reason.trim() === "") {
                 reason = 'No reason given.'
             }
 
@@ -31,7 +32,8 @@ module.exports = {
             if (message.guild.members.cache.find(user => message.user.id === user.id).user.id === mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't unban yourself!`).setColor(`Red`)] })
 
             let reason = message.options.getString("reason") || 'No reason given.'
-            if (reason || reason.trim() === "") {
+            if (!reason) reason = 'No reason given.'
+            if (reason.trim() === "") {
                 reason = 'No reason given.'
             }
 
