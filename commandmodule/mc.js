@@ -28,15 +28,21 @@ module.exports = {
             if (subcommand === "player") {
                 const player = argument.slice(1).join(" ").trim();
                 fetch("https://api.mojang.com/profiles/minecraft", { method: "POST", body: JSON.stringify([player]), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
-                    if (json["error"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild minecraft player or an error has occured.`).setColor(`Red`)] })
-                    const name = json[0]["name"]
-                    const id = json[0]["id"]
-                    message.channel.send({ embeds: [new EmbedBuilder().setThumbnail(`https://mineskin.eu/helm/${player}/100`).setDescription(`Username: **${name}**\nId: \`${id}\``).setColor(`Blue`)] })
+                    if (json["error"]) {
+                        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild minecraft player or an error has occured.`).setColor(`Red`)] })
+                    }
+                    try {
+                        const name = json[0]["name"]
+                        const id = json[0]["id"]
+                        message.channel.send({ embeds: [new EmbedBuilder().setThumbnail(`https://mineskin.eu/helm/${player}/100`).setDescription(`Username: **${name}**\nId: \`${id}\``).setColor(`Blue`)] })
+                    } catch (err) {
+                        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild minecraft player or an error has occured.`).setColor(`Red`)] })
+                    }
                 })
             } else if (subcommand === "server") {
                 const server = argument.slice(1).join(" ").trim();
                 fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(json => {
-                    if (json["debug"] && json["debug"]["dns"] && json["debug"]["dns"]["a"] && json["debug"]["dns"]["a"]["message"] && json["debug"]["dns"]["a"]["message"] === "DNS request failed: The domain name referenced in the query does not exist.") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild server ip address.`).setColor(`Red`)] })
+                    if (json["ip"] === "127.0.0.1" && json["debug"]["ping"] === false) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild server ip address.`).setColor(`Red`)] })
                     const serverip = json["ip"]
                     const port = json["port"]
                     const onlinemode = json["online"]
@@ -53,17 +59,23 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             if (message.options.getSubcommand() === "player") {
                 const player = message.options.getString("user");
-                if (!player) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing type of subcommand`).setColor(`Red`)] })
+                if (json["error"] && json["error"] === "BadRequestException") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing type of subcommand`).setColor(`Red`)] })
                 fetch("https://api.mojang.com/profiles/minecraft", { method: "POST", body: JSON.stringify([player]), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
-                    if (json["error"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild minecraft player or an error has occured.`).setColor(`Red`)] })
-                    const name = json[0]["name"]
-                    const id = json[0]["id"]
-                    message.reply({ embeds: [new EmbedBuilder().setThumbnail(`https://mineskin.eu/helm/${player}/100`).setDescription(`Username: **${name}**\nId: \`${id}\``).setColor(`Blue`)] })
+                    if (json["error"]) {
+                        return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild minecraft player or an error has occured.`).setColor(`Red`)] })
+                    }
+                    try {
+                        const name = json[0]["name"]
+                        const id = json[0]["id"]
+                        message.reply({ embeds: [new EmbedBuilder().setThumbnail(`https://mineskin.eu/helm/${player}/100`).setDescription(`Username: **${name}**\nId: \`${id}\``).setColor(`Blue`)] })
+                    } catch (err) {
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild minecraft player or an error has occured.`).setColor(`Red`)] })
+                    }
                 })
             } else if (message.options.getSubcommand() === "server") {
                 const server = message.options.getString("address");
                 fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(json => {
-                    if (json["debug"] && json["debug"]["dns"] && json["debug"]["dns"]["a"] && json["debug"]["dns"]["a"]["message"] && json["debug"]["dns"]["a"]["message"] === "DNS request failed: The domain name referenced in the query does not exist.") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild server ip address.`).setColor(`Red`)] })
+                    if (json["ip"] === "127.0.0.1" && json["debug"]["ping"] === false) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild server ip address.`).setColor(`Red`)] })
                     const serverip = json["ip"]
                     const port = json["port"]
                     const onlinemode = json["online"]
