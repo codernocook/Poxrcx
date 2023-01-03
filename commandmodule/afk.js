@@ -108,7 +108,7 @@ module.exports = {
                 if (!user) user = message.user
                 if (!user.id) return
                 if (afk.has(user.id)) {
-                    message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Removed ${user.tag} afk tag, reason: ${reason}`).setColor(`Green`)] })
+                    message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Removed <@${user.id}> afk tag, reason: ${reason}`).setColor(`Green`)] })
                     try {
                         afkset.delete(message.author.id)
                         /* Disabled because it laggy
@@ -119,10 +119,10 @@ module.exports = {
                     }
                     catch (error) {
                         console.log(error)
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't remove ${user.tag} afk tag.`).setColor(`Red`)] })
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't remove <@${user.id}> afk tag.`).setColor(`Red`)] })
                     }
                 } else {
-                    message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You didn't have any afk status to remove.`).setColor(`Red`)] })
+                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You didn't have any afk status to remove.`).setColor(`Red`)] })
                 }
             }
         }
