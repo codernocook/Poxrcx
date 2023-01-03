@@ -103,7 +103,7 @@ module.exports = {
                     message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk.`).setColor(`Green`)] })
                 }
             } else if (message.options.getSubcommand() === "remove") {
-                let user = message.options.getString("user")
+                let user = message.options.getMentionable("user")
                 let reason = message.options.getString("reason")
                 if (!user) user = message.user
                 if (!user.id) return
