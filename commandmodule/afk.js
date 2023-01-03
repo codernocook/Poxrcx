@@ -62,7 +62,7 @@ module.exports = {
                 if (afk.has(user.id)) {
                     message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Removed ${user.tag} afk tag, reason: ${reason}`).setColor(`Green`)] })
                     try {
-                        afkset.delete(message.author.id)
+                        afk.delete(message.author.id)
                         /* Disabled because it laggy
                         if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                             message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
@@ -110,7 +110,7 @@ module.exports = {
                 if (afk.has(user.id)) {
                     message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Removed <@${user.id}> afk tag, reason: ${reason}`).setColor(`Green`)] })
                     try {
-                        afkset.delete(message.author.id)
+                        afk.delete(message.author.id)
                         /* Disabled because it laggy
                         if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                             message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
