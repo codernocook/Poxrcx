@@ -122,7 +122,7 @@ module.exports = {
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't remove <@${user.id}> afk tag.`).setColor(`Red`)] })
                     }
                 } else {
-                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You didn't have any afk status to remove.`).setColor(`Red`)] })
+                    message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You didn't have any afk status to remove.`).setColor(`Red`)] })
                 }
             }
         }
