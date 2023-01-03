@@ -1,8 +1,10 @@
 const { Client, REST, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions, Guild, GuildMember, Routes, ActivityType, Collection } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] });
 const token = process.env.token;
-const rest = new REST({ version: '10' }).setToken(token);
 const prefix = process.env.prefix;
+const clientid = process.env.CLIENT_ID;
+const ownerid = process.env.ownerid;
+const rest = new REST({ version: '10' }).setToken(token);
 let commandcooldown = new Set();
 let interactioncooldown = new Set();
 let afkset = new Map();
@@ -53,12 +55,12 @@ client.on("ready", () => {
     const guild_ids = client.guilds.cache.map(guild => guild.id);
 
     for (const guildId of guild_ids) {
-        rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildId), {body: commands}).catch(err => console.log(err));
+        rest.put(Routes.applicationGuildCommands(clientid, guildId), {body: commands}).catch(err => console.log(err));
     }
 })
 
 client.on("guildCreate", async (guildcreate) => {
-    rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildcreate.id), {body: commands}).catch(err => console.log(err));
+    rest.put(Routes.applicationGuildCommands(clientid, guildcreate.id), {body: commands}).catch(err => console.log(err));
 })
 
 client.on("guildDelete", async (guildDelete) => {
@@ -99,20 +101,16 @@ client.on("messageCreate", async (message) => {
             }
         }
         // Respond afk message if someone mention afk user
-        if (message.mentions.members.first()) {
-            for (const mentionmessage of message.mentions.members.size) {
-                let mentionget = message.mentions.members.first(mentionmessage)
-                
-                if (mentionget) {
-                    if (afkset.has(mentionget.id)) {
-                        if (Number(message.guildId) === Number(afkset.get(mentionget.id)[3].id)) {
-                            const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
-                            if (afkset.get(mentionget.id)[2]) {
-                                message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
-                            } else if (!afkset.get(mentionget.id)[2]) {
-                                message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
-                            }
-                        }
+        let mentionget = message.mentions.members.first()
+
+        if (mentionget) {
+            if (afkset.has(mentionget.id)) {
+                if (Number(message.guildId) === Number(afkset.get(mentionget.id)[3].id)) {
+                    const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
+                    if (afkset.get(mentionget.id)[2]) {
+                        message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
+                    } else if (!afkset.get(mentionget.id)[2]) {
+                        message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
                     }
                 }
             }
@@ -124,10 +122,10 @@ client.on("messageCreate", async (message) => {
         return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
     } else {
         //OwnerCommand (Only for owner)
-        if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(process.env.ownerid)) return message.channel.send("I'm Always here!");
+        if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(ownerid)) return message.channel.send("I'm Always here!");
         // Itzporium Account Death (Remove when you come back!)
         if (message.mentions.members.first()) {
-            if (message.mentions.members.first().id === process.env.ownerid) return message.channel.send({ embeds: [new EmbedBuilder().setTitle("The death of Itzporium.").setDescription(`Don't ping him, he dead. The last thing is invite me and dispify. He will back in summer. You may forgot him, but he will never forgot you.\n\nWhy he offline?\n\`Because he must spend time to do school homework and other things.\`\nWhat if this bot Crash/Offline?\n\`Nothing will happend, bot will restart and everything will work fine!\`\nWill he respond my message?\n\`No, he may reply it in summer\`\n\nHave a nice day!`).setFooter({ text: "Posted 1/12/2022 | 3:30pm"}).setColor(`Blue`)] });
+            if (message.mentions.members.first().id === ownerid) return message.channel.send({ embeds: [new EmbedBuilder().setTitle("The death of Itzporium.").setDescription(`Don't ping him, he dead. The last thing is invite me and dispify. He will back in summer. You may forgot him, but he will never forgot you.\n\nWhy he offline?\n\`Because he must spend time to do school homework and other things.\`\nWhat if this bot Crash/Offline?\n\`Nothing will happend, bot will restart and everything will work fine!\`\nWill he respond my message?\n\`No, he may reply it in summer\`\n\nHave a nice day!`).setFooter({ text: "Posted 1/12/2022 | 3:30pm"}).setColor(`Blue`)] });
         }
         // Start normal command
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
