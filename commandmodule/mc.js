@@ -59,7 +59,6 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             if (message.options.getSubcommand() === "player") {
                 const player = message.options.getString("user");
-                if (json["error"] && json["error"] === "BadRequestException") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing type of subcommand`).setColor(`Red`)] })
                 fetch("https://api.mojang.com/profiles/minecraft", { method: "POST", body: JSON.stringify([player]), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                     if (json["error"]) {
                         return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild minecraft player or an error has occured.`).setColor(`Red`)] })
