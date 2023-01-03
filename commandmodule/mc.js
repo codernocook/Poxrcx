@@ -36,7 +36,7 @@ module.exports = {
             } else if (subcommand === "server") {
                 const server = argument.slice(1).join(" ").trim();
                 fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(json => {
-                    if (json["debug"]["srv"] === false) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild server ip address.`).setColor(`Red`)] })
+                    if (json["debug"] && json["debug"]["dns"] && json["debug"]["dns"]["a"] && json["debug"]["dns"]["a"]["message"] && json["debug"]["dns"]["a"]["message"] === "DNS request failed: The domain name referenced in the query does not exist.") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild server ip address.`).setColor(`Red`)] })
                     const serverip = json["ip"]
                     const port = json["port"]
                     const onlinemode = json["online"]
@@ -63,7 +63,7 @@ module.exports = {
             } else if (message.options.getSubcommand() === "server") {
                 const server = message.options.getString("address");
                 fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(json => {
-                    if (json["debug"]["srv"] === false) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild server ip address.`).setColor(`Red`)] })
+                    if (json["debug"] && json["debug"]["dns"] && json["debug"]["dns"]["a"] && json["debug"]["dns"]["a"]["message"] && json["debug"]["dns"]["a"]["message"] === "DNS request failed: The domain name referenced in the query does not exist.") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You sent an invaild server ip address.`).setColor(`Red`)] })
                     const serverip = json["ip"]
                     const port = json["port"]
                     const onlinemode = json["online"]
