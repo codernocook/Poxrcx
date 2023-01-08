@@ -50,6 +50,7 @@ module.exports = {
                     message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk.`).setColor(`Green`)] })
                 }
             } else if (subcommand === "remove") {
+                if (!message.member.permissions.has("KickMembers") && !message.member.permissions.has("BanMembers") && !message.member.permissions.has("Administrator")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to do that.`).setColor(`Red`)] })
                 let user = argument[1]
                 let reason = argument.slice(2).join(" ");
                 if (!user) user = message.author
@@ -97,6 +98,7 @@ module.exports = {
                     message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk.`).setColor(`Green`)] })
                 }
             } else if (message.options.getSubcommand() === "remove") {
+                if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("KickMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("BanMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to do that.`).setColor(`Red`)] })
                 let user = message.options.getMentionable("user")
                 let reason = message.options.getString("reason")
                 if (!user) user = message.user
