@@ -10,9 +10,6 @@ module.exports = {
 				.setDescription("Set your status to Afk")
 				.addStringOption(option =>
                     option.setName("message").setDescription("the message you want other user know.").setRequired(false)
-                )
-                .addMentionableOption(option =>
-                    option.setName("user").setDescription("The user you want to set afk, leave a blank if it is you").setRequired(false)
                 ),
 		)
         .addSubcommand(subcommand =>
@@ -28,14 +25,12 @@ module.exports = {
 		),
     execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
-            if (afk.has(message.author.id)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in another server.`).setColor(`Red`)] })
             const subcommand = argument[0]
             if (subcommand === "set") {
-                let user = message.mentions.members.first() || message.guild.members.cache.get(argument[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === argument.slice(0).join(" ") || x.user.username === argument[0]);
-                if (!user) user = message.author
-                if (afk.has(user.id)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in another server.`).setColor(`Red`)] })
+                let user = message.author
+                if (afk.has(user.id + `_${message.guildId}`)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
                 let reason = argument.slice(1).join(" ");
-                afk.set(user.id, {
+                afk.set(user.id + `_${message.guildId}`, {
                     [1]: Date.now(),
                     [2]: reason,
                     [3]: message.guild,
@@ -59,10 +54,10 @@ module.exports = {
                 let reason = argument.slice(2).join(" ");
                 if (!user) user = message.author
                 if (!user.id) return
-                if (afk.has(user.id)) {
+                if (afk.has(user.id + `_${message.guildId}`)) {
                     message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Removed ${user.tag} afk tag, reason: ${reason}`).setColor(`Green`)] })
                     try {
-                        afk.delete(user.id)
+                        afk.delete(user.id + `_${message.guildId}`)
                         /* Disabled because it laggy
                         if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                             message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
@@ -79,11 +74,10 @@ module.exports = {
             }
         } else if (typeofcommand === "interaction"){
             if (message.options.getSubcommand() === "set") {
-                let user = message.options.getMentionable("user")
-                if (!user) user = message.user
-                if (afk.has(user.id)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in another server.`).setColor(`Red`)] })
+                let user = message.user
+                if (afk.has(user.id + `_${message.guildId}`)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
                 let reason = message.options.getString("message")
-                afk.set(user.id, {
+                afk.set(user.id + `_${message.guildId}`, {
                     [1]: Date.now(),
                     [2]: reason,
                     [3]: message.guild,
@@ -107,10 +101,10 @@ module.exports = {
                 let reason = message.options.getString("reason")
                 if (!user) user = message.user
                 if (!user.id) return
-                if (afk.has(user.id)) {
+                if (afk.has(user.id + `_${message.guildId}`)) {
                     message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Removed <@${user.id}> afk tag, reason: ${reason}`).setColor(`Green`)] })
                     try {
-                        afk.delete(user.id)
+                        afk.delete(user.id + `_${message.guildId}`)
                         /* Disabled because it laggy
                         if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                             message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)

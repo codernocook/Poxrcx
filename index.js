@@ -84,11 +84,11 @@ client.on("messageCreate", async (message) => {
     // afk module
     if (!message.author.bot) {
         // Check if user not afk and send back message
-        if (afkset.has(message.author.id)) {
-            if (Number(message.guildId) === Number(afkset.get(message.author.id)[3].id)) {
+        if (afkset.has(message.author.id + `_${message.guildId}`)) {
+            if (Number(message.guildId) === Number(afkset.get(message.author.id + `_${message.guildId}`)[3].id)) {
                 message.channel.send(`Welcome back <@${message.author.id}>, I removed your Afk status.`)
                 try {
-                    afkset.delete(message.author.id)
+                    afkset.delete(message.author.id + `_${message.guildId}`)
                     /* Disabled because it laggy
                     if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                         message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
@@ -104,12 +104,12 @@ client.on("messageCreate", async (message) => {
         let mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            if (afkset.has(mentionget.id)) {
-                if (Number(message.guildId) === Number(afkset.get(mentionget.id)[3].id)) {
-                    const timeago = moment(afkset.get(mentionget.id)[1]).fromNow();
-                    if (afkset.get(mentionget.id)[2]) {
-                        message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id)[2]}.`)
-                    } else if (!afkset.get(mentionget.id)[2]) {
+            if (afkset.has(mentionget.id + `_${message.guildId}`)) {
+                if (Number(message.guildId) === Number(afkset.get(mentionget.id + `_${message.guildId}`)[3].id)) {
+                    const timeago = moment(afkset.get(mentionget.id + `_${message.guildId}`)[1]).fromNow();
+                    if (afkset.get(mentionget.id + `_${message.guildId}`)[2]) {
+                        message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${afkset.get(mentionget.id + `_${message.guildId}`)[2]}.`)
+                    } else if (!afkset.get(mentionget.id + `_${message.guildId}`)[2]) {
                         message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
                     }
                 }
