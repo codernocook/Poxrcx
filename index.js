@@ -50,7 +50,7 @@ client.giveaways = new GiveawaysManager(client, {
 // Run command handle
 client.on("ready", () => {
     client.user.setActivity('./help', { type: ActivityType.Playing });
-    console.log("Poxrcx v3.0 started!")
+    console.log("Poxrcx v3.5 started!")
     // Deploy all interaction command when bot started
     const guild_ids = client.guilds.cache.map(guild => guild.id);
 
