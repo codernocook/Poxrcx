@@ -4,7 +4,7 @@ module.exports = {
     data: new SlashCommandBuilder()
 		.setName("warn")
 		.setDescription("Send user a warning.")
-        .addMentionableOption(option =>
+        .addUserOption(option =>
             option.setName("user").setDescription("User to warn").setRequired(true)
         )
         .addStringOption(option =>
@@ -33,7 +33,7 @@ module.exports = {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Sent user ${mentioneduser} a warn for **${reason}**`).setColor(`Green`)] })
             mentioneduser.send({ embeds: [new EmbedBuilder().setDescription(`You were **warned** in ${message.guild.name} for **${reason}**`).setColor(`Green`)] }).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This user has their DMS off.`).setColor(`Red`)] })})
         } else if (typeofcommand === "interaction"){
-            const mentioneduser = message.options.getMentionable("user");
+            const mentioneduser = message.guild.members.cache.find(user => message.options.getUser("user").id === user.id);
             if (!mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild User!`).setColor(`Red`)] })
             if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("ManageMessages") || !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("ManageChannels") || !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to warn a user!`).setColor(`Red`)] })
             if (message.guild.members.cache.find(user => message.user.id) === mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't warn yourself!`).setColor(`Red`)] })

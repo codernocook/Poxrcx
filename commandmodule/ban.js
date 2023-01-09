@@ -4,7 +4,7 @@ module.exports = {
     data: new SlashCommandBuilder()
 		.setName("ban")
 		.setDescription("Ban someone from the server!")
-        .addMentionableOption(option =>
+        .addUserOption(option =>
             option.setName("user").setDescription("User to ban").setRequired(true)
         )
         .addStringOption(option =>
@@ -38,7 +38,7 @@ module.exports = {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Banned user ${mentioneduser} for **${reason}**`).setColor(`Green`)] })
             mentioneduser.ban({ reason: `${reason}` }).catch(err => {message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't ban this user, maybe my role position is too low.`).setColor(`Red`)] })})
         } else if (typeofcommand === "interaction") {
-            const mentioneduser = message.options.getMentionable("user");
+            const mentioneduser = message.guild.members.cache.find(user => message.options.getUser("user").id === user.id);
             if (!mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild User!`).setColor(`Red`)] })
             if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("BanMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to ban!`).setColor(`Red`)] })
             if (message.guild.members.cache.find(user => message.user.id) === mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't ban yourself!`).setColor(`Red`)] })

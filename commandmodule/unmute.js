@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
 		.setName("unmute")
 		.setDescription("Unmute someone from the server!")
-        .addMentionableOption(option =>
+        .addUserOption(option =>
             option.setName("user").setDescription("User to unmute").setRequired(true)
         )
         .addStringOption(option =>
@@ -32,7 +32,7 @@ module.exports = {
     
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> User ${mentioneduser} was unmuted.`).setColor(`Green`)] })
         } else if (typeofcommand === "interaction") {
-            const mentioneduser = message.options.getMentionable("user")
+            const mentioneduser = message.guild.members.cache.find(user => message.options.getUser("user").id === user.id);
             const parsetime = require('parse-duration').default;
             const mspack = require('ms');
 

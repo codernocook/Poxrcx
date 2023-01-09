@@ -16,7 +16,7 @@ module.exports = {
 			subcommand
 				.setName("remove")
 				.setDescription("Remove your status to Afk")
-                .addMentionableOption(option =>
+                .addUserOption(option =>
                     option.setName("user").setDescription("The user you want to remove afk status.").setRequired(true)
                 )
 				.addStringOption(option =>
@@ -99,7 +99,7 @@ module.exports = {
                 }
             } else if (message.options.getSubcommand() === "remove") {
                 if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("KickMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("BanMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to do that.`).setColor(`Red`)] })
-                let user = message.options.getMentionable("user")
+                let user = message.guild.members.cache.find(user => message.options.getUser("user").id === user.id);
                 let reason = message.options.getString("reason")
                 if (!user) user = message.user
                 if (!user.id) return
