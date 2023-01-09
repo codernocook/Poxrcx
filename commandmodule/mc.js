@@ -53,7 +53,7 @@ module.exports = {
                     //const icon = new Image();
                     //icon.src = json["icon"];
 
-                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: ${hostname}\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
+                    message.channel.send({ embeds: [new EmbedBuilder().setThumbnail(`https://eu.mc-api.net/v3/server/favicon/${serverip}`).setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: ${hostname}\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
                 })
             }
         } else if (typeofcommand === "interaction"){
@@ -85,7 +85,7 @@ module.exports = {
                     //const icon = new Image();
                     //icon.src = json["icon"];
 
-                    message.reply({ embeds: [new EmbedBuilder().setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: ${hostname}\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
+                    message.reply({ embeds: [new EmbedBuilder().setThumbnail(`https://eu.mc-api.net/v3/server/favicon/${serverip}`).setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: ${hostname}\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
                 })
             }
         }
