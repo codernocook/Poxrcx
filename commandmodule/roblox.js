@@ -109,18 +109,34 @@ module.exports = {
                     })
                 }
             } else if (commandcalltype === "experience") {
-                if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild universeId!`).setColor(`Red`)] });
-                fetch(`https://games.roblox.com/v1/games?universeIds=${infomation}`).then(res => res.json()).then(json => {
-                    let jsondata = json.data[0];
+                if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                fetch(`https://apis.roblox.com/universes/v1/places/${infomation}/universe`).then(res1 => res1.json()).then(jsonid => {
+                    if (!jsonid) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                    if (!jsonid["universeId"]) return
 
-                    if (jsondata && !jsondata["errors"] && jsondata["name"] && jsondata["description"]) {
-                        let CreateMoment = moment(new Date(jsondata.created).getTime()).fromNow()
-                        let LastUpdateMoment = moment(new Date(jsondata.updated).getTime()).fromNow()
+                    let universeId = jsonid["universeId"];
 
-                        message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${jsondata.name}`).setDescription(`Description: \`${jsondata.description}\`\nCreator: ${jsondata.creator.name}\nEdit Permission: ${jsondata.copyingAllowed}\nPlaying: ${jsondata.playing}\nVisits: ${jsondata.visits}\nMax Players: ${jsondata.maxPlayers}\nCreated: ${jsondata.created} | ${CreateMoment}\nUpdate: ${jsondata.updated} | ${LastUpdateMoment}\nAllow Private Server: ${jsondata.createVipServersAllowed}\nGame Avatar: ${jsondata.universeAvatarType}\nGenre: ${jsondata.genre}\nFavorite: ${jsondata.favoritedCount}`).setColor(`Blue`)] });
-                    }else {
-                        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild universeId!`).setColor(`Red`)] });
-                    }
+                    if (universeId === null && jsonid["universeId"] === null) universeId = infomation;
+
+                    fetch(`https://thumbnails.roblox.com/v1/games/icons?universeIds=${universeId},0&returnPolicy=PlaceHolder&size=128x128&format=Png&isCircular=false`).then(resav => resav.json()).then(jsonthumbnail => {
+                        if (!jsonthumbnail) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"] || jsonthumbnail["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"][0]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"][0]["imageUrl"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+
+                        fetch(`https://games.roblox.com/v1/games?universeIds=${universeId}`).then(res => res.json()).then(json => {
+                            let jsondata = json.data[0];
+    
+                            if (jsondata && !jsondata["errors"] && jsondata["name"] && jsondata["description"]) {
+                                let CreateMoment = moment(new Date(jsondata.created).getTime()).fromNow()
+                                let LastUpdateMoment = moment(new Date(jsondata.updated).getTime()).fromNow()
+    
+                                message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${jsondata.name}`).setThumbnail(`${jsonthumbnail["data"][0]["imageUrl"] || undefined}`).setDescription(`Description: \n{\n"\`${jsondata.description}\`"\n}\nGameId: ${jsondata.id}\nRoot PlaceId: ${jsondata.rootPlaceId}\nCreator: ${jsondata.creator.name}\nEdit Permission: ${jsondata.copyingAllowed}\nPlaying: ${jsondata.playing}\nVisits: ${jsondata.visits}\nMax Players: ${jsondata.maxPlayers}\nCreated: ${jsondata.created} | ${CreateMoment}\nUpdate: ${jsondata.updated} | ${LastUpdateMoment}\nAllow Private Server: ${jsondata.createVipServersAllowed}\nGame Avatar: ${jsondata.universeAvatarType}\nGenre: ${jsondata.genre}\nFavorite: ${jsondata.favoritedCount}`).setColor(`Blue`)] });
+                            }else {
+                                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                            }
+                        })
+                    })
                 })
             }
         } else if (typeofcommand === "interaction"){
@@ -208,16 +224,33 @@ module.exports = {
                 }
             } else if (message.options.getSubcommand() === "experience") {
                 let infomation = message.options.getString("universeid")
-                fetch(`https://games.roblox.com/v1/games?universeIds=${infomation}`).then(res => res.json()).then(json => {
-                    let jsondata = json.data[0];
-                    let CreateMoment = moment(new Date(jsondata.created).getTime()).fromNow()
-                    let LastUpdateMoment = moment(new Date(jsondata.updated).getTime()).fromNow()
+                fetch(`https://apis.roblox.com/universes/v1/places/${infomation}/universe`).then(res1 => res1.json()).then(jsonid => {
+                    if (!jsonid) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                    if (!jsonid["universeId"]) return
 
-                    if (jsondata && !jsondata["errors"] && jsondata["name"] && jsondata["description"]) {
-                        message.reply({ embeds: [new EmbedBuilder().setTitle(`${jsondata.name}`).setDescription(`Description: \`${jsondata.description}\`\nCreator: ${jsondata.creator.name}\nEdit Permission: ${jsondata.copyingAllowed}\nPlaying: ${jsondata.playing}\nVisits: ${jsondata.visits}\nMax Players: ${jsondata.maxPlayers}\nCreated: ${jsondata.created} | ${CreateMoment}\nUpdate: ${jsondata.updated} | ${LastUpdateMoment}\nAllow Private Server: ${jsondata.createVipServersAllowed}\nGame Avatar: ${jsondata.universeAvatarType}\nGenre: ${jsondata.genre}\nFavorite: ${jsondata.favoritedCount}`).setColor(`Blue`)] });
-                    }else {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild universeId!`).setColor(`Red`)] });
-                    }
+                    let universeId = jsonid["universeId"];
+
+                    if (universeId === null && jsonid["universeId"] === null) universeId = infomation;
+
+                    fetch(`https://thumbnails.roblox.com/v1/games/icons?universeIds=${universeId},0&returnPolicy=PlaceHolder&size=128x128&format=Png&isCircular=false`).then(resav => resav.json()).then(jsonthumbnail => {
+                        if (!jsonthumbnail) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"] || jsonthumbnail["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"][0]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"][0]["imageUrl"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+
+                        fetch(`https://games.roblox.com/v1/games?universeIds=${universeId}`).then(res => res.json()).then(json => {
+                            let jsondata = json.data[0];
+    
+                            if (jsondata && !jsondata["errors"] && jsondata["name"] && jsondata["description"]) {
+                                let CreateMoment = moment(new Date(jsondata.created).getTime()).fromNow()
+                                let LastUpdateMoment = moment(new Date(jsondata.updated).getTime()).fromNow()
+    
+                                message.reply({ embeds: [new EmbedBuilder().setTitle(`${jsondata.name}`).setThumbnail(`${jsonthumbnail["data"][0]["imageUrl"] || undefined}`).setDescription(`Description: "\`${jsondata.description}\`"\nGameId: ${jsondata.id}\nRoot PlaceId: ${jsondata.rootPlaceId}\nCreator: ${jsondata.creator.name}\nEdit Permission: ${jsondata.copyingAllowed}\nPlaying: ${jsondata.playing}\nVisits: ${jsondata.visits}\nMax Players: ${jsondata.maxPlayers}\nCreated: ${jsondata.created} | ${CreateMoment}\nUpdate: ${jsondata.updated} | ${LastUpdateMoment}\nAllow Private Server: ${jsondata.createVipServersAllowed}\nGame Avatar: ${jsondata.universeAvatarType}\nGenre: ${jsondata.genre}\nFavorite: ${jsondata.favoritedCount}`).setColor(`Blue`)] });
+                            }else {
+                                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                            }
+                        })
+                    })
                 })
             }
         }
