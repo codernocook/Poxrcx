@@ -52,15 +52,7 @@ client.on("ready", () => {
     client.user.setActivity('./help', { type: ActivityType.Playing });
     console.log("Poxrcx v3.5 started!")
     // Deploy all interaction command when bot started
-    const guild_ids = client.guilds.cache.map(guild => guild.id);
-
-    for (const guildId of guild_ids) {
-        rest.put(Routes.applicationGuildCommands(clientid, guildId), {body: commands}).catch(err => console.log(err));
-    }
-})
-
-client.on("guildCreate", async (guildcreate) => {
-    rest.put(Routes.applicationGuildCommands(clientid, guildcreate.id), {body: commands}).catch(err => console.log(err));
+    rest.put(Routes.applicationCommands(clientid), {body: commands}).catch(err => console.log(err));
 })
 
 client.on("guildDelete", async (guildDelete) => {
