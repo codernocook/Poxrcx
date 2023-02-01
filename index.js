@@ -1,8 +1,9 @@
 const { Client, REST, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions, Guild, GuildMember, Routes, ActivityType, Collection } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] });
+require('dotenv').config();
 const token = process.env.token;
+const clientid = process.env.client_id;
 const prefix = process.env.prefix;
-const clientid = process.env.CLIENT_ID;
 const ownerid = process.env.ownerid;
 const rest = new REST({ version: '10' }).setToken(token);
 let commandcooldown = new Set();
@@ -115,10 +116,6 @@ client.on("messageCreate", async (message) => {
     } else {
         //OwnerCommand (Only for owner)
         if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(ownerid)) return message.channel.send("I'm Always here!");
-        // Itzporium Account Death (Remove when you come back!)
-        if (message.mentions.members.first()) {
-            if (message.mentions.members.first().id === ownerid) return message.channel.send({ embeds: [new EmbedBuilder().setTitle("The death of Itzporium.").setDescription(`Don't ping him, he dead. The last thing is invite me and dispify. He will back in summer. You may forgot him, but he will never forgot you.\n\nWhy he offline?\n\`Because he must spend time to do school homework and other things.\`\nWhat if this bot Crash/Offline?\n\`Nothing will happend, bot will restart and everything will work fine!\`\nWill he respond my message?\n\`No, he may reply it in summer\`\n\nHave a nice day!`).setFooter({ text: "Posted 1/12/2022 | 3:30pm"}).setColor(`Blue`)] });
-        }
         // Start normal command
         if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
         // Add delay
