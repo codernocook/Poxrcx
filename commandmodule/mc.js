@@ -53,11 +53,13 @@ module.exports = {
                     //const icon = new Image();
                     //icon.src = json["icon"];
 
-                    if (hostname) {
-                        message.channel.send({ embeds: [new EmbedBuilder().setThumbnail(`https://eu.mc-api.net/v3/server/favicon/${hostname}`).setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: ${hostname}\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
-                    } else if (!hostname) {
-                        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: None\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
-                    }
+                    try {
+                        if (hostname) {
+                            message.channel.send({ embeds: [new EmbedBuilder().setThumbnail(`https://eu.mc-api.net/v3/server/favicon/${hostname}`).setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: ${hostname}\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
+                        } else if (!hostname) {
+                            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: None\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
+                        }
+                    } catch {}
                 })
             }
         } else if (typeofcommand === "interaction"){
@@ -89,11 +91,13 @@ module.exports = {
                     //const icon = new Image();
                     //icon.src = json["icon"];
 
-                    if (hostname) {
-                        message.reply({ embeds: [new EmbedBuilder().setThumbnail(`https://eu.mc-api.net/v3/server/favicon/${hostname}`).setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: ${hostname}\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
-                    } else if (!hostname) {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: None\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
-                    }
+                    try {
+                        if (hostname) {
+                            message.reply({ embeds: [new EmbedBuilder().setThumbnail(`https://eu.mc-api.net/v3/server/favicon/${hostname}`).setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: ${hostname}\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
+                        } else if (!hostname) {
+                            message.reply({ embeds: [new EmbedBuilder().setDescription(`Ip Address: ${serverip}\nPort: ${port}\nHostname: None\nOnline Mode: ${onlinemode}\nPlaying: ${onlineplayers}\nMax Player: ${maxplayer}\nStats: ${onlineplayers}/${maxplayer}`).setColor(`Blue`)] })
+                        }
+                    } catch {}
                 })
             }
         }
