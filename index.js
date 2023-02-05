@@ -1,6 +1,6 @@
 const { Client, REST, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions, Guild, GuildMember, Routes, ActivityType, Collection } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] });
-require('dotenv').config();
+require('dotenv').config({path: "./settings.env"}); // load the env
 const token = process.env.token;
 const clientid = process.env.client_id;
 const prefix = process.env.prefix;
