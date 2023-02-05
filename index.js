@@ -51,6 +51,11 @@ client.giveaways = new GiveawaysManager(client, {
 // Run command handle
 client.on("ready", () => {
     client.user.setActivity('./help', { type: ActivityType.Playing });
+    function SetBotStatus() {
+        client.user.setActivity('./help', { type: ActivityType.Playing });
+        setTimeout(SetBotStatus, 3600000); // loop the playing status every 1 hour to patch (discord.js) bug
+    }
+    SetBotStatus(); // Run the loop 
     console.log("Poxrcx v3.5 started!")
     // Deploy all interaction command when bot started
     rest.put(Routes.applicationCommands(clientid), {body: commands}).catch(err => console.log(err));
