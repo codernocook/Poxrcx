@@ -31,7 +31,7 @@ module.exports = {
                     let pressure = apiData.main.pressure;
                     let cloudness = apiData.weather[0].description;
     
-                    message.channel.send({ embeds: [new EmbedBuilder().setTitle(`There is ${currentTemp}\u00B0 C in ${cityName}, ${country}`).setDescription(`**Maximum Temperature:** ${maxTemp}\u00B0 C\n**Minimum Temperature:** ${minTemp}\u00B0 C\n**Humidity:** ${humidity}\n**Wind Speed:** ${wind}\n**Pressure:** ${pressure}\n **Cloudiness:** ${cloudness}`).setColor(`Blue`)] });
+                    message.channel.send({ embeds: [new EmbedBuilder().setTitle(`There is ${currentTemp}\u00B0 C in ${cityName}, ${country}`).setDescription(`**Maximum Temperature:** ${maxTemp}\u00B0 C\n**Minimum Temperature:** ${minTemp}\u00B0 C\n**Humidity:** ${humidity}\n**Wind Speed:** ${wind}\n**Pressure:** ${pressure}\n**Cloudiness:** ${cloudness}`).setColor(`Blue`)] });
                 })
             } catch {}
            }
@@ -56,7 +56,7 @@ module.exports = {
                     let pressure = apiData.main.pressure;
                     let cloudness = apiData.weather[0].description;
     
-                    message.reply({ embeds: [new EmbedBuilder().setTitle(`There is ${currentTemp}\u00B0 C in ${cityName}, ${country}`).setDescription(`**Maximum Temperature:** ${maxTemp}\u00B0 C\n**Minimum Temperature:** ${minTemp}\u00B0 C\n**Humidity:** ${humidity}\n**Wind Speed:** ${wind}\n**Pressure:** ${pressure}\n **Cloudiness:** ${cloudness}`).setColor(`Blue`)] });
+                    message.reply({ embeds: [new EmbedBuilder().setTitle(`There is ${currentTemp}\u00B0 C in ${cityName}, ${country}`).setDescription(`**Maximum Temperature:** ${maxTemp}\u00B0 C\n**Minimum Temperature:** ${minTemp}\u00B0 C\n**Humidity:** ${humidity}\n**Wind Speed:** ${wind}\n**Pressure:** ${pressure}\n**Cloudiness:** ${cloudness}`).setColor(`Blue`)] });
                 })
             } catch {}
            }
