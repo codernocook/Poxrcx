@@ -17,9 +17,9 @@ module.exports = {
             if (data.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild City/Location. Please type a invaild location.`).setColor(`Red`)] });
             try {
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${data}&units=metric&appid=${weathertoken}`).then(res => res.json()).then(response => {
-                    if (response["cod"] === "429") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> The weather api has been limited, please try again later.`).setColor(`Red`)] });
-                    if (response["cod"] === "404") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild City/Location. Please type a invaild location.`).setColor(`Red`)] });
-                    if (response["cod"] !== 200 && response["cod"] !== "404" && response["cod"] !== "429") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
+                    if (toString(response["cod"]) === "429") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> The weather api has been limited, please try again later.`).setColor(`Red`)] });
+                    if (toString(response["cod"]) === "404") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild City/Location. Please type a invaild location.`).setColor(`Red`)] });
+                    if (toString(response["cod"]) !== "200" && toString(response["cod"]) !== "404" && toString(response["cod"]) !== "429") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
                     let apiData = response;
                     let currentTemp = Math.ceil(apiData.main.temp)
                     let maxTemp = apiData.main.temp_max;
@@ -42,9 +42,9 @@ module.exports = {
             if (data.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Country/City/Location. Please type a invaild location.`).setColor(`Red`)] });
             try {
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${data}&units=metric&appid=${weathertoken}`).then(res => res.json()).then(response => {
-                    if (response["cod"] === "429") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> The weather api has been limited, please try again later.`).setColor(`Red`)] });
-                    if (response["cod"] === "404") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild City/Location. Please type a invaild location.`).setColor(`Red`)] });
-                    if (response["cod"] !== 200 && response["cod"] !== "404" && response["cod"] !== "429") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
+                    if (toString(response["cod"]) === "429") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> The weather api has been limited, please try again later.`).setColor(`Red`)] });
+                    if (toString(response["cod"]) === "404") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild City/Location. Please type a invaild location.`).setColor(`Red`)] });
+                    if (toString(response["cod"]) !== "200" && toString(response["cod"]) !== "404" && toString(response["cod"]) !== "429") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
                     let apiData = response;
                     let currentTemp = Math.ceil(apiData.main.temp)
                     let maxTemp = apiData.main.temp_max;
