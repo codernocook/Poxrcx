@@ -31,10 +31,10 @@ module.exports = {
                 if (afk.has(user.id + `_${message.guildId}`)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
                 let reason = argument.slice(1).join(" ");
                 afk.set(user.id + `_${message.guildId}`, {
-                    [1]: Date.now(),
-                    [2]: reason,
-                    [3]: message.guild,
-                    [4]: user.username
+                    "1": Date.now(),
+                    "2": reason,
+                    "3": message.guild,
+                    "4": user.username
                 })
     
                 // Checking Position when change name
@@ -79,10 +79,10 @@ module.exports = {
                 if (afk.has(user.id + `_${message.guildId}`)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
                 let reason = message.options.getString("message")
                 afk.set(user.id + `_${message.guildId}`, {
-                    [1]: Date.now(),
-                    [2]: reason,
-                    [3]: message.guild,
-                    [4]: user.username
+                    ["1"]: Date.now(),
+                    ["2"]: reason,
+                    ["3"]: message.guild,
+                    ["4"]: user.username
                 })
     
                 // Checking Position when change name

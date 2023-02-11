@@ -82,7 +82,7 @@ client.on("messageCreate", async (message) => {
     // afk module
     if (!message.author.bot) {
         // Check if user not afk and send back message
-        if (afkset.has(message.author.id + `_${message.guildId}`)) {
+        if (afkset.has(message.author.id + `_${message.guildId}`) === true) {
             if (Number(message.guildId) === Number(afkset.get(message.author.id + `_${message.guildId}`)[3].id)) {
                 message.channel.send(`Welcome back <@${message.author.id}>, I removed your Afk status.`)
                 try {
@@ -102,7 +102,7 @@ client.on("messageCreate", async (message) => {
         let mentionget = message.mentions.members.first()
 
         if (mentionget) {
-            if (afkset.has(mentionget.id + `_${message.guildId}`)) {
+            if (afkset.has(mentionget.id + `_${message.guildId}`) === true) {
                 if (Number(message.guildId) === Number(afkset.get(mentionget.id + `_${message.guildId}`)[3].id)) {
                     const timeago = moment(afkset.get(mentionget.id + `_${message.guildId}`)[1]).fromNow();
                     if (afkset.get(mentionget.id + `_${message.guildId}`)[2]) {
