@@ -27,8 +27,8 @@ module.exports = {
         if (typeofcommand === "message") {
             const subcommand = argument[0]
             if (subcommand === "set") {
-                let user = message.author
-                if (afk.has(user.id + `_${message.guildId}`)) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
+                let user = message.author;
+                if (afkset.has(user.id + `_${message.guildId}`, function(callback){ callback === true })) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
                 let reason = argument.slice(1).join(" ");
                 afk.set(user.id + `_${message.guildId}`, {
                     "1": Date.now(),
@@ -58,7 +58,7 @@ module.exports = {
                 if (afk.has(user.id + `_${message.guildId}`)) {
                     message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Removed ${user.tag} afk tag, reason: ${reason}`).setColor(`Green`)] })
                     try {
-                        afk.delete(user.id + `_${message.guildId}`)
+                        afkset.delete(user.id + `_${message.guildId}`, function(delafkuser) {});
                         /* Disabled because it laggy
                         if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                             message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)
@@ -106,7 +106,7 @@ module.exports = {
                 if (afk.has(user.id + `_${message.guildId}`)) {
                     message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Removed <@${user.id}> afk tag, reason: ${reason}`).setColor(`Green`)] })
                     try {
-                        afk.delete(user.id + `_${message.guildId}`)
+                        afkset.delete(user.id + `_${message.guildId}`, function(delafkuser) {});
                         /* Disabled because it laggy
                         if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
                             message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)[4]}`)

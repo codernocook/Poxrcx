@@ -1,65 +1,62 @@
 require('dotenv').config({path: "./settings.env"}); // load the env
-const db = toString(process.env.db);
+const db = process.env.db;
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 module.exports = {
-    set(key, value) {
+    set(key, value, callback) {
         if (db) {
             let bodyfetch = {
-                "key": toString(key),
+                "key": key,
                 "value": value
             }
-            fetch(process.env.db + "/set", { method: "POST", body: bodyfetch, headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+            fetch(db + "/set", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
-                    if (json["status"] === false) return false;
-                    if (json ["status"] === true) return json;
+                    if (json["status"] === false) callback(false);
+                    if (json ["status"] === true) callback(json);
                 }
             })
         }
     },
-    has(key) {
+    has(key, callback) {
         if (db) {
-            fetch(process.env.db + "/get", { method: "GET", headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+            let bodyfetch = {
+                "key": key,
+            }
+            fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
-                    if (json["status"] === false) return false;
+                    if (json["status"] === false) callback(false);
+                    if (json["status"] === true) callback(true);
+                }
+            })
+        }
+    },
+    get(key, callback) {
+        if (db) {
+            let bodyfetch = {
+                "key": key,
+            }
+            fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                if (json) {
+                    if (json["status"] === false) callback(false);
 
-                    if (json["status"] === true) {
-                        if (json["data"] && json["data"][key]) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                    if (json["data"]) {
+                        callback(json["data"]);
+                    } else {
+                        callback(undefined);
                     }
                 }
             })
         }
     },
-    get(key) {
-        if (db) {
-            fetch(process.env.db + "/get", { method: "GET", headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
-                if (json) {
-                    if (json["status"] === false) return false;
-
-                    if (json["status"] === true) {
-                        if (json["data"] && json["data"][key]) {
-                            return json["data"][key]["value"];
-                        } else {
-                            return undefined;
-                        }
-                    }
-                }
-            })
-        }
-    },
-    delete(key) {
+    delete(key, callback) {
         let bodyfetch = {
-            "key": toString(key)
+            "key": key
         }
         if (db) {
-            fetch(process.env.db + "/del", { method: "DELETE", body: bodyfetch, headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+            fetch(db + "/del", { method: "DELETE", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
-                    if (json["status"] === false) return false;
-                    if (json ["status"] === true) return json;
+                    if (json["status"] === false) callback(false);
+                    if (json ["status"] === true) callback(json);
                 }
             })
         }
