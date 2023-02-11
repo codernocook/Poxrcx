@@ -12,7 +12,7 @@ module.exports = {
             fetch(db + "/set", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
                     if (json["status"] === false) callback(false);
-                    if (json ["status"] === true) callback(json);
+                    if (json["status"] === true) callback(json);
                 }
             })
         }
