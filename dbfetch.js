@@ -6,7 +6,7 @@ module.exports = {
     set(key, value) {
         if (db) {
             let bodyfetch = {
-                "key": toString("key"),
+                "key": toString(key),
                 "value": value
             }
             fetch(process.env.db + "/set", { method: "POST", body: bodyfetch, headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
@@ -34,7 +34,7 @@ module.exports = {
             })
         }
     },
-    get(key, value) {
+    get(key) {
         if (db) {
             fetch(process.env.db + "/get", { method: "GET", headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
@@ -44,7 +44,7 @@ module.exports = {
                         if (json["data"] && json["data"][key]) {
                             return json["data"][key]["value"];
                         } else {
-                            return json["data"][key]["value"];
+                            return undefined;
                         }
                     }
                 }
@@ -53,7 +53,7 @@ module.exports = {
     },
     delete(key) {
         let bodyfetch = {
-            "key": toString("key")
+            "key": toString(key)
         }
         if (db) {
             fetch(process.env.db + "/del", { method: "DELETE", body: bodyfetch, headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
