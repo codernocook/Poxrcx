@@ -1,25 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const rpschar = ['Rock', 'Paper', 'Scissor']
 
-async function rpsgame(reqsent, botsent) {
-    const req = reqsent.toLowerCase();
-    const bot = botsent.toLowerCase();
-
-    //check if req and bot is not missing
-    if (!req || !bot) return
-    // if the req and bot is match then we gonna return (match)
-    if (req === bot) return "Match!"
-
-    // Win
-    if ((req === "rock" && bot === "scissors") || (req === "paper" && bot === "rock" || (req === "scissor" && bot === "paper"))) {
-        return "You win!"
-    }
-    //Lose
-    if ((req === "rock" && bot === "paper") || (req === "paper" && bot === "scissors") || (req === "scissor" && bot === "rock")) {
-        return "You lose!"
-    }
-}
-
 module.exports = {
     data: new SlashCommandBuilder()
 		.setName("rps")
@@ -30,20 +11,46 @@ module.exports = {
     async execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
             const botrpsanswer = await rpschar[Math.floor(Math.random()*rpschar.length)]
-            const botrpsrandom = await rpsgame(argument.join(" ").trim(), botrpsanswer)
+            const req = argument.join(" ").trim().toLowerCase();
+            const bot = botrpsanswer;
             const reqchoice = argument.join(" ").trim().charAt(0).toUpperCase() + argument.join(" ").trim().slice(1)
+            let botrpsrandom = undefined;
+
+            if (req === bot) botrpsrandom = "Tie!"
+
+            // Win
+            if ((req === "rock" && bot === "scissors") || (req === "paper" && bot === "rock" || (req === "scissor" && bot === "paper"))) {
+                botrpsrandom = "You win!"
+            }
+            //Lose
+            if ((req === "rock" && bot === "paper") || (req === "paper" && bot === "scissors") || (req === "scissor" && bot === "rock")) {
+                botrpsrandom = "You lose"
+            }
 
             if (botrpsrandom === "You win!") {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Green`)] })
             } else if (botrpsrandom === "You lose!") {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Red`)] })
-            } else if (botrpsrandom === "Match!") {
+            } else if (botrpsrandom === "Tie!") {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Blue`)] })
             }
         } else if (typeofcommand === "interaction"){
             const botrpsanswer = await rpschar[Math.floor(Math.random()*rpschar.length)]
-            const botrpsrandom = await rpsgame(message.options.getString("choice").trim(), botrpsanswer)
+            const req = message.options.getString("choice").trim();
+            const bot = botrpsanswer
             const reqchoice = message.options.getString("choice").trim().charAt(0).toUpperCase() + message.options.getString("choice").trim().slice(1)
+            let botrpsrandom = undefined;
+
+            if (req === bot) botrpsrandom = "Tie!"
+
+            // Win
+            if ((req === "rock" && bot === "scissors") || (req === "paper" && bot === "rock" || (req === "scissor" && bot === "paper"))) {
+                botrpsrandom = "You win!"
+            }
+            //Lose
+            if ((req === "rock" && bot === "paper") || (req === "paper" && bot === "scissors") || (req === "scissor" && bot === "rock")) {
+                botrpsrandom = "You lose"
+            }
 
             if (botrpsrandom === "You win!") {
                 message.reply({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Green`)] })

@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 require('dotenv').config({path: "../settings.env"}); // load weather env file;
 const weathertoken = process.env.weatherapitoken
 
