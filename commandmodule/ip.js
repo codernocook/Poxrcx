@@ -4,7 +4,7 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 module.exports = {
     data: new SlashCommandBuilder()
 		.setName("ip")
-		.setDescription("Show the help info!")
+		.setDescription("Show the ip address infomation.")
         .addStringOption(option =>
             option.setName("ip-address").setDescription("The ip address you want to get infomation.").setRequired(true)
         ),
