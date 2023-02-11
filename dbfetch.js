@@ -15,7 +15,7 @@ module.exports = {
     },
     has(key) {
         if (db) {
-            fetch(process.env.db + "/get", { method: "GET", body: { "key": key }, headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+            fetch(process.env.db + "/get", { method: "GET", headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
                     if (json["status"] === false) return false;
 
@@ -32,7 +32,7 @@ module.exports = {
     },
     get(key, value) {
         if (db) {
-            fetch(process.env.db + "/get", { method: "GET", body: { "key": key }, headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+            fetch(process.env.db + "/get", { method: "GET", headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
                     if (json["status"] === false) return false;
                     if (json ["status"] === true) return json["data"];
