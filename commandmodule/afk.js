@@ -36,7 +36,7 @@ module.exports = {
                         "2": reason,
                         "3": message.guild,
                         "4": user.username
-                    })
+                    }, function(callset) {})
         
                     // Checking Position when change name
                     /* disabled the module cuz it lag
@@ -86,7 +86,7 @@ module.exports = {
                         ["2"]: reason,
                         ["3"]: message.guild,
                         ["4"]: user.username
-                    })
+                    }, function(callset) {})
         
                     // Checking Position when change name
                     /* disabled the module cuz it lag
