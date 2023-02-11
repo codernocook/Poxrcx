@@ -5,7 +5,11 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 module.exports = {
     set(key, value) {
         if (db) {
-            fetch(process.env.db + "/set", { method: "POST", body: { "key": key, "value": value }, headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+            let bodyfetch = {
+                "key": toString("key"),
+                "value": value
+            }
+            fetch(process.env.db + "/set", { method: "POST", body: bodyfetch, headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
                     if (json["status"] === false) return false;
                     if (json ["status"] === true) return json;
@@ -48,8 +52,11 @@ module.exports = {
         }
     },
     delete(key) {
+        let bodyfetch = {
+            "key": toString("key")
+        }
         if (db) {
-            fetch(process.env.db + "/del", { method: "DELETE", body: { "key": key }, headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+            fetch(process.env.db + "/del", { method: "DELETE", body: bodyfetch, headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
                     if (json["status"] === false) return false;
                     if (json ["status"] === true) return json;
