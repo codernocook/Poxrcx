@@ -26,7 +26,7 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand, afk) {
         if (typeofcommand === "message") {
             const subcommand = argument[0]
-            afkset.has(user.id + `_${message.guildId}`, function(callback) {
+            afk.has(message.author.id + `_${message.guildId}`, function(callback) {
                 if (subcommand === "set") {
                     let user = message.author;
                     if (callback === true) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
@@ -76,7 +76,7 @@ module.exports = {
                 }    
             })
         } else if (typeofcommand === "interaction"){
-            afkset.has(user.id + `_${message.guildId}`, function(callback) {
+            afk.has(message.user.id + `_${message.guildId}`, function(callback) {
                 if (message.options.getSubcommand() === "set") {
                     let user = message.user
                     if (callback === true) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
