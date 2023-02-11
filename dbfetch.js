@@ -35,7 +35,14 @@ module.exports = {
             fetch(process.env.db + "/get", { method: "GET", headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
                     if (json["status"] === false) return false;
-                    if (json ["status"] === true) return json["data"];
+
+                    if (json["status"] === true) {
+                        if (json["data"] && json["data"][key]) {
+                            return json["data"][key]["value"];
+                        } else {
+                            return json["data"][key]["value"];
+                        }
+                    }
                 }
             })
         }
