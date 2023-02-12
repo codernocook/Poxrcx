@@ -83,30 +83,30 @@ client.on("messageCreate", async (message) => {
     if (!message.author.bot) {
         // Check if user not afk and send back message
         afkset.has(message.author.id + `_${message.guildId}`, function(callback) {
-            if (callback === true) {
-                afkset.get(message.author.id + `_${message.guildId}`, function(getcallbackvalue) {
-                    if (Number(message.guildId) === Number(getcallbackvalue["3"].id)) {
-                        message.channel.send(`Welcome back <@${message.author.id}>, I removed your Afk status.`)
-                        try {
-                            afkset.delete(message.author.id + `_${message.guildId}`, function(delafkuser) {});
-                            /* Disabled because it laggy
-                            if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
-                                message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)["4"]}`)
-                            }
-                            */
-                        }
-                        catch (error) {
-                            console.log(error)
-                        }
-                    }
-                })
-            }
-            // Respond afk message if someone mention afk user
-            let mentionget = message.mentions.members.first();
-    
-            if (mentionget) {
+            afkset.get(mentionget.id + `_${message.guildId}`, function(getcallbackvaluemention) {
                 if (callback === true) {
-                    afkset.get(mentionget.id + `_${message.guildId}`, function(getcallbackvaluemention) {
+                    afkset.get(message.author.id + `_${message.guildId}`, function(getcallbackvalue) {
+                        if (Number(message.guildId) === Number(getcallbackvalue["3"].id)) {
+                            message.channel.send(`Welcome back <@${message.author.id}>, I removed your Afk status.`)
+                            try {
+                                afkset.delete(message.author.id + `_${message.guildId}`, function(delafkuser) {});
+                                /* Disabled because it laggy
+                                if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
+                                    message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)["4"]}`)
+                                }
+                                */
+                            }
+                            catch (error) {
+                                console.log(error)
+                            }
+                        }
+                    })
+                }
+                // Respond afk message if someone mention afk user
+                let mentionget = message.mentions.members.first();
+        
+                if (mentionget) {
+                    if (callback === true) {
                         if (Number(message.guildId) === Number(getcallbackvaluemention["3"].id)) {
                             const timeago = moment(getcallbackvaluemention["1"]).fromNow();
                             if (getcallbackvaluemention["2"]) {
@@ -115,9 +115,9 @@ client.on("messageCreate", async (message) => {
                                 message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
                             }
                         }
-                    })
+                    }
                 }
-            }
+            })
         })
     }
     // Check cooldown for command
