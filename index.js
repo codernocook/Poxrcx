@@ -133,13 +133,13 @@ client.on("messageCreate", async (message) => {
             }
         }
         if(commandcooldown.has(message.author.id)) {
-            if (!message.content.startsWith(prefix) || message.author.bot) return; // check again if bot send message to themself
+            if (message.author.bot) return; // check again if bot send message to themself
             return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
         } else {
             //OwnerCommand (Only for owner)
             if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(ownerid)) return message.channel.send("I'm Always here!");
             // Start normal command
-            if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
+            if (message.author.bot) return; // check if dumb discord bot send message.
             // Add delay
             commandcooldown.add(message.author.id);
             //Run the command checker
