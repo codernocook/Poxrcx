@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
 const prefixdb = require("../prefixdb.js");
+require('dotenv').config({path: "../settings.env"}); // load the prefix if the new set is the old one
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,6 +16,7 @@ module.exports = {
             if (prefixtype.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid prefix you want to set.`).setColor(`Red`)] });
             
             if (prefixtype) {
+                if (prefixtype.trim() === process.env.prefix) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Changed the prefix to \`${prefixtype.trim()}\``).setColor(`Green`)] });
                 prefixdb.set(`${message.guildId}`, {
                     "time": Date.now(),
                     "prefix": prefixtype.trim(),
@@ -29,6 +31,7 @@ module.exports = {
             if (prefixtype.trim() === "") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid prefix you want to set.`).setColor(`Red`)] });
             
             if (prefixtype) {
+                if (prefixtype.trim() === process.env.prefix) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Changed the prefix to \`${prefixtype.trim()}\``).setColor(`Green`)] });
                 prefixdb.set(`${message.guildId}`, {
                     "time": Date.now(),
                     "prefix": prefixtype.trim(),
