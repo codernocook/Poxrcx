@@ -126,10 +126,12 @@ client.on("messageCreate", async (message) => {
     await prefixdb.get(`${message.guildId}`, function(callbackprefixget0) { callbackprefix = callbackprefixget0}); //get the thing from db
 
     if (callbackprefix) {
+        console.log(callbackprefix);
         if (!message.content.startsWith(callbackprefix)) {
             return;
         }
     } else {
+        console.log(callbackprefix);
         if (!message.content.startsWith(prefix)) {
             return;
         }
