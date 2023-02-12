@@ -133,7 +133,7 @@ client.on("messageCreate", async (message) => {
         // Start the command check, run
         let callbackprefix = callbackprefixget0 || undefined;
 
-        if (callbackprefix) {
+        if (callbackprefix !== undefined) {
             if (!message.content.startsWith(callbackprefix)) {
                 return;
             }
@@ -167,7 +167,6 @@ client.on("messageCreate", async (message) => {
                         executefile(`${command}`, argument, message, "message")
                     }
                 } catch(err) {}
-                antiloop = 0; //don't need but its important to face the error
             // remove user command timeout
             setTimeout(() => {
                 return commandcooldown.delete(message.author.id);
