@@ -130,7 +130,7 @@ client.on("messageCreate", async (message) => {
             if (!message.content.startsWith(callbackprefix)) {
                 return;
             }
-        } else {
+        } else if (callbackprefix === undefined) {
             if (!message.content.startsWith(prefix)) {
                 return;
             }
