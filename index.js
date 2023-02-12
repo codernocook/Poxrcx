@@ -107,7 +107,7 @@ client.on("messageCreate", async (message) => {
             if (mentionget) {
                 if (callback === true) {
                     afkset.get(mentionget.id + `_${message.guildId}`, function(getcallbackvaluemention) {
-                        if (Number(message.guildId) === Number(afkset.get(getcallbackvaluemention["3"].id))) {
+                        if (Number(message.guildId) === Number(getcallbackvaluemention["3"].id)) {
                             const timeago = moment(getcallbackvaluemention["1"]).fromNow();
                             if (getcallbackvaluemention["2"]) {
                                 message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${getcallbackvaluemention["2"]}.`)
