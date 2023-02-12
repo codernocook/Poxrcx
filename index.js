@@ -124,18 +124,12 @@ client.on("messageCreate", async (message) => {
     // Check cooldown for command
     prefixdb.get(`${message.guildId}`, function(callbackprefixget0) {
         // Start the command check, run
-        let callbackprefix = callbackprefixget0;
+        let callbackprefix = callbackprefixget0 || undefined;
 
-        if (callbackprefix !== undefined) {
-            if (!message.content.startsWith(callbackprefix)) {
-                return;
-            }
-        }
-
-        if (!message.content.startsWith(prefix)) {
+        if (!message.content.startsWith(callbackprefix) && !message.content.startsWith(prefix)) {
             return;
         }
-    
+
         if(commandcooldown.has(message.author.id)) {
             if (message.author.bot) return; // check again if bot send message to themself
             return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
