@@ -122,43 +122,44 @@ client.on("messageCreate", async (message) => {
         })
     }
     // Check cooldown for command
-    prefixdb.get(`${message.guildId}`, function(callbackprefixget) {
-        let callbackprefix = callbackprefixget || null;
-        
-        if (callbackprefix !== null && callbackprefix !== undefined) {
-            callbackprefix = callbackprefixget["prefix"];
-        }
+    let callbackprefixget = undefined;
+    await prefixdb.get(`${message.guildId}`, function(callbackprefixget0) { callbackprefixget = callbackprefixget0}); //get the thing from db
 
-        if(commandcooldown.has(message.author.id)) {
-            if (message.author.bot) return; // check again if bot send message to themself
-            return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
-        } else {
-            //OwnerCommand (Only for owner)
-            if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(ownerid)) return message.channel.send("I'm Always here!");
-            // Start normal command
-            if ((!message.content.startsWith(callbackprefix) && !message.content.startsWith(prefix)) || message.author.bot) return; // check if dumb discord bot send message.
-            // Add delay
-            //commandcooldown.add(message.author.id);
-            //Run the command checker
-                const args = message.content.slice(prefix.length).split(/ +/);
-                const command = args.shift().toLowerCase();
-                const messaggearray = message.content.split(" ");
-                const argument = messaggearray.slice(1);
-                const cmd = messaggearray[0];
+    let callbackprefix = callbackprefixget || null;
+        
+    if (callbackprefix !== null && callbackprefix !== undefined) {
+        callbackprefix = callbackprefixget["prefix"];
+    }
+
+    if(commandcooldown.has(message.author.id)) {
+        if (message.author.bot) return; // check again if bot send message to themself
+        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
+    } else {
+        //OwnerCommand (Only for owner)
+        if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(ownerid)) return message.channel.send("I'm Always here!");
+        // Start normal command
+        if ((!message.content.startsWith(callbackprefix) && !message.content.startsWith(prefix)) || message.author.bot) return; // check if dumb discord bot send message.
+        // Add delay
+        commandcooldown.add(message.author.id);
+        //Run the command checker
+            const args = message.content.slice(prefix.length).split(/ +/);
+            const command = args.shift().toLowerCase();
+            const messaggearray = message.content.split(" ");
+            const argument = messaggearray.slice(1);
+            const cmd = messaggearray[0];
     
-                //run the command
-                const execpath = `./commandmodule/${command}.js`
-                try {
-                    if (fs.existsSync(execpath)) {
-                        executefile(`${command}`, argument, message, "message")
-                    }
-                } catch(err) {}
-            // remove user command timeout
-            setTimeout(() => {
-                return commandcooldown.delete(message.author.id);
-            }, 900);
-        }
-    })
+            //run the command
+            const execpath = `./commandmodule/${command}.js`
+            try {
+                if (fs.existsSync(execpath)) {
+                    executefile(`${command}`, argument, message, "message")
+                }
+            } catch(err) {}
+        // remove user command timeout
+        setTimeout(() => {
+            return commandcooldown.delete(message.author.id);
+        }, 900);
+    }
 })
 
 client.on('interactionCreate', async (interaction) => {
