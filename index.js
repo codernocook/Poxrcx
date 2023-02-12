@@ -123,7 +123,7 @@ client.on("messageCreate", async (message) => {
     }
     // Check cooldown for command
     prefixdb.get(`${message.guildId}`, function(callback) {
-        if (callback !== undefined || callback !== null) {
+        if (callback) {
             if (!message.content.startsWith(callback)) {
                 return;
             }
