@@ -18,8 +18,7 @@ module.exports = {
                 try {
                     if (json) {
                         if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-                        if (typeof(json) === "string" && json.toLowerCase().trim() === "invalidtimezone") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-                        if (!json["TimeZone"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+                        if (json === "Invalid Timezone") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
                         
                         let year = json["year"];
                         let month = json["month"];
@@ -50,8 +49,7 @@ module.exports = {
                 try {
                     if (json) {
                         if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-                        if (typeof(json) === "string" && json.toLowerCase().trim() === "invalidtimezone") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-                        if (!json["TimeZone"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+                        if (json === "Invalid Timezone") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
 
                         let year = json["year"];
                         let month = json["month"];
