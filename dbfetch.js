@@ -1,11 +1,13 @@
 require('dotenv').config({path: "./settings.env"}); // load the env
 const db = process.env.db;
+const authkey = process.env.authdb;
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 module.exports = {
     set(key, value, callback) {
         if (db) {
             let bodyfetch = {
+                "authorization": authkey,
                 "key": key,
                 "value": value
             }
@@ -20,7 +22,8 @@ module.exports = {
     has(key, callback) {
         if (db) {
             let bodyfetch = {
-                "key": key,
+                "authorization": authkey,
+                "key": key
             }
             fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
@@ -33,7 +36,8 @@ module.exports = {
     get(key, callback) {
         if (db) {
             let bodyfetch = {
-                "key": key,
+                "authorization": authkey,
+                "key": key
             }
             fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                 if (json) {
@@ -50,6 +54,7 @@ module.exports = {
     },
     delete(key, callback) {
         let bodyfetch = {
+            "authorization": authkey,
             "key": key
         }
         if (db) {
