@@ -19,7 +19,7 @@ module.exports = {
                     if (json) {
                         if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
                         if (typeof(json) === "string" && json.toLowerCase().trim() === "invalidtimezone") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-                        if (typeof(json) !== "string" && !json["TimeZone"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+                        if (!json["TimeZone"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
                         
                         let year = json["year"];
                         let month = json["month"];
@@ -47,11 +47,11 @@ module.exports = {
             timezonename = message.options.getString("timezone").trim();
 
             fetch(`https://www.timeapi.io/api/Time/current/zone?timeZone=${timezonename}`).then(res => res.json()).then(json => {
-                //try {
+                try {
                     if (json) {
                         if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
                         if (typeof(json) === "string" && json.toLowerCase().trim() === "invalidtimezone") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-                        if (typeof(json) !== "string" && !json["TimeZone"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+                        if (!json["TimeZone"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
 
                         let year = json["year"];
                         let month = json["month"];
@@ -68,9 +68,9 @@ module.exports = {
                         
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`**Year:** ${year}\n**Month:** ${month}\n**Day:** ${day}\n**Hour:** ${hour}\n**Minute:** ${minute}\n**Second:** ${second}\n**MilliSeconds:** ${milli_seconds}\n**Date:** ${date}\n**System time:** ${dateTime}\n**Time:** ${time}\n**Day of week:** ${dayOfWeek}\n**Timezone:** ${timezone}`).setColor(`Blue`)] })
                     }
-                //} catch {
+                } catch {
                     message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command, please try again later.`).setColor(`Red`)] });
-                //};
+                };
             })
         }
     }
