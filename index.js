@@ -126,6 +126,10 @@ client.on("messageCreate", async (message) => {
         // Start the command check, run
         let callbackprefix = callbackprefixget0 || undefined;
 
+        if (callbackprefix !== undefined) {
+            callbackprefix = callbackprefixget0["prefix"];
+        }
+
         if (!message.content.startsWith(callbackprefix) && !message.content.startsWith(prefix)) {
             return;
         }
