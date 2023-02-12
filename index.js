@@ -123,7 +123,11 @@ client.on("messageCreate", async (message) => {
     }
     // Check cooldown for command
     prefixdb.get(`${message.guildId}`, function(callbackprefixget) {
-        let callbackprefix = callbackprefixget["prefix"] || null;
+        let callbackprefix = callbackprefixget || null;
+        
+        if (callbackprefix !== null && callbackprefix !== undefined) {
+            callbackprefix = callbackprefixget["prefix"];
+        }
 
         if(commandcooldown.has(message.author.id)) {
             if ((!message.content.startsWith(callbackprefix) && !message.content.startsWith(prefix)) || message.author.bot) return; // check again if bot send message to themself
