@@ -122,13 +122,17 @@ client.on("messageCreate", async (message) => {
         })
     }
     // Check cooldown for command
-    let callbackprefixget = undefined;
-    await prefixdb.get(`${message.guildId}`, function(callbackprefixget0) { callbackprefixget = callbackprefixget0}); //get the thing from db
+    let callbackprefix = undefined;
+    await prefixdb.get(`${message.guildId}`, function(callbackprefixget0) { callbackprefix = callbackprefixget0}); //get the thing from db
 
-    let callbackprefix = callbackprefixget || null;
-        
-    if (callbackprefix !== null && callbackprefix !== undefined) {
-        callbackprefix = callbackprefixget["prefix"];
+    if (callbackprefix) {
+        if (!message.content.startsWith(callbackprefix)) {
+            return;
+        }
+    } else {
+        if (!message.content.startsWith(prefix)) {
+            return;
+        }
     }
 
     if(commandcooldown.has(message.author.id)) {
@@ -138,7 +142,7 @@ client.on("messageCreate", async (message) => {
         //OwnerCommand (Only for owner)
         if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(ownerid)) return message.channel.send("I'm Always here!");
         // Start normal command
-        if ((!message.content.startsWith(callbackprefix) && !message.content.startsWith(prefix)) || message.author.bot) return; // check if dumb discord bot send message.
+        if (message.author.bot) return; // check if dumb discord bot send message.
         // Add delay
         commandcooldown.add(message.author.id);
         //Run the command checker
