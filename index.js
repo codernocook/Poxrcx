@@ -124,16 +124,16 @@ client.on("messageCreate", async (message) => {
     // Check cooldown for command
     prefixdb.get(`${message.guildId}`, function(callbackprefixget0) {
         // Start the command check, run
-        let callbackprefix = callbackprefixget0 || undefined;
+        let callbackprefix = callbackprefixget0;
 
         if (callbackprefix !== undefined) {
             if (!message.content.startsWith(callbackprefix)) {
                 return;
             }
-        } else if (callbackprefix === undefined) {
-            if (!message.content.startsWith(prefix)) {
-                return;
-            }
+        }
+
+        if (!message.content.startsWith(prefix)) {
+            return;
         }
     
         if(commandcooldown.has(message.author.id)) {
