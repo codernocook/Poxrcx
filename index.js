@@ -8,7 +8,8 @@ const ownerid = process.env.ownerid;
 const rest = new REST({ version: '10' }).setToken(token);
 let commandcooldown = new Set();
 let interactioncooldown = new Set();
-let afkset = require("./dbfetch.js")
+let afkset = require("./dbfetch.js");
+let prefixdb = require("./prefixdb.js");
 const fs = require('fs');
 const path = require('path');
 const moment = require("moment");
@@ -121,35 +122,46 @@ client.on("messageCreate", async (message) => {
         })
     }
     // Check cooldown for command
-    if(commandcooldown.has(message.author.id)) {
-        if (!message.content.startsWith(prefix) || message.author.bot) return; // check again if bot send message to themself
-        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
-    } else {
-        //OwnerCommand (Only for owner)
-        if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(ownerid)) return message.channel.send("I'm Always here!");
-        // Start normal command
-        if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
-        // Add delay
-        commandcooldown.add(message.author.id);
-        //Run the command checker
-            const args = message.content.slice(prefix.length).split(/ +/);
-            const command = args.shift().toLowerCase();
-            const messaggearray = message.content.split(" ");
-            const argument = messaggearray.slice(1);
-            const cmd = messaggearray[0];
-
-            //run the command
-            const execpath = `./commandmodule/${command}.js`
-            try {
-                if (fs.existsSync(execpath)) {
-                    executefile(`${command}`, argument, message, "message")
-                }
-            } catch(err) {}
-        // remove user command timeout
-        setTimeout(() => {
-            return commandcooldown.delete(message.author.id);
-        }, 900);
-    }
+    prefixdb.get(`${message.guildId}`, function(callback) {
+        if (callback !== undefined || callback !== null) {
+            if (!message.content.startsWith(callback)) {
+                return;
+            }
+        } else {
+            if (!message.content.startsWith(prefix)) {
+                return;
+            }
+        }
+        if(commandcooldown.has(message.author.id)) {
+            if (!message.content.startsWith(prefix) || message.author.bot) return; // check again if bot send message to themself
+            return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
+        } else {
+            //OwnerCommand (Only for owner)
+            if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(ownerid)) return message.channel.send("I'm Always here!");
+            // Start normal command
+            if (!message.content.startsWith(prefix) || message.author.bot) return; // check if dumb discord bot send message.
+            // Add delay
+            commandcooldown.add(message.author.id);
+            //Run the command checker
+                const args = message.content.slice(prefix.length).split(/ +/);
+                const command = args.shift().toLowerCase();
+                const messaggearray = message.content.split(" ");
+                const argument = messaggearray.slice(1);
+                const cmd = messaggearray[0];
+    
+                //run the command
+                const execpath = `./commandmodule/${command}.js`
+                try {
+                    if (fs.existsSync(execpath)) {
+                        executefile(`${command}`, argument, message, "message")
+                    }
+                } catch(err) {}
+            // remove user command timeout
+            setTimeout(() => {
+                return commandcooldown.delete(message.author.id);
+            }, 900);
+        }
+    })
 })
 
 client.on('interactionCreate', async (interaction) => {
