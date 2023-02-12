@@ -123,13 +123,6 @@ client.on("messageCreate", async (message) => {
     }
     // Check cooldown for command
     prefixdb.get(`${message.guildId}`, function(callbackprefixget0) {
-        // Anti database 2 time loop
-        let antiloop = 0;
-
-        antiloop++; // plus 1 value to check
-
-        if (antiloop > 1) return; // kill the second loop
-
         // Start the command check, run
         let callbackprefix = callbackprefixget0 || undefined;
 
