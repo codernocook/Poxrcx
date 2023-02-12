@@ -15,10 +15,10 @@ module.exports = {
             if (timezonename.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
 
             fetch(`https://www.timeapi.io/api/Time/current/zone?timeZone=${timezonename}`).then(res => res.json()).then(json => {
-                //try {
+                try {
                     if (json) {
                         if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-                        if (json.trim().toLowerCase() === "invalidtimezone") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+                        if (typeof(json) === "string" && json.trim().toLowerCase() === "invalidtimezone") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
                         let year = json["year"];
                         let month = json["month"];
                         let day = json["day"];
@@ -34,9 +34,9 @@ module.exports = {
                         
                         message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Year: ${year}\nMonth: ${month}\nDay: ${day}\nHour: ${hour}\nMinute: ${minute}\nSecond: ${second}\nMilliSeconds: ${milli_seconds}\nDate: ${date}\nSystem time: ${dateTime}\nTime: ${time}\nDay of week: ${dayOfWeek}\nTimezone: ${timezone}`).setColor(`Blue`)] })
                     }
-                //} catch {
+                } catch {
                     message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command, please try again later.`).setColor(`Red`)] });
-                //};
+                };
             })
         } else if (typeofcommand === "interaction"){
             let timezonename = message.options.getString("timezone");
@@ -45,10 +45,10 @@ module.exports = {
             timezonename = message.options.getString("timezone").trim();
 
             fetch(`https://www.timeapi.io/api/Time/current/zone?timeZone=${timezonename}`).then(res => res.json()).then(json => {
-                //try {
+                try {
                     if (json) {
                         if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-                        if (json.trim().toLowerCase() === "invalidtimezone") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+                        if (typeof(json) === "string" && json.trim().toLowerCase() === "invalidtimezone") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
                         let year = json["year"];
                         let month = json["month"];
                         let day = json["day"];
@@ -64,9 +64,9 @@ module.exports = {
                         
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`Year: ${year}\nMonth: ${month}\nDay: ${day}\nHour: ${hour}\nMinute: ${minute}\nSecond: ${second}\nMilliSeconds: ${milli_seconds}\nDate: ${date}\nSystem time: ${dateTime}\nTime: ${time}\nDay of week: ${dayOfWeek}\nTimezone: ${timezone}`).setColor(`Blue`)] })
                     }
-                //} catch {
+                } catch {
                     message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command, please try again later.`).setColor(`Red`)] });
-                //};
+                };
             })
         }
     }
