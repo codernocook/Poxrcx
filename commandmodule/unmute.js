@@ -17,7 +17,7 @@ module.exports = {
             const parsetime = require('parse-duration').default;
             const mspack = require('ms');
 
-            if (!mentioneduser) return message.channel.send("Invaild user.")
+            if (!mentioneduser) return message.channel.send("Invalid user.")
             if (message.member === mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't unmute yourself!`).setColor(`Red`)] })
             if (!message.member.permissions.has("Administrator")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to unmute this user!`).setColor(`Red`)] })
 
@@ -36,7 +36,7 @@ module.exports = {
             const parsetime = require('parse-duration').default;
             const mspack = require('ms');
 
-            if (!mentioneduser) return message.reply("Invaild user.")
+            if (!mentioneduser) return message.reply("Invalid user.")
             if (message.guild.members.cache.find(user => message.user.id === user.id) === mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't unmute yourself!`).setColor(`Red`)] })
             if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to unmute this user!`).setColor(`Red`)] })
 

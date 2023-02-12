@@ -35,7 +35,7 @@ module.exports = {
                 if (!user) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing user.`).setColor(`Red`)] });
                 fetch(`https://api.github.com/users/${user}`).then(res => res.json()).then(json => {
                     try {
-                        if (json["message"] && json["message"].toLowerCase().trim() === "notfound") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild github username.`).setColor(`Red`)] });
+                        if (json["message"] && json["message"].toLowerCase().trim() === "notfound") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid github username.`).setColor(`Red`)] });
 
                         let LoginName = json["login"] || "None";
                         let id = json["id"] || "None";
@@ -106,7 +106,7 @@ module.exports = {
                 if (!user) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing user.`).setColor(`Red`)] });
                 fetch(`https://api.github.com/users/${user}`).then(res => res.json()).then(json => {
                     try {
-                        if (json["message"] && json["message"].toLowerCase().trim() === "notfound") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild github username.`).setColor(`Red`)] });
+                        if (json["message"] && json["message"].toLowerCase().trim() === "notfound") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid github username.`).setColor(`Red`)] });
 
                         let LoginName = json["login"] || "None";
                         let id = json["id"] || "None";

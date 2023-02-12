@@ -19,7 +19,7 @@ module.exports = {
                 fetch(`http://ip-api.com/json/`).then(res => res.json()).then(jsoncheck => {
                     if (json) {
                         try {
-                            if (json["message"] && json["message"].toLowerCase().trim() === "invalidquery") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild ip address.`).setColor(`Red`)] });
+                            if (json["message"] && json["message"].toLowerCase().trim() === "invalidquery") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid ip address.`).setColor(`Red`)] });
                             if (json["status"] && json["status"] === "fail" && json["message"] && json["message"].toLowerCase().trim() !== "invalidquery") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
     
                             let country = json["country"] || "None";
@@ -58,7 +58,7 @@ module.exports = {
                 fetch(`http://ip-api.com/json/`).then(res => res.json()).then(jsoncheck => {
                     if (json) {
                         try {
-                            if (json["message"] && json["message"].toLowerCase().trim() === "invalidquery") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild ip address.`).setColor(`Red`)] });
+                            if (json["message"] && json["message"].toLowerCase().trim() === "invalidquery") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid ip address.`).setColor(`Red`)] });
                             if (json["status"] && json["status"] === "fail" && json["message"] && json["message"].toLowerCase().trim() !== "invalidquery") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
     
                             let country = json["country"] || "None";

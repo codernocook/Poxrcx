@@ -26,12 +26,12 @@ module.exports = {
         if (typeofcommand === "message") {
             const commandcalltype = argument[0]
             let infomation = argument.slice(1).join(" ");
-            if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox User!`).setColor(`Red`)] });
+            if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox User!`).setColor(`Red`)] });
             if (commandcalltype === "user") {
                 if (isNaN(infomation)) {
                     fetch(`https://api.roblox.com/users/get-by-username?username=${infomation}`).then(res => res.json()).then(json => {
                     if (!json) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
-                    if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                    if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                     let UserId = json.Id;
                         fetch(`https://users.roblox.com/v1/users/${UserId}`).then(resinfo => resinfo.json()).then(jsoninfo => {
                             fetch(`https://api.roblox.com/users/${UserId}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
@@ -56,14 +56,14 @@ module.exports = {
                                                 }
                                                 message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
                                             }else {
-                                                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                             }
                                         } else {
-                                            return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                            return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                         }
                                     })
                                 } else {
-                                    return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                    return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                 }
                             })
                         })
@@ -71,7 +71,7 @@ module.exports = {
                 } else {
                     fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
                     if (!json) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
-                    if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                    if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                         fetch(`https://users.roblox.com/v1/users/${infomation}`).then(resinfo => resinfo.json()).then(jsoninfo => {
                             fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
                                 if (!jsononline["errors"]) {
@@ -95,23 +95,23 @@ module.exports = {
                                                 }
                                                 message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
                                             }else {
-                                                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                             }
                                         } else {
-                                            return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                            return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                         }
                                     })
                                 } else {
-                                    return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                    return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                 }
                             })
                         })
                     })
                 }
             } else if (commandcalltype === "experience") {
-                if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                if (!infomation) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
                 fetch(`https://apis.roblox.com/universes/v1/places/${infomation}/universe`).then(res1 => res1.json()).then(jsonid => {
-                    if (!jsonid) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                    if (!jsonid) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
                     if (!jsonid["universeId"]) return
 
                     let universeId = jsonid["universeId"];
@@ -119,10 +119,10 @@ module.exports = {
                     if (universeId === null && jsonid["universeId"] === null) universeId = infomation;
 
                     fetch(`https://thumbnails.roblox.com/v1/games/icons?universeIds=${universeId},0&returnPolicy=PlaceHolder&size=128x128&format=Png&isCircular=false`).then(resav => resav.json()).then(jsonthumbnail => {
-                        if (!jsonthumbnail) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
-                        if (!jsonthumbnail["data"] || jsonthumbnail["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
-                        if (!jsonthumbnail["data"][0]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
-                        if (!jsonthumbnail["data"][0]["imageUrl"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"] || jsonthumbnail["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"][0]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"][0]["imageUrl"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
 
                         fetch(`https://games.roblox.com/v1/games?universeIds=${universeId}`).then(res => res.json()).then(json => {
                             let jsondata = json.data[0];
@@ -133,7 +133,7 @@ module.exports = {
     
                                 message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${jsondata.name}`).setThumbnail(`${jsonthumbnail["data"][0]["imageUrl"] || undefined}`).setDescription(`Description: \n{\n"\`${jsondata.description}\`"\n}\nGameId: ${jsondata.id}\nRoot PlaceId: ${jsondata.rootPlaceId}\nCreator: ${jsondata.creator.name}\nEdit Permission: ${jsondata.copyingAllowed}\nPlaying: ${jsondata.playing}\nVisits: ${jsondata.visits}\nMax Players: ${jsondata.maxPlayers}\nCreated: ${jsondata.created} | ${CreateMoment}\nUpdate: ${jsondata.updated} | ${LastUpdateMoment}\nAllow Private Server: ${jsondata.createVipServersAllowed}\nGame Avatar: ${jsondata.universeAvatarType}\nGenre: ${jsondata.genre}\nFavorite: ${jsondata.favoritedCount}`).setColor(`Blue`)] });
                             }else {
-                                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                                message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
                             }
                         })
                     })
@@ -145,7 +145,7 @@ module.exports = {
                 if (isNaN(infomation)) {
                     fetch(`https://api.roblox.com/users/get-by-username?username=${infomation}`).then(res => res.json()).then(json => {
                     if (!json) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
-                    if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                    if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                     let UserId = json.Id;
                         fetch(`https://users.roblox.com/v1/users/${UserId}`).then(resinfo => resinfo.json()).then(jsoninfo => {
                             fetch(`https://api.roblox.com/users/${UserId}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
@@ -170,14 +170,14 @@ module.exports = {
                                                 }
                                                 message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
                                             }else {
-                                                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                             }
                                         } else {
-                                            return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                            return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                         }
                                     })
                                 } else {
-                                    return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                    return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                 }
                             })
                         })
@@ -185,7 +185,7 @@ module.exports = {
                 } else {
                     fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
                     if (!json) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
-                    if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                    if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                         fetch(`https://users.roblox.com/v1/users/${infomation}`).then(resinfo => resinfo.json()).then(jsoninfo => {
                             fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
                                 if (!jsononline["errors"]) {
@@ -209,14 +209,14 @@ module.exports = {
                                                 }
                                                 message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
                                             }else {
-                                                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                             }
                                         } else {
-                                            return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                            return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                         }
                                     })
                                 } else {
-                                    return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Roblox user!`).setColor(`Red`)] });
+                                    return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                 }
                             })
                         })
@@ -225,7 +225,7 @@ module.exports = {
             } else if (message.options.getSubcommand() === "experience") {
                 let infomation = message.options.getString("universeid")
                 fetch(`https://apis.roblox.com/universes/v1/places/${infomation}/universe`).then(res1 => res1.json()).then(jsonid => {
-                    if (!jsonid) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                    if (!jsonid) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
                     if (!jsonid["universeId"]) return
 
                     let universeId = jsonid["universeId"];
@@ -233,10 +233,10 @@ module.exports = {
                     if (universeId === null && jsonid["universeId"] === null) universeId = infomation;
 
                     fetch(`https://thumbnails.roblox.com/v1/games/icons?universeIds=${universeId},0&returnPolicy=PlaceHolder&size=128x128&format=Png&isCircular=false`).then(resav => resav.json()).then(jsonthumbnail => {
-                        if (!jsonthumbnail) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
-                        if (!jsonthumbnail["data"] || jsonthumbnail["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
-                        if (!jsonthumbnail["data"][0]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
-                        if (!jsonthumbnail["data"][0]["imageUrl"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"] || jsonthumbnail["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"][0]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
+                        if (!jsonthumbnail["data"][0]["imageUrl"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
 
                         fetch(`https://games.roblox.com/v1/games?universeIds=${universeId}`).then(res => res.json()).then(json => {
                             let jsondata = json.data[0];
@@ -247,7 +247,7 @@ module.exports = {
     
                                 message.reply({ embeds: [new EmbedBuilder().setTitle(`${jsondata.name}`).setThumbnail(`${jsonthumbnail["data"][0]["imageUrl"] || undefined}`).setDescription(`Description: "\`${jsondata.description}\`"\nGameId: ${jsondata.id}\nRoot PlaceId: ${jsondata.rootPlaceId}\nCreator: ${jsondata.creator.name}\nEdit Permission: ${jsondata.copyingAllowed}\nPlaying: ${jsondata.playing}\nVisits: ${jsondata.visits}\nMax Players: ${jsondata.maxPlayers}\nCreated: ${jsondata.created} | ${CreateMoment}\nUpdate: ${jsondata.updated} | ${LastUpdateMoment}\nAllow Private Server: ${jsondata.createVipServersAllowed}\nGame Avatar: ${jsondata.universeAvatarType}\nGenre: ${jsondata.genre}\nFavorite: ${jsondata.favoritedCount}`).setColor(`Blue`)] });
                             }else {
-                                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild gameId/universeId!`).setColor(`Red`)] });
+                                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid gameId/universeId!`).setColor(`Red`)] });
                             }
                         })
                     })

@@ -15,11 +15,11 @@ module.exports = {
             let data = argument.slice(0).join(" ");
 
            if (data) {
-            if (data.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild City/Location. Please type a invaild location.`).setColor(`Red`)] });
+            if (data.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid City/Location. Please type a invalid location.`).setColor(`Red`)] });
             try {
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${data}&units=metric&appid=${weathertoken}`).then(res => res.json()).then(response => {
                     if (response["cod"] === "429") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> The weather api has been limited, please try again later.`).setColor(`Red`)] });
-                    if (response["cod"] === "404") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild City/Location. Please type a invaild location.`).setColor(`Red`)] });
+                    if (response["cod"] === "404") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid City/Location. Please type a invalid location.`).setColor(`Red`)] });
                     if (response["cod"] !== 200 && response["cod"] !== "404" && response["cod"] !== "429") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
                     let apiData = response;
                     let currentTemp = Math.ceil(apiData.main.temp)
@@ -40,11 +40,11 @@ module.exports = {
             let data = message.options.getString("city");
 
            if (data) {
-            if (data.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild Country/City/Location. Please type a invaild location.`).setColor(`Red`)] });
+            if (data.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Country/City/Location. Please type a invalid location.`).setColor(`Red`)] });
             try {
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${data}&units=metric&appid=${weathertoken}`).then(res => res.json()).then(response => {
                     if (response["cod"] === "429") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> The weather api has been limited, please try again later.`).setColor(`Red`)] });
-                    if (response["cod"] === "404") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild City/Location. Please type a invaild location.`).setColor(`Red`)] });
+                    if (response["cod"] === "404") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid City/Location. Please type a invalid location.`).setColor(`Red`)] });
                     if (response["cod"] !== 200 && response["cod"] !== "404" && response["cod"] !== "429") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
                     let apiData = response;
                     let currentTemp = Math.ceil(apiData.main.temp)

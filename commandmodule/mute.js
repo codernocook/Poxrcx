@@ -16,12 +16,12 @@ module.exports = {
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
-            if (!argument[0]) return  message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild user.`).setColor(`Red`)] })
+            if (!argument[0]) return  message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid user.`).setColor(`Red`)] })
             if (!argument[1]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing mute duration!`).setColor(`Red`)] })
                 const mentioneduser = message.mentions.members.first();
                 const parsetime = require('parse-duration').default;
                 const mspack = require('ms');
-                if (!mentioneduser) return message.channel.send("Invaild user.")
+                if (!mentioneduser) return message.channel.send("Invalid user.")
                 if (!message.member.permissions.has("Administrator")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to mute user!`).setColor(`Red`)] })
                 //if (!message.guild) return message.channel.send("I don't have permission to time out people please enable it!")
                 if (message.member === mentioneduser) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't mute yourself.`).setColor(`Red`)] })
@@ -42,7 +42,7 @@ module.exports = {
                     reason = 'No reason given.'
                 }
 
-                if (parsedtime < mspack("1m") || parsedtime > mspack("14d")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please use vaild limit less than 14 days and more than 1 minute.`).setColor(`Red`)] });
+                if (parsedtime < mspack("1m") || parsedtime > mspack("14d")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please use valid limit less than 14 days and more than 1 minute.`).setColor(`Red`)] });
 
                 mentioneduser.timeout(parsedtime, reason).catch(err => { message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't mute ${mentioneduser}, maybe my role position is too low.`).setColor(`Red`)] }) });
 
@@ -51,7 +51,7 @@ module.exports = {
                 const mentioneduser = message.guild.members.cache.find(user => message.options.getUser("user").id === user.id);
                 const parsetime = require('parse-duration').default;
                 const mspack = require('ms');
-                if (!mentioneduser) return message.reply("Invaild user.")
+                if (!mentioneduser) return message.reply("Invalid user.")
                 if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to mute user!`).setColor(`Red`)] })
                 //if (!message.guild) return message.reply("I don't have permission to time out people please enable it!")
                 if (message.guild.members.cache.find(user => message.user.id === user.id) === mentioneduser) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't mute yourself.`).setColor(`Red`)] })
@@ -72,7 +72,7 @@ module.exports = {
                     reason = 'No reason given.'
                 }
 
-                if (parsedtime < mspack("1m") || parsedtime > mspack("14d")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please use vaild limit less than 14 days and more than 1 minute.`).setColor(`Red`)] });
+                if (parsedtime < mspack("1m") || parsedtime > mspack("14d")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please use valid limit less than 14 days and more than 1 minute.`).setColor(`Red`)] });
 
                 mentioneduser.timeout(parsedtime, reason).catch(err => { message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't mute ${mentioneduser}, maybe my role position is too low.`).setColor(`Red`)] }) });
 

@@ -49,7 +49,7 @@ module.exports = {
                 const duration = message.options.getString("duration");
                 const prize = message.options.getString("name");
     
-                if (!Number(winners)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invaild winner number.`).setColor(`Red`)] })
+                if (!Number(winners)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid winner number.`).setColor(`Red`)] })
                 const winnerCount = Number(winners);
     
                 const parsetime = require('parse-duration').default;
@@ -89,7 +89,7 @@ module.exports = {
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Ended the giveaway.`).setColor(`Green`)] });
                     })
                     .catch((err) => {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This giveaway has already ended or invaild message id.`).setColor(`Red`)], ephemeral: true })
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This giveaway has already ended or invalid message id.`).setColor(`Red`)], ephemeral: true })
                     });
             } else if (message.options.getSubcommand() === "reroll") {
                 if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("ManageEvents") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to create/stop a giveaway.`).setColor(`Red`)], ephemeral: true  })

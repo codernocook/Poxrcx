@@ -11,14 +11,14 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
             let timezonename = argument.join(" ").trim();
-            if (!timezonename) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-            if (timezonename.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+            if (!timezonename) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid timezone.`).setColor(`Red`)] });
+            if (timezonename.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid timezone.`).setColor(`Red`)] });
 
             fetch(`https://www.timeapi.io/api/Time/current/zone?timeZone=${timezonename}`).then(res => res.json()).then(json => {
                 try {
                     if (json) {
-                        if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-                        if (json === "Invalid Timezone") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+                        if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid timezone.`).setColor(`Red`)] });
+                        if (json === "Invalid Timezone") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid timezone.`).setColor(`Red`)] });
                         
                         let year = json["year"];
                         let month = json["month"];
@@ -41,15 +41,15 @@ module.exports = {
             })
         } else if (typeofcommand === "interaction"){
             let timezonename = message.options.getString("timezone");
-            if (!timezonename) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-            if (timezonename.trim() === "") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+            if (!timezonename) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid timezone.`).setColor(`Red`)] });
+            if (timezonename.trim() === "") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid timezone.`).setColor(`Red`)] });
             timezonename = message.options.getString("timezone").trim();
 
             fetch(`https://www.timeapi.io/api/Time/current/zone?timeZone=${timezonename}`).then(res => res.json()).then(json => {
                 try {
                     if (json) {
-                        if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
-                        if (json === "Invalid Timezone") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+                        if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid timezone.`).setColor(`Red`)] });
+                        if (json === "Invalid Timezone") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid timezone.`).setColor(`Red`)] });
 
                         let year = json["year"];
                         let month = json["month"];
