@@ -10,7 +10,7 @@ module.exports = {
         ),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
-            let timezonename = argument.join(" ");
+            let timezonename = argument.join(" ").trim();
             if (!timezonename) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
             if (timezonename.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
 
@@ -42,6 +42,7 @@ module.exports = {
             let timezonename = message.options.getString("timezone");
             if (!timezonename) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
             if (timezonename.trim() === "") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a vaild timezone.`).setColor(`Red`)] });
+            timezonename = message.options.getString("timezone").trim();
 
             fetch(`https://www.timeapi.io/api/Time/current/zone?timeZone=${timezonename}`).then(res => res.json()).then(json => {
                 try {
