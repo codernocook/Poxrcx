@@ -16,7 +16,15 @@ module.exports = {
             if (prefixtype.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid prefix you want to set.`).setColor(`Red`)] });
             
             if (prefixtype) {
-                if (prefixtype.trim() === process.env.prefix) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Changed the prefix to \`${prefixtype.trim()}\``).setColor(`Green`)] });
+                if (prefixtype.trim() === process.env.prefix) {
+                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Changed the prefix to \`${prefixtype.trim()}\``).setColor(`Green`)] });
+                    prefixdb.has(`${message.guildId}`, function(callback) {
+                        if (callback === true) {
+                            prefixdb.delete(`${message.guildId}`, function(prefixdel) {});
+                        }
+                    })
+                    return;
+                }
                 prefixdb.set(`${message.guildId}`, {
                     "time": Date.now(),
                     "prefix": prefixtype.trim(),
@@ -31,7 +39,15 @@ module.exports = {
             if (prefixtype.trim() === "") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid prefix you want to set.`).setColor(`Red`)] });
             
             if (prefixtype) {
-                if (prefixtype.trim() === process.env.prefix) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Changed the prefix to \`${prefixtype.trim()}\``).setColor(`Green`)] });
+                if (prefixtype.trim() === process.env.prefix) {
+                    message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Changed the prefix to \`${prefixtype.trim()}\``).setColor(`Green`)] });
+                    prefixdb.has(`${message.guildId}`, function(callback) {
+                        if (callback === true) {
+                            prefixdb.delete(`${message.guildId}`, function(prefixdel) {});
+                        }
+                    })
+                    return;
+                }
                 prefixdb.set(`${message.guildId}`, {
                     "time": Date.now(),
                     "prefix": prefixtype.trim(),
