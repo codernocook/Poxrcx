@@ -5,65 +5,73 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 
 module.exports = {
     set(key, value, callback) {
-        if (db) {
-            let bodyfetch = {
-                "authorization": authkey,
-                "key": key,
-                "value": value
-            }
-            fetch(db + "/set", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
-                if (json) {
-                    if (json["status"] === false) return callback(false);
-                    if (json["status"] === true) return callback(json);
+        try {
+            if (db) {
+                let bodyfetch = {
+                    "authorization": authkey,
+                    "key": key,
+                    "value": value
                 }
-            })
-        }
+                fetch(db + "/set", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                    if (json) {
+                        if (json["status"] === false) return callback(false);
+                        if (json["status"] === true) return callback(json);
+                    }
+                })
+            }
+        } catch {}
     },
     has(key, callback) {
-        if (db) {
-            let bodyfetch = {
-                "authorization": authkey,
-                "key": key
-            }
-            fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
-                if (json) {
-                    if (json["status"] === false) return callback(false);
-                    if (json["status"] === true) return callback(true);
+        try {
+            if (db) {
+                let bodyfetch = {
+                    "authorization": authkey,
+                    "key": key
                 }
-            })
-        }
+                fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                    if (json) {
+                        if (json["status"] === false) return callback(false);
+                        if (json["status"] === true) return callback(true);
+                    }
+                })
+            }
+        } catch {}
     },
     get(key, callback) {
-        if (db) {
+        try {
+            if (db) {
+                let bodyfetch = {
+                    "authorization": authkey,
+                    "key": key
+                }
+                fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                    if (json) {
+                        if (json["status"] === false) return callback(false);
+    
+                        if (json["data"]) {
+                            return callback(json["data"]);
+                        } else {
+                            return callback(undefined);
+                        }
+                    }
+                })
+            }
+        } catch {}
+    },
+    delete(key, callback) {
+        try {
             let bodyfetch = {
                 "authorization": authkey,
                 "key": key
             }
-            fetch(db + "/has", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
-                if (json) {
-                    if (json["status"] === false) return callback(false);
-
-                    if (json["data"]) {
-                        return callback(json["data"]);
-                    } else {
-                        return callback(undefined);
+            if (db) {
+                fetch(db + "/del", { method: "DELETE", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                    if (json) {
+                        if (json["status"] === false) return callback(false);
+                        if (json ["status"] === true) return callback(json);
                     }
-                }
-            })
-        }
-    },
-    delete(key, callback) {
-        let bodyfetch = {
-            "authorization": authkey,
-            "key": key
-        }
-        if (db) {
-            fetch(db + "/del", { method: "DELETE", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
-                if (json) {
-                    if (json["status"] === false) return callback(false);
-                    if (json ["status"] === true) return callback(json);
-                }
-            })
-        }
+                })
+            }
+        } catch {}
     }
 }
