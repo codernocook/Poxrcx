@@ -86,6 +86,7 @@ client.on("messageCreate", async (message) => {
         afkset.has(message.author.id + `_${message.guildId}`, function(callback) {
             if (callback === true) {
                 afkset.get(message.author.id + `_${message.guildId}`, function(getcallbackvalue) {
+                    if (getcallbackvalue === undefined || getcallbackvalue === null) return;
                     if (Number(message.guildId) === Number(getcallbackvalue["3"].id)) {
                         message.channel.send(`Welcome back <@${message.author.id}>, I removed your Afk status.`)
                         try {
