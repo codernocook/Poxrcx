@@ -175,6 +175,30 @@ client.on("messageCreate", async (message) => {
 })
 
 client.on('interactionCreate', async (interaction) => {
+    // Checking if user is afk
+    afkset.has(message.user.id + `_${message.guildId}`, function(callback) {
+        if (callback === true) {
+            afkset.get(message.user.id + `_${message.guildId}`, function(getcallbackvalue) {
+                if (getcallbackvalue === undefined || getcallbackvalue === null) return;
+                if (Number(message.guildId) === Number(getcallbackvalue["3"].id)) {
+                    message.channel.send(`Welcome back <@${message.user.id}>, I removed your Afk status.`)
+                    try {
+                        afkset.delete(message.user.id + `_${message.guildId}`, function(delafkuser) {});
+                        /* Disabled because it laggy
+                        if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
+                            message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${afkset.get(message.author.id)["4"]}`)
+                        }
+                        */
+                    }
+                    catch (error) {
+                        console.log(error)
+                    }
+                }
+            })
+        }
+    })
+    /////////
+
     // Check cooldown for command
     if (!interaction.isChatInputCommand()) return;
     const command = client.commands.get(interaction.commandName);
