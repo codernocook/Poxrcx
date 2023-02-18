@@ -19,7 +19,9 @@ module.exports = {
                     }
                 })
             }
-        } catch {}
+        } catch {
+            return callback(false);
+        }
     },
     has(key, callback) {
         try {
@@ -35,7 +37,9 @@ module.exports = {
                     }
                 })
             }
-        } catch {}
+        } catch {
+            return callback(false);
+        }
     },
     get(key, callback) {
         try {
@@ -56,7 +60,9 @@ module.exports = {
                     }
                 })
             }
-        } catch {}
+        } catch {
+            return callback(undefined);
+        }
     },
     delete(key, callback) {
         try {
@@ -72,6 +78,8 @@ module.exports = {
                     }
                 })
             }
-        } catch {}
+        } catch {
+            return callback(false);
+        }
     }
 }
