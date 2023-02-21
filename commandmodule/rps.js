@@ -10,9 +10,9 @@ module.exports = {
         ),
     async execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
-            const botrpsanswer = await rpschar[Math.floor(Math.random()*rpschar.length)]
+            const botrpsanswer = await rpschar[Math.floor(Math.random()*rpschar.length)];
             const req = argument.join(" ").trim().toLowerCase();
-            const bot = botrpsanswer;
+            let bot = botrpsanswer;
             const reqchoice = argument.join(" ").trim().charAt(0).toUpperCase() + argument.join(" ").trim().slice(1)
             let botrpsrandom = undefined;
 
@@ -35,9 +35,9 @@ module.exports = {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botrpsanswer}**.\n\n**${botrpsrandom}**`).setColor(`Blue`)] })
             }
         } else if (typeofcommand === "interaction"){
-            const botrpsanswer = await rpschar[Math.floor(Math.random()*rpschar.length)]
+            const botrpsanswer = await rpschar[Math.floor(Math.random()*rpschar.length)];
             const req = message.options.getString("choice").trim();
-            const bot = botrpsanswer
+            let bot = botrpsanswer
             const reqchoice = message.options.getString("choice").trim().charAt(0).toUpperCase() + message.options.getString("choice").trim().slice(1)
             let botrpsrandom = undefined;
 

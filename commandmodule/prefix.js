@@ -12,6 +12,9 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
             let prefixtype = argument.join(" ").trim();
+            
+            if (!message.member.permissions.has("ManageGuild") && !message.member.permissions.has("Administrator")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to change the guild prefix.`).setColor(`Red`)] });
+
             if (!prefixtype) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid prefix you want to set.`).setColor(`Red`)] });
             if (prefixtype.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid prefix you want to set.`).setColor(`Red`)] });
             
@@ -35,6 +38,9 @@ module.exports = {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Changed the prefix to \`${prefixtype.trim()}\``).setColor(`Green`)] });
         } else if (typeofcommand === "interaction"){
             let prefixtype = message.options.getString("prefix");
+
+            if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("ManageGuild") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to change the guild prefix.`).setColor(`Red`)] });
+
             if (!prefixtype) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid prefix you want to set.`).setColor(`Red`)] });
             if (prefixtype.trim() === "") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid prefix you want to set.`).setColor(`Red`)] });
             

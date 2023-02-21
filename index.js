@@ -107,6 +107,7 @@ client.on("messageCreate", async (message) => {
                         catch (error) {
                             console.log(error)
                         }
+                        return;
                     }
                 })
             }
@@ -123,6 +124,7 @@ client.on("messageCreate", async (message) => {
                             } else if (!getcallbackvaluemention["2"]) {
                                 message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
                             }
+                            return;
                         }
                     }
                 })
@@ -161,9 +163,16 @@ client.on("messageCreate", async (message) => {
         
                 //run the command
                 const execpath = `./commandmodule/${command}.js`
+                //check if command is vaild
                 try {
                     if (fs.existsSync(execpath)) {
-                        executefile(`${command}`, argument, message, "message")
+                        // check if the command spam error
+                        try {
+                            executefile(`${command}`, argument, message, "message")
+                        } catch (error) {
+                            console.log(error);
+                            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch(() => {})
+                        }
                     }
                 } catch(err) {}
             // remove user command timeout
@@ -208,10 +217,6 @@ client.on('interactionCreate', async (interaction) => {
     if (interactioncooldown.has(interaction.user.id)) return interaction.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)], ephemeral: true });
 
     interactioncooldown.add(interaction.user.id)
-    //check if user using invite custom command
-    if (interaction.commandId === "1052093786559361154") {
-        return interaction.reply("Here is the bot invite: https://poxrcx.vercel.app/auth/")
-    }
 
     // execute the command
     try {
@@ -219,6 +224,7 @@ client.on('interactionCreate', async (interaction) => {
     }
     catch(error) {
         console.log(error);
+        interaction.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch(() => {})
     }
     // remove user interaction timeout
     setTimeout(() => {
