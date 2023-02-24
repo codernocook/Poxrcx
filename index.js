@@ -15,7 +15,6 @@ const path = require('path');
 const moment = require("moment");
 const { GiveawaysManager } = require('discord-giveaways');
 
-
 function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
     if (!filerequire === "afk") {
         require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand)
@@ -107,9 +106,9 @@ client.on("messageCreate", async (message) => {
                         catch (error) {
                             console.log(error)
                         }
-                        return;
                     }
                 })
+                return;
             }
             // Respond afk message if someone mention afk user
             let mentionget = message.mentions.members.first();
@@ -124,10 +123,10 @@ client.on("messageCreate", async (message) => {
                             } else if (!getcallbackvaluemention["2"]) {
                                 message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
                             }
-                            return;
                         }
                     }
                 })
+                return;
             }
         })
     }
@@ -168,10 +167,13 @@ client.on("messageCreate", async (message) => {
                     if (fs.existsSync(execpath)) {
                         // check if the command spam error
                         try {
-                            executefile(`${command}`, argument, message, "message")
+                            async function run() {
+                                await executefile(`${command}`, argument, message, "message")
+                            }
+                            run();
                         } catch (error) {
+                            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch((err) => {console.log(err)});
                             console.log(error);
-                            message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch(() => {})
                         }
                     }
                 } catch(err) {}
@@ -223,8 +225,12 @@ client.on('interactionCreate', async (interaction) => {
         await executefile(`${interaction.commandName}`, {}, interaction, "interaction");
     }
     catch(error) {
+        interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)], ephemeral: true }).catch(() => {
+            interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)], ephemeral: true }).catch((err) => {
+                console.log(err)
+            })
+        })
         console.log(error);
-        interaction.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch(() => {})
     }
     // remove user interaction timeout
     setTimeout(() => {
