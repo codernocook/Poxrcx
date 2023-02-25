@@ -34,9 +34,11 @@ module.exports = {
                     if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                     let UserId = json.Id;
                         fetch(`https://users.roblox.com/v1/users/${UserId}`).then(resinfo => resinfo.json()).then(jsoninfo => {
-                            fetch(`https://api.roblox.com/users/${UserId}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
-                                if (!jsononline["errors"]) {
-                                    let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
+                            fetch(`https://presence.roblox.com/v1/presence/last-online`, { method: "POST", body: JSON.stringify({ "userIds": [UserId] }), headers: { 'Content-Type': 'application/json' }}).then(resonline => resonline.json()).then(jsononline => {
+                                if (jsononline["lastOnlineTimestamps"]) {
+                                    if (!jsononline["lastOnlineTimestamps"][0]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
+                                    if (!jsononline["lastOnlineTimestamps"][0]["userId"] || !jsononline["lastOnlineTimestamps"][0]["lastOnline"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
+                                    let LastOnlineMoment = moment(new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getTime()).fromNow();
                                     fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${UserId}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
                                         if (!jsavatarthumbnail["errors"]) {
                                             if (!json["errors"]) {
@@ -54,7 +56,21 @@ module.exports = {
                                                         return "Yes"
                                                     }
                                                 }
-                                                message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
+                                                function IsOnline() {
+                                                    if (jsononline["lastOnlineTimestamps"][0]["lastOnline"]) {
+                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getSeconds();
+                                                        const new_time = new Date().getSeconds();
+
+                                                        if ((new_time - old_time) <= (60)) {
+                                                            return "Online";
+                                                        } else {
+                                                            return "Offline";
+                                                        }
+                                                    } else {
+                                                        return "Offline";
+                                                    }
+                                                }
+                                                message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${IsOnline()}\nLast Online: ${LastOnlineMoment} | ${jsononline["lastOnlineTimestamps"][0]["lastOnline"]}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
                                             }else {
                                                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                             }
@@ -73,9 +89,9 @@ module.exports = {
                     if (!json) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
                     if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                         fetch(`https://users.roblox.com/v1/users/${infomation}`).then(resinfo => resinfo.json()).then(jsoninfo => {
-                            fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
-                                if (!jsononline["errors"]) {
-                                    let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
+                            fetch(`https://presence.roblox.com/v1/presence/last-online`, { method: "POST", body: JSON.stringify({ "userIds": [infomation] }), headers: { 'Content-Type': 'application/json' }}).then(resonline => resonline.json()).then(jsononline => {
+                                if (jsononline["lastOnlineTimestamps"]) {
+                                    let LastOnlineMoment = moment(new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getTime()).fromNow();
                                     fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${infomation}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
                                         if (!jsavatarthumbnail["errors"]) {
                                             if (!json["errors"]) {
@@ -93,7 +109,21 @@ module.exports = {
                                                         return "Yes"
                                                     }
                                                 }
-                                                message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
+                                                function IsOnline() {
+                                                    if (jsononline["lastOnlineTimestamps"][0]["lastOnline"]) {
+                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getSeconds();
+                                                        const new_time = new Date().getSeconds();
+
+                                                        if ((new_time - old_time) <= (60)) {
+                                                            return "Online";
+                                                        } else {
+                                                            return "Offline";
+                                                        }
+                                                    } else {
+                                                        return "Offline";
+                                                    }
+                                                }
+                                                message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${IsOnline()}\nLast Online: ${LastOnlineMoment} | ${jsononline["lastOnlineTimestamps"][0]["lastOnline"]}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
                                             }else {
                                                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                             }
@@ -148,9 +178,9 @@ module.exports = {
                     if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                     let UserId = json.Id;
                         fetch(`https://users.roblox.com/v1/users/${UserId}`).then(resinfo => resinfo.json()).then(jsoninfo => {
-                            fetch(`https://api.roblox.com/users/${UserId}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
-                                if (!jsononline["errors"]) {
-                                    let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
+                            fetch(`https://presence.roblox.com/v1/presence/last-online`, { method: "POST", body: JSON.stringify({ "userIds": [UserId] }), headers: { 'Content-Type': 'application/json' }}).then(resonline => resonline.json()).then(jsononline => {
+                                if (jsononline["lastOnlineTimestamps"]) {
+                                    let LastOnlineMoment = moment(new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getTime()).fromNow();
                                     fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${UserId}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
                                         if (!jsavatarthumbnail["errors"]) {
                                             if (!json["errors"]) {
@@ -168,7 +198,21 @@ module.exports = {
                                                         return "Yes"
                                                     }
                                                 }
-                                                message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
+                                                function IsOnline() {
+                                                    if (jsononline["lastOnlineTimestamps"][0]["lastOnline"]) {
+                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getSeconds();
+                                                        const new_time = new Date().getSeconds();
+
+                                                        if ((new_time - old_time) <= (60)) {
+                                                            return "Online";
+                                                        } else {
+                                                            return "Offline";
+                                                        }
+                                                    } else {
+                                                        return "Offline";
+                                                    }
+                                                }
+                                                message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${IsOnline()}\nLast Online: ${LastOnlineMoment} | ${jsononline["lastOnlineTimestamps"][0]["lastOnline"]}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
                                             }else {
                                                 message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                             }
@@ -187,9 +231,9 @@ module.exports = {
                     if (!json) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
                     if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                         fetch(`https://users.roblox.com/v1/users/${infomation}`).then(resinfo => resinfo.json()).then(jsoninfo => {
-                            fetch(`https://api.roblox.com/users/${infomation}/onlinestatus`).then(resonline => resonline.json()).then(jsononline => {
-                                if (!jsononline["errors"]) {
-                                    let LastOnlineMoment = moment(new Date(jsononline.LastOnline).getTime()).fromNow()
+                            fetch(`https://presence.roblox.com/v1/presence/last-online`, { method: "POST", body: JSON.stringify({ "userIds": [infomation] }), headers: { 'Content-Type': 'application/json' }}).then(resonline => resonline.json()).then(jsononline => {
+                                if (jsononline["lastOnlineTimestamps"]) {
+                                    let LastOnlineMoment = moment(new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getTime()).fromNow();
                                     fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${infomation}&size=100x100&format=Png&isCircular=false`).then(resavatarthumbnail => resavatarthumbnail.json()).then(jsavatarthumbnail => {
                                         if (!jsavatarthumbnail["errors"]) {
                                             if (!json["errors"]) {
@@ -207,7 +251,21 @@ module.exports = {
                                                         return "Yes"
                                                     }
                                                 }
-                                                message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${jsononline.LastLocation}\nLast Online: ${LastOnlineMoment} | ${jsononline.LastOnline}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
+                                                function IsOnline() {
+                                                    if (jsononline["lastOnlineTimestamps"][0]["lastOnline"]) {
+                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getSeconds();
+                                                        const new_time = new Date().getSeconds();
+
+                                                        if ((new_time - old_time) <= (60)) {
+                                                            return "Online";
+                                                        } else {
+                                                            return "Offline";
+                                                        }
+                                                    } else {
+                                                        return "Offline";
+                                                    }
+                                                }
+                                                message.reply({ embeds: [new EmbedBuilder().setTitle(`${json.Username}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${json.Username}\nDisplay: ${jsoninfo.displayName}\nUserId: ${json.Id}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${IsOnline()}\nLast Online: ${LastOnlineMoment} | ${jsononline["lastOnlineTimestamps"][0]["lastOnline"]}\nCreated: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()}\nRoblox Profile: **[${json.Username}](https://www.roblox.com/users/${json.Id}/profile/)**`).setColor(`Blue`)] });
                                             }else {
                                                 message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                             }
