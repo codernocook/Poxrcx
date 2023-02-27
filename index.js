@@ -93,7 +93,7 @@ client.on("messageCreate", async (message) => {
             if (callback === true) {
                 afkset.get(message.author.id + `_${message.guildId}`, function(getcallbackvalue) {
                     if (getcallbackvalue === undefined || getcallbackvalue === null) return;
-                    if (Number(message.guildId) === Number(getcallbackvalue["3"].id)) {
+                    if (Number(message.guildId) === Number(getcallbackvalue["3"])) {
                         message.channel.send(`Welcome back <@${message.author.id}>, I removed your Afk status.`)
                         try {
                             afkset.delete(message.author.id + `_${message.guildId}`, function(delafkuser) {});
@@ -116,7 +116,7 @@ client.on("messageCreate", async (message) => {
             if (mentionget) {
                 afkset.get(mentionget.id + `_${message.guildId}`, function(getcallbackvaluemention) {
                     if (callback === true) {
-                        if (Number(message.guildId) === Number(getcallbackvaluemention["3"].id)) {
+                        if (Number(message.guildId) === Number(getcallbackvaluemention["3"])) {
                             const timeago = moment(getcallbackvaluemention["1"]).fromNow();
                             if (getcallbackvaluemention["2"]) {
                                 message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${getcallbackvaluemention["2"]}.`)
@@ -191,7 +191,7 @@ client.on('interactionCreate', async (interaction) => {
         if (callback === true) {
             afkset.get(interaction.user.id + `_${interaction.guildId}`, function(getcallbackvalue) {
                 if (getcallbackvalue === undefined || getcallbackvalue === null) return;
-                if (Number(interaction.guildId) === Number(getcallbackvalue["3"].id)) {
+                if (Number(interaction.guildId) === Number(getcallbackvalue["3"])) {
                     interaction.channel.send(`Welcome back <@${interaction.user.id}>, I removed your Afk status.`)
                     try {
                         afkset.delete(interaction.user.id + `_${interaction.guildId}`, function(delafkuser) {});

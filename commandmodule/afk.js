@@ -34,7 +34,7 @@ module.exports = {
                     afk.set(user.id + `_${message.guildId}`, {
                         "1": Date.now(),
                         "2": reason,
-                        "3": message.guild,
+                        "3": message.guild.id,
                         "4": user.username
                     }, function(callset) {})
         
@@ -84,7 +84,7 @@ module.exports = {
                     afk.set(user.id + `_${message.guildId}`, {
                         ["1"]: Date.now(),
                         ["2"]: reason,
-                        ["3"]: message.guild,
+                        ["3"]: message.guild.id,
                         ["4"]: user.username
                     }, function(callset) {})
         
