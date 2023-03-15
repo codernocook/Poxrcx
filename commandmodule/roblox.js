@@ -58,10 +58,10 @@ module.exports = {
                                                 }
                                                 function IsOnline() {
                                                     if (jsononline["lastOnlineTimestamps"][0]["lastOnline"]) {
-                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getSeconds();
-                                                        const new_time = new Date().getSeconds();
+                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getTime();
+                                                        const new_time = new Date().getTime();
 
-                                                        if ((new_time - old_time) <= (60)) {
+                                                        if ((new_time - old_time) <= (60 * 1000)) {
                                                             return "Online";
                                                         } else {
                                                             return "Offline";
@@ -111,10 +111,10 @@ module.exports = {
                                                 }
                                                 function IsOnline() {
                                                     if (jsononline["lastOnlineTimestamps"][0]["lastOnline"]) {
-                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getSeconds();
-                                                        const new_time = new Date().getSeconds();
+                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getTime();
+                                                        const new_time = new Date().getTime();
 
-                                                        if ((new_time - old_time) <= (60)) {
+                                                        if ((new_time - old_time) <= (60 * 1000)) {
                                                             return "Online";
                                                         } else {
                                                             return "Offline";
