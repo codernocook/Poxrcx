@@ -27,7 +27,7 @@ module.exports = {
                         }
                     })
                 } catch {
-                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] }).catch((e) => console.log(e));
+                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
                 }
             })
         } else if (typeofcommand === "interaction"){
@@ -44,7 +44,7 @@ module.exports = {
                         }
                     })
                 } catch {
-                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] }).catch((e) => console.log(e));
+                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
                 }
             })
         }
