@@ -19,17 +19,14 @@ module.exports = {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription("Please wait, getting answer ...").setColor(`Blue`)] }).then(currentMessage => {
                     if (!currentMessage) return;
                     try {
-                        function run_script() {
-                            youchatwrapper.chat(chatmessageget, function(callback) {
-                                if (typeof(callback) !== "string") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] });
-                                if (callback.trim().toLowerCase() !== rate_limit || callback.trim().toLowerCase() !== rate_limit_1) {
-                                    currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**GPT-3**: ${callback}`).setColor(`Green`)] })
-                                } else {
-                                    currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please try again in few seconds.`).setColor(`Red`)] })
-                                }
-                            })
-                        }
-                        run_script();
+                        youchatwrapper.chat(chatmessageget, function(callback) {
+                            if (typeof(callback) !== "string") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] });
+                            if (callback.trim().toLowerCase() !== rate_limit || callback.trim().toLowerCase() !== rate_limit_1) {
+                                currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**GPT-3**: ${callback}`).setColor(`Green`)] })
+                            } else {
+                                currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please try again in few seconds.`).setColor(`Red`)] })
+                            }
+                        })
                     } catch {
                         message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
                     }
@@ -43,17 +40,14 @@ module.exports = {
             try {
                 message.reply({ embeds: [new EmbedBuilder().setDescription("Please wait, getting answer ...").setColor(`Blue`)] }).then(currentMessage => {
                     try {
-                        function run_script() {
-                            youchatwrapper.chat(chatmessageget, function(callback) {
-                                if (typeof(callback) !== "string") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] });
-                                if (callback.trim().toLowerCase() !== rate_limit || callback.trim().toLowerCase() !== rate_limit_1) {
-                                    currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**GPT-3**: ${callback}`).setColor(`Green`)] })
-                                } else {
-                                    currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please try again in few seconds.`).setColor(`Red`)] })
-                                }
-                            })
-                        }
-                        run_script();
+                        youchatwrapper.chat(chatmessageget, function(callback) {
+                            if (typeof(callback) !== "string") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] });
+                            if (callback.trim().toLowerCase() !== rate_limit || callback.trim().toLowerCase() !== rate_limit_1) {
+                                currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**GPT-3**: ${callback}`).setColor(`Green`)] })
+                            } else {
+                                currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please try again in few seconds.`).setColor(`Red`)] })
+                            }
+                        })
                     } catch {
                         message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
                     }
