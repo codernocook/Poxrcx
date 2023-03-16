@@ -48,6 +48,9 @@ client.giveaways = new GiveawaysManager(client, {
     }
 });
 
+// Prevent from uncaughtException crashing
+process.on('uncaughtException', function(err) {});
+
 // Run command handle
 client.on("ready", () => {
     client.user.setActivity('./help', { type: ActivityType.Playing });
