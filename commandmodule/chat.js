@@ -15,7 +15,7 @@ module.exports = {
         if (typeofcommand === "message") {
             let chatmessageget = argument.slice(0).join(" ")
             if (!chatmessageget) return
-            message.channel.send({ embeds: [new EmbedBuilder().setDescription("Please wait, getting answer ...").setColor(`Green`)] }).then(currentMessage => {
+            message.channel.send({ embeds: [new EmbedBuilder().setDescription("Please wait, getting answer ...").setColor(`Blue`)] }).then(currentMessage => {
                 if (!currentMessage) return;
                 try {
                     youchatwrapper.chat(chatmessageget, function(callback) {
@@ -26,13 +26,13 @@ module.exports = {
                         }
                     })
                 } catch {
-                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] }).catch(e => console.log(e));
+                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] }).catch((e) => console.log(e));
                 }
             })
         } else if (typeofcommand === "interaction"){
             let chatmessageget = message.options.getString("message")
             if (!chatmessageget) return
-            message.reply({ embeds: [new EmbedBuilder().setDescription("Please wait, getting answer ...").setColor(`Green`)] }).then(currentMessage => {
+            message.reply({ embeds: [new EmbedBuilder().setDescription("Please wait, getting answer ...").setColor(`Blue`)] }).then(currentMessage => {
                 try {
                     youchatwrapper.chat(chatmessageget, function(callback) {
                         if (callback !== rate_limit || callback !== rate_limit_1) {
@@ -42,7 +42,7 @@ module.exports = {
                         }
                     })
                 } catch {
-                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] }).catch(e => console.log(e));
+                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] }).catch((e) => console.log(e));
                 }
             })
         }
