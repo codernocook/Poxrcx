@@ -31,6 +31,7 @@ module.exports = {
                 if (isNaN(infomation)) {
                     fetch(`https://api.roblox.com/users/get-by-username?username=${infomation}`).then(res => res.json()).then(json => {
                     if (!json) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
+                    if (json === "The custom error module does not recognize this error.") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
                     if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                     let UserId = json.Id;
                         fetch(`https://users.roblox.com/v1/users/${UserId}`).then(resinfo => resinfo.json()).then(jsoninfo => {
@@ -87,6 +88,7 @@ module.exports = {
                 } else {
                     fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
                     if (!json) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
+                    if (json === "The custom error module does not recognize this error.") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
                     if (json["errors"]) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                         fetch(`https://users.roblox.com/v1/users/${infomation}`).then(resinfo => resinfo.json()).then(jsoninfo => {
                             fetch(`https://presence.roblox.com/v1/presence/last-online`, { method: "POST", body: JSON.stringify({ "userIds": [infomation] }), headers: { 'Content-Type': 'application/json' }}).then(resonline => resonline.json()).then(jsononline => {
@@ -175,6 +177,7 @@ module.exports = {
                 if (isNaN(infomation)) {
                     fetch(`https://api.roblox.com/users/get-by-username?username=${infomation}`).then(res => res.json()).then(json => {
                     if (!json) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
+                    if (json === "The custom error module does not recognize this error.") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
                     if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                     let UserId = json.Id;
                         fetch(`https://users.roblox.com/v1/users/${UserId}`).then(resinfo => resinfo.json()).then(jsoninfo => {
@@ -200,10 +203,10 @@ module.exports = {
                                                 }
                                                 function IsOnline() {
                                                     if (jsononline["lastOnlineTimestamps"][0]["lastOnline"]) {
-                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getSeconds();
-                                                        const new_time = new Date().getSeconds();
+                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getTime();
+                                                        const new_time = new Date().getTime();
 
-                                                        if ((new_time - old_time) <= (60)) {
+                                                        if ((new_time - old_time) <= (60 * 1000)) {
                                                             return "Online";
                                                         } else {
                                                             return "Offline";
@@ -229,6 +232,7 @@ module.exports = {
                 } else {
                     fetch(`https://api.roblox.com/users/${infomation}`).then(res => res.json()).then(json => {
                     if (!json) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
+                    if (json === "The custom error module does not recognize this error.") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't fetch user profile, maybe api cooldown.`).setColor(`Red`)] });
                     if (json["errors"]) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                         fetch(`https://users.roblox.com/v1/users/${infomation}`).then(resinfo => resinfo.json()).then(jsoninfo => {
                             fetch(`https://presence.roblox.com/v1/presence/last-online`, { method: "POST", body: JSON.stringify({ "userIds": [infomation] }), headers: { 'Content-Type': 'application/json' }}).then(resonline => resonline.json()).then(jsononline => {
@@ -253,10 +257,10 @@ module.exports = {
                                                 }
                                                 function IsOnline() {
                                                     if (jsononline["lastOnlineTimestamps"][0]["lastOnline"]) {
-                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getSeconds();
-                                                        const new_time = new Date().getSeconds();
+                                                        const old_time = new Date(jsononline["lastOnlineTimestamps"][0]["lastOnline"]).getTime();
+                                                        const new_time = new Date().getTime();
 
-                                                        if ((new_time - old_time) <= (60)) {
+                                                        if ((new_time - old_time) <= (60 * 1000)) {
                                                             return "Online";
                                                         } else {
                                                             return "Offline";
