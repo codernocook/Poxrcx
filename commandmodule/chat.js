@@ -14,17 +14,25 @@ module.exports = {
             let chatmessageget = argument.slice(0).join(" ")
             if (!chatmessageget) return
             message.channel.send({ embeds: [new EmbedBuilder().setDescription("Please wait, getting answer ...").setColor(`Green`)] }).then(currentMessage => {
-                youchatwrapper.chat(chatmessageget, function(callback) {
-                    currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`Question: ${chatmessageget}\n\nGPT-3: ${callback}`).setColor(`Green`)] }).catch(e => console.log(e));
-                })
+                try {
+                    youchatwrapper.chat(chatmessageget, function(callback) {
+                        currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`**Question**: ${chatmessageget}\n\n**GPT-3**: ${callback}`).setColor(`Green`)] }).catch(e => console.log(e));
+                    })
+                } catch {
+                    currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Green`)] }).catch(e => console.log(e));
+                }
             })
         } else if (typeofcommand === "interaction"){
             let chatmessageget = message.options.getString("message")
             if (!chatmessageget) return
             message.reply({ embeds: [new EmbedBuilder().setDescription("Please wait, getting answer ...").setColor(`Green`)] }).then(currentMessage => {
-                youchatwrapper.chat(chatmessageget, function(callback) {
-                    currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`Question: ${chatmessageget}\n\nGPT-3: ${callback}`).setColor(`Green`)] }).catch(e => console.log(e));
-                })
+                try {
+                    youchatwrapper.chat(chatmessageget, function(callback) {
+                        currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`Question: ${chatmessageget}\n\nGPT-3: ${callback}`).setColor(`Green`)] }).catch(e => console.log(e));
+                    })
+                } catch {
+                    currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Green`)] }).catch(e => console.log(e));
+                }
             })
         }
     }
