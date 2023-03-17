@@ -38,28 +38,21 @@ module.exports = {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
             }
         } else if (typeofcommand === "interaction"){
-            let chatmessageget = message.options.getString("message");
+            let chatmessageget = message.options.getString("prompt");
             if (!chatmessageget) return;
-            await interaction.deferReply();
-            try {
-                async function run_script() {
-                    try {
-                        youchatwrapper.chat(chatmessageget, function(callback) {
-                            if (typeof(callback) !== "string") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] });
-                            if (callback.toLowerCase().replace(/ /g,'') !== rate_limit) {
-                                message.editReply({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**GPT-3**: ${callback}`).setColor(`Green`)] })
-                            } else {
-                                message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please try again in few seconds.`).setColor(`Red`)] })
-                            }
-                        })
-                    } catch {
-                        message.channel.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
-                    }
-                }
+            await message.deferReply();
 
-                run_script();
+            try {
+                youchatwrapper.chat(chatmessageget, function(callback) {
+                    if (typeof(callback) !== "string") return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] });
+                    if (callback.toLowerCase().replace(/ /g,'') !== rate_limit) {
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**GPT-3**: ${callback}`).setColor(`Green`)] })
+                    } else {
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please try again in few seconds.`).setColor(`Red`)] })
+                    }
+                })
             } catch {
-                message.channel.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
+                message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
             }
         }
     }
