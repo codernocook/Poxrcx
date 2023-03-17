@@ -46,7 +46,7 @@ module.exports = {
                     */
         
                     if (reason) {
-                        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk. Message: \`${reason}\`.`).setColor(`Green`)] })
+                        message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk. Message: \`${reason}\``).setColor(`Green`)] })
                     } else {
                         message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk.`).setColor(`Green`)] })
                     }
@@ -96,7 +96,7 @@ module.exports = {
                     */
         
                     if (reason) {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk. Message: \`${reason}\`.`).setColor(`Green`)] })
+                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk. Message: \`${reason}\``).setColor(`Green`)] })
                     } else {
                         message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk.`).setColor(`Green`)] })
                     }

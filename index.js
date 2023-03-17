@@ -113,25 +113,26 @@ client.on("messageCreate", async (message) => {
                 })
                 return;
             }
-            // Respond afk message if someone mention afk user
-            let mentionget = message.mentions.members.first();
+        })
+
+        // Respond afk message if someone mention afk user
+        let mentionget = message.mentions.members.first();
     
-            if (mentionget) {
-                afkset.get(mentionget.id + `_${message.guildId}`, function(getcallbackvaluemention) {
-                    if (callback === true) {
-                        if (Number(message.guildId) === Number(getcallbackvaluemention["3"])) {
-                            const timeago = moment(getcallbackvaluemention["1"]).fromNow();
-                            if (getcallbackvaluemention["2"]) {
-                                message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${getcallbackvaluemention["2"]}.`)
-                            } else if (!getcallbackvaluemention["2"]) {
-                                message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
-                            }
+        if (mentionget) {
+            afkset.get(mentionget.id + `_${message.guildId}`, function(getcallbackvaluemention) {
+                if (callback === true) {
+                    if (Number(message.guildId) === Number(getcallbackvaluemention["3"])) {
+                        const timeago = moment(getcallbackvaluemention["1"]).fromNow();
+                        if (getcallbackvaluemention["2"]) {
+                            message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${getcallbackvaluemention["2"]}.`)
+                        } else if (!getcallbackvaluemention["2"]) {
+                            message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
                         }
                     }
-                })
-                return;
-            }
-        })
+                }
+            })
+            return;
+        }
     }
     // Check cooldown for command
     prefixdb.get(`${message.guildId}`, function(callbackprefixget0) {
