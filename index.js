@@ -119,17 +119,19 @@ client.on("messageCreate", async (message) => {
         let mentionget = message.mentions.members.first();
     
         if (mentionget) {
-            afkset.get(mentionget.id + `_${message.guildId}`, function(getcallbackvaluemention) {
-                if (callback === true) {
-                    if (Number(message.guildId) === Number(getcallbackvaluemention["3"])) {
-                        const timeago = moment(getcallbackvaluemention["1"]).fromNow();
-                        if (getcallbackvaluemention["2"]) {
-                            message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${getcallbackvaluemention["2"]}.`)
-                        } else if (!getcallbackvaluemention["2"]) {
-                            message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
+            afkset.has(mentionget.id + `_${message.guildId}`, function(callback) {
+                afkset.get(mentionget.id + `_${message.guildId}`, function(getcallbackvaluemention) {
+                    if (callback === true) {
+                        if (Number(message.guildId) === Number(getcallbackvaluemention["3"])) {
+                            const timeago = moment(getcallbackvaluemention["1"]).fromNow();
+                            if (getcallbackvaluemention["2"]) {
+                                message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**, AFK Message: ${getcallbackvaluemention["2"]}.`)
+                            } else if (!getcallbackvaluemention["2"]) {
+                                message.channel.send(`\`${mentionget.user.username}\` afked for **${timeago}**.`)
+                            }
                         }
                     }
-                }
+                })
             })
             return;
         }
