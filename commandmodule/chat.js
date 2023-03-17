@@ -6,6 +6,8 @@ let rate_limit = "😔duetohighdemand,i'mexperiencingissuesbriefly.pleasetryagai
 youchatwrapper.apiKey = ""
 youchatwrapper.cloudflare_message_bypass = true;
 youchatwrapper.retry = true;
+youchatwrapper.cloudflare_retry_limit = 5;
+youchatwrapper.retry_limit = 5;
 
 module.exports = {
     data: new SlashCommandBuilder()
