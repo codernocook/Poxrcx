@@ -1,7 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const youchatwrapper = require("@codernocook/youchatwrapper");
 let rate_limit = "😔duetohighdemand,i'mexperiencingissuesbriefly.pleasetryagainlaterorusethealltabtogetananswerinthemeantime."
+
+//Settings
 youchatwrapper.apiKey = ""
+youchatwrapper.cloudflare_message_bypass = true;
+youchatwrapper.retry = true;
 
 module.exports = {
     data: new SlashCommandBuilder()
