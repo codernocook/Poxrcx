@@ -22,10 +22,13 @@ module.exports = {
             //Check position to not abuse or exploit
             const mentioneduserposition = mentioneduser.roles.highest.position
             const authorsendposition = message.member.roles.highest.position
-            const botposition = message.guild.members.me.roles.highest.permissions
+            const botMember = message.guild.members.cache.get(client.user.id);
+            const botPermissions = new client.Permissions(botMember.permissions.bitfield);
+            const botPosition = botMember.roles.highest.position;
     
-            if (botposition < mentioneduserposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })
             if (mentioneduserposition > authorsendposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
+            if (!botPermissions.has("BanMembers")) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] });
+            if (botPosition <= mentioneduserposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })
 
             // Checking if reason value is filled or not
             let reason = argument.slice(1).join(" ") || 'No reason given.'
@@ -42,10 +45,13 @@ module.exports = {
             //Check position to not abuse or exploit
             const mentioneduserposition = mentioneduser.roles.highest.position
             const authorsendposition = message.member.roles.highest.position
-            const botposition = message.guild.members.me.roles.highest.permissions
-    
-            if (botposition < mentioneduserposition) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })
+            const botMember = message.guild.members.cache.get(client.user.id);
+            const botPermissions = new client.Permissions(botMember.permissions.bitfield);
+            const botPosition = botMember.roles.highest.position;
+
             if (mentioneduserposition > authorsendposition) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
+            if (!botPermissions.has("BanMembers")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] });
+            if (botPosition <= mentioneduserposition) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> My role position is too low.`).setColor(`Red`)] })
 
             // Checking if reason value is filled or not
             let reason = message.options.getString("reason") || 'No reason given.'

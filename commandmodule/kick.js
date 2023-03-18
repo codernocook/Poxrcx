@@ -21,7 +21,7 @@ module.exports = {
             const mentioneduserposition = member.roles.highest.position
             const authorsendposition = message.member.roles.highest.position
             const botMember = message.guild.members.cache.get(client.user.id);
-            const botPermissions = new Permissions(botMember.permissions.bitfield);
+            const botPermissions = new client.Permissions(botMember.permissions.bitfield);
             const botPosition = botMember.roles.highest.position;
 
             if (mentioneduserposition > authorsendposition) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] });
@@ -51,7 +51,7 @@ module.exports = {
             const mentioneduserposition = member.roles.highest.position
             const authorsendposition = message.member.roles.highest.position
             const botMember = message.guild.members.cache.get(client.user.id);
-            const botPermissions = new Permissions(botMember.permissions.bitfield);
+            const botPermissions = new client.Permissions(botMember.permissions.bitfield);
             const botPosition = botMember.roles.highest.position;
 
             if (mentioneduserposition > authorsendposition) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> That user is a moderator, I can't do that.`).setColor(`Red`)] })
