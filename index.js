@@ -108,10 +108,10 @@ client.on("guildDelete", async (guildDelete) => {
     // Remove afk when bot leave a server!
     for (const guilddeletemember of guildDelete.members.id) {
         try {
-            afkset.get(guilddeletemember.id + `_${guilddeletemember.guild.id}`, function(getcallbackvalue) {
-                if (getcallbackvalue === undefined || getcallbackvalue === null) return;
-                afkset.delete(guilddeletemember.id + `_${guilddeletemember.guild.id}`, function(del) {});
-                guilddeletemember.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> You left the server, I removed your Afk status.`).setColor(`Green`)] })
+            afkset.has(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(callback) {
+                if (callback === false) return;
+                    afkset.delete(guilddeletemember.id + `_${guilddeletemember.guild.id}`, function(del) {});
+                    guilddeletemember.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> The server was deleted, I removed your Afk status.`).setColor(`Green`)] })
             })
         } catch {}
     }
@@ -119,12 +119,12 @@ client.on("guildDelete", async (guildDelete) => {
 
 client.on("guildMemberRemove", async (guildMemberRemove) => {
     // Remove afk when a user leave the user
-    afkset.get(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(getcallbackvalue) {
-        try {
-            if (getcallbackvalue === undefined || getcallbackvalue === null) return;
+    afkset.has(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(callback) {
+        afkset.get(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(getcallbackvalue) {
+            if (callback === false) return;
             afkset.delete(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(del) {});
             guildMemberRemove.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> You left the server, I removed your Afk status.`).setColor(`Green`)] })
-        } catch {}
+        })
     })
 })
 
