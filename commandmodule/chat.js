@@ -21,7 +21,7 @@ module.exports = {
             let chatmessageget = argument.slice(0).join(" ")
             if (!chatmessageget) return
             try {
-                message.channel.send({ embeds: [new EmbedBuilder().setDescription("Please wait, getting answer ...").setColor(`Blue`)] }).then(currentMessage => {
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription("Please wait, getting answer ... (It's take 5 seconds - 1 min).").setColor(`Blue`)] }).then(currentMessage => {
                     if (!currentMessage) return;
                     try {
                         youchatwrapper.chat(chatmessageget, function(callback) {
