@@ -78,5 +78,22 @@ module.exports = {
         } catch {
             return callback(false);
         }
+    },
+    clear(callback) {
+        try {
+            let bodyfetch = {
+                "authorization": authkey,
+            }
+            if (db) {
+                fetch(db + "/clear", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
+                    if (json) {
+                        if (json["status"] === false) return callback(false);
+                        if (json ["status"] === true) return callback(json);
+                    }
+                })
+            }
+        } catch {
+            return callback(false);
+        }
     }
 }

