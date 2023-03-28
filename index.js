@@ -129,6 +129,14 @@ client.on("guildMemberRemove", async (guildMemberRemove) => {
 })
 
 client.on("messageCreate", async (message) => {
+    // Prevent user send message in DMS
+    if (message) {
+        if (!message.guild) {
+            message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't use slash command in DMS.`).setColor(`Red`)] })
+            return;
+        }
+    }
+
     // afk module
     if (!message.author.bot) {
         // Check if user not afk and send back message

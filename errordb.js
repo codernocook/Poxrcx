@@ -87,6 +87,7 @@ module.exports = {
             if (db) {
                 fetch(db + "/clear", { method: "POST", body: JSON.stringify(bodyfetch), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
                     if (json) {
+                        if (!callback) return;
                         if (json["status"] === false) return callback(false);
                         if (json ["status"] === true) return callback(json);
                     }
