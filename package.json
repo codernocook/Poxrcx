@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@codernocook/youchatwrapper": "^1.1.5",
+    "@codernocook/youchatwrapper": "^1.1.6",
     "@discordjs/collection": "^1.4.0",
     "@iamtraction/google-translate": "^2.0.1",
     "discord-chatbot": "^2.1.0",
