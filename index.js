@@ -255,8 +255,6 @@ client.on("messageCreate", async (message) => {
                                         permissions: [
                                             PermissionsBitField.Flags.Administrator,
                                             PermissionsBitField.Flags.ViewChannel,
-                                            PermissionsBitField.Flags.ManageRoles,
-                                            PermissionsBitField.Flags.ManageMessages,
                                             PermissionsBitField.Flags.KickMembers,
                                             PermissionsBitField.Flags.BanMembers,
                                             PermissionsBitField.Flags.MuteMembers,
@@ -318,6 +316,13 @@ client.on("messageCreate", async (message) => {
 })
 
 client.on('interactionCreate', async (interaction) => {
+    // Prevent user send interaction in DMS
+    if (interaction) {
+        if (!interaction.guild) {
+            interaction.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't use slash command in DMS.`).setColor(`Red`)] })
+            return;
+        }
+    }
     // Checking if user is afk
     afkset.has(interaction.user.id + `_${interaction.guildId}`, function(callback) {
         if (callback === true) {
