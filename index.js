@@ -16,6 +16,9 @@ const path = require('path');
 const moment = require("moment");
 const { GiveawaysManager } = require('discord-giveaways');
 
+// build a website to respond status
+require("./htmlBuilder.js")();
+
 function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
     if (!filerequire === "afk") {
         require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand)
