@@ -31,7 +31,7 @@ module.exports = {
             const words = message.options.getString("words");
 
             translate(words, {from: fromlanguage, to: tolanguage}).then(async (res) => {
-                await message.reply({ embeds: [new EmbedBuilder().setDescription(`Translate (${fromlanguage}): ${words}\nTo (${tolanguage}): ${res.text}`).setColor(`Blue`)] })
+                await message.editReply({ embeds: [new EmbedBuilder().setDescription(`Translate (${fromlanguage}): ${words}\nTo (${tolanguage}): ${res.text}`).setColor(`Blue`)] })
             }).catch(err => {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> An error has occured`).setColor(`Red`)] })
             })

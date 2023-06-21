@@ -43,7 +43,6 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             let chatmessageget = message.options.getString("prompt");
             if (!chatmessageget) return;
-            await message.deferReply();
 
             if (delayed === true) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Sorry, You need to slowdown.`).setColor(`Red`)] })
             delayed = true;

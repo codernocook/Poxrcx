@@ -49,7 +49,7 @@ module.exports = {
                 const duration = message.options.getString("duration");
                 const prize = message.options.getString("name");
     
-                if (!Number(winners)) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid winner number.`).setColor(`Red`)] })
+                if (!Number(winners)) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid winner number.`).setColor(`Red`)] })
                 const winnerCount = Number(winners);
     
                 const parsetime = require('parse-duration').default;
@@ -76,25 +76,25 @@ module.exports = {
                             endedAt: 'Ended at'
                         }
                     }).then((data) => {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Started giveaway!`).setColor(`Green`)], ephemeral: true });
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Started giveaway!`).setColor(`Green`)], ephemeral: true });
                     })
                     .catch((err) => {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something when wrong, I can't start the giveaway!`).setColor(`Red`)], ephemeral: true })
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something when wrong, I can't start the giveaway!`).setColor(`Red`)], ephemeral: true })
                     });
             } else if (message.options.getSubcommand() === "end") {
-                if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("ManageEvents") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to create/stop a giveaway.`).setColor(`Red`)], ephemeral: true  })
+                if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("ManageEvents") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to create/stop a giveaway.`).setColor(`Red`)], ephemeral: true  })
                 const messageidget = message.options.getString("message-id")
                 client.giveaways.end(messageidget)
                     .then(() => {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Ended the giveaway.`).setColor(`Green`)] });
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Ended the giveaway.`).setColor(`Green`)] });
                     })
                     .catch((err) => {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This giveaway has already ended or invalid message id.`).setColor(`Red`)], ephemeral: true })
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This giveaway has already ended or invalid message id.`).setColor(`Red`)], ephemeral: true })
                     });
             } else if (message.options.getSubcommand() === "reroll") {
-                if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("ManageEvents") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to create/stop a giveaway.`).setColor(`Red`)], ephemeral: true  })
+                if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("ManageEvents") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to create/stop a giveaway.`).setColor(`Red`)], ephemeral: true  })
                 const messageidget = message.options.getString("message-id")
-                message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Rerolling!`).setColor(`Green`)], ephemeral: true });
+                message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Rerolling!`).setColor(`Green`)], ephemeral: true });
                 client.giveaways.reroll(messageidget, {
                     congrat: `<:PoxSuccess:1027083813123268618> Congratulations, {winners}! You won **{this.prize}**!`,
                     error: 'No valid participations, no new winner(s) can be chosen!'

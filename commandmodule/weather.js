@@ -43,9 +43,9 @@ module.exports = {
             if (data.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Country/City/Location. Please type a invalid location.`).setColor(`Red`)] });
             try {
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${data}&units=metric&appid=${weathertoken}`).then(res => res.json()).then(response => {
-                    if (response["cod"] === "429") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> The weather api has been limited, please try again later.`).setColor(`Red`)] });
-                    if (response["cod"] === "404") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid City/Location. Please type a invalid location.`).setColor(`Red`)] });
-                    if (response["cod"] !== 200 && response["cod"] !== "404" && response["cod"] !== "429") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
+                    if (response["cod"] === "429") return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> The weather api has been limited, please try again later.`).setColor(`Red`)] });
+                    if (response["cod"] === "404") return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid City/Location. Please type a invalid location.`).setColor(`Red`)] });
+                    if (response["cod"] !== 200 && response["cod"] !== "404" && response["cod"] !== "429") return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
                     let apiData = response;
                     let currentTemp = Math.ceil(apiData.main.temp)
                     let maxTemp = apiData.main.temp_max;
@@ -57,7 +57,7 @@ module.exports = {
                     let pressure = apiData.main.pressure;
                     let cloudness = apiData.weather[0].description;
     
-                    message.reply({ embeds: [new EmbedBuilder().setTitle(`There is ${currentTemp}\u00B0 C in ${cityName}, ${country}`).setDescription(`**Maximum Temperature:** ${maxTemp}\u00B0 C\n**Minimum Temperature:** ${minTemp}\u00B0 C\n**Humidity:** ${humidity}\n**Wind Speed:** ${wind}\n**Pressure:** ${pressure}\n**Cloudiness:** ${cloudness}`).setColor(`Blue`)] });
+                    message.editReply({ embeds: [new EmbedBuilder().setTitle(`There is ${currentTemp}\u00B0 C in ${cityName}, ${country}`).setDescription(`**Maximum Temperature:** ${maxTemp}\u00B0 C\n**Minimum Temperature:** ${minTemp}\u00B0 C\n**Humidity:** ${humidity}\n**Wind Speed:** ${wind}\n**Pressure:** ${pressure}\n**Cloudiness:** ${cloudness}`).setColor(`Blue`)] });
                 })
             } catch {}
            }

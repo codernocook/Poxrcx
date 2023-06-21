@@ -9,7 +9,7 @@ module.exports = {
         if (typeofcommand === "message") {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.author.id}> ${coinfliping[Math.floor(Math.random()*coinfliping.length)]}`).setColor(`Green`)] })
         } else if (typeofcommand === "interaction"){
-            message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> ${coinfliping[Math.floor(Math.random()*coinfliping.length)]}`).setColor(`Green`)] })
+            message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${message.user.id}> ${coinfliping[Math.floor(Math.random()*coinfliping.length)]}`).setColor(`Green`)] })
         }
     }
 }
