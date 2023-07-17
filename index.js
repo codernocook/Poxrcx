@@ -321,8 +321,12 @@ client.on("messageCreate", async (message) => {
 })
 
 client.on('interactionCreate', async (interaction) => {
+    // Tic-tac-toe doesn't work on new rewrite
+    if (interaction.commandName === "ttt") {
+        return executeFile(`${interaction.commandName}`, {}, interaction, "interaction");
+    }
+
     // iteraction deferReply (prevent bot crash from high ping, or slow respond)
-    if (interaction.commandName === "ttt") return; // tic-tac-toe command not supported
     await interaction.deferReply();
 
     // Prevent user send interaction in DMS
