@@ -1,5 +1,5 @@
 const { Client, REST, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions, Guild, GuildMember, Routes, ActivityType, Collection } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMembers] });
 require('dotenv').config({path: "./settings.env"}); // load the env
 const token = process.env.token;
 const clientid = process.env.client_id;
@@ -16,11 +16,11 @@ const path = require('path');
 const moment = require("moment");
 const { GiveawaysManager } = require('discord-giveaways');
 
-function executefile(filerequire, argumentsend, messagesend, typeofcommand) {
+function executeFile(filerequire, argumentsend, messagesend, typeofcommand) {
     if (!filerequire === "afk") {
-        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand)
+        return require(`./commandmodule/${filerequire}.js`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand);
     } else {
-        require(`./commandmodule/${filerequire}`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand, afkset)
+        return require(`./commandmodule/${filerequire}.js`).execute(argumentsend, messagesend, EmbedBuilder, client, typeofcommand, afkset);
     }
 }
 
@@ -302,18 +302,15 @@ client.on("messageCreate", async (message) => {
                     if (fs.existsSync(execpath)) {
                         // check if the command spam error
                         try {
-                            async function run() {
-                                await executefile(`${command}`, argument, message, "message")
-                            }
-                            run();
+                            await executeFile(`${command}`, argument, message, "message")
                         } catch (error) {
                             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch((err) => {console.log(err)});
-                            console.error(error);
+                            throw error;
                         }
                     }
                 } catch(err) {
                     message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch((err) => {console.log(err)});
-                    console.error(err)
+                    throw err;
                 }
             // remove user command timeout
             setTimeout(() => {
@@ -324,13 +321,18 @@ client.on("messageCreate", async (message) => {
 })
 
 client.on('interactionCreate', async (interaction) => {
+    // iteraction deferReply (prevent bot crash from high ping, or slow respond)
+    if (interaction.commandName === "ttt") return; // tic-tac-toe command not supported
+    await interaction.deferReply();
+
     // Prevent user send interaction in DMS
     if (interaction) {
         if (!interaction.guild) {
-            interaction.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't use slash command in DMS.`).setColor(`Red`)] })
+            interaction.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't use slash command in DMS.`).setColor(`Red`)] })
             return;
         }
     }
+    
     // Checking if user is afk
     afkset.has(interaction.user.id + `_${interaction.guildId}`, function(callback) {
         if (callback === true) {
@@ -361,13 +363,13 @@ client.on('interactionCreate', async (interaction) => {
     if (!command) return
 
     // check if the user spam to run the command
-    if (interactioncooldown.has(interaction.user.id)) return interaction.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)], ephemeral: true });
+    if (interactioncooldown.has(interaction.user.id)) return interaction.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)], ephemeral: true });
 
     interactioncooldown.add(interaction.user.id)
 
     // execute the command
     try {
-        await executefile(`${interaction.commandName}`, {}, interaction, "interaction");
+        await executeFile(`${interaction.commandName}`, {}, interaction, "interaction");
     }
     catch(error) {
         interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)], ephemeral: true }).catch(() => {

@@ -8,7 +8,7 @@ module.exports = {
         if (typeofcommand === "message") {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Pong! **${client.ws.ping}ms**`).setColor(`Green`)] })
         } else if (typeofcommand === "interaction"){
-            message.reply({ embeds: [new EmbedBuilder().setDescription(`Pong! **${client.ws.ping}ms**`).setColor(`Green`)] })
+            message.editReply({ embeds: [new EmbedBuilder().setDescription(`Pong! **${client.ws.ping}ms**`).setColor(`Green`)] })
         }
     }
 }

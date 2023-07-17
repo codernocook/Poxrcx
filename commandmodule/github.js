@@ -103,10 +103,10 @@ module.exports = {
             if (subcommand === "user") {
                 let user = message.options.getString("user");
 
-                if (!user) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing user.`).setColor(`Red`)] });
+                if (!user) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing user.`).setColor(`Red`)] });
                 fetch(`https://api.github.com/users/${user}`).then(res => res.json()).then(json => {
                     try {
-                        if (json["message"] && json["message"].toLowerCase().trim() === "notfound") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid github username.`).setColor(`Red`)] });
+                        if (json["message"] && json["message"].toLowerCase().trim() === "notfound") return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid github username.`).setColor(`Red`)] });
 
                         let LoginName = json["login"] || "None";
                         let id = json["id"] || "None";
@@ -133,21 +133,21 @@ module.exports = {
                             updated_at_moment = moment(new Date(json["updated_at"]).getTime()).fromNow();
                         }
 
-                        message.reply({ embeds: [new EmbedBuilder().setThumbnail(avatar_url).setTitle(LoginName).setDescription(`Login name: ${LoginName}\nId: ${id}\nType: ${type}\nAdmin: ${site_admin}\nPublic repository: ${public_repos}\nPublic gist: ${public_gists}\nFollower: ${follower}\nFollowing: ${following}\nCompany: ${company}\nLocation: ${location}\nEmail: ${email}\nBio: \`${bio}\`\nProfile: **[${LoginName}](${url})**\nCreated at: ${created_at_moment} | ${created_at}\nUpdated at: ${updated_at_moment} | ${updated_at}`).setColor(`Blue`)] });
+                        message.editReply({ embeds: [new EmbedBuilder().setThumbnail(avatar_url).setTitle(LoginName).setDescription(`Login name: ${LoginName}\nId: ${id}\nType: ${type}\nAdmin: ${site_admin}\nPublic repository: ${public_repos}\nPublic gist: ${public_gists}\nFollower: ${follower}\nFollowing: ${following}\nCompany: ${company}\nLocation: ${location}\nEmail: ${email}\nBio: \`${bio}\`\nProfile: **[${LoginName}](${url})**\nCreated at: ${created_at_moment} | ${created_at}\nUpdated at: ${updated_at_moment} | ${updated_at}`).setColor(`Blue`)] });
                     } catch {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command or a user.`).setColor(`Red`)] });
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command or a user.`).setColor(`Red`)] });
                     }
                 })
             } else if (subcommand === "repo") {
                 let user = message.options.getString("user");
                 let repository = message.options.getString("repository");
                 
-                if (!user) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing username of the repository you want to find.`).setColor(`Red`)] });
-                if (!repository) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing the repository name.`).setColor(`Red`)] });
+                if (!user) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing username of the repository you want to find.`).setColor(`Red`)] });
+                if (!repository) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing the repository name.`).setColor(`Red`)] });
     
                 fetch(`https://api.github.com/repos/${user}/${repository}`).then(res => res.json()).then(json => {
                     if (json["message"] && json["message"] === "Not Found") {
-                        return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't find the user or repository requested!`).setColor(`Red`)] });
+                        return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't find the user or repository requested!`).setColor(`Red`)] });
                     } else {
                         let ProjectAuthor = json.owner.login;
                         let ProjectAuthorAvatar = json.owner.avatar_url;
@@ -164,7 +164,7 @@ module.exports = {
                             }
                         }
         
-                        message.reply({ embeds: [new EmbedBuilder().setThumbnail(ProjectAuthorAvatar).setTitle(ProjectAuthor).setDescription(`Repository Name: ${ProjectName}\nWatchers: ${Watchers}\nOpen Issues: ${OpenIssues}\nMost Language: ${MostLanguage}\nVisibility: ${Visibility}\nArchived: ${Archived()}`).setColor(`Blue`)] });
+                        message.editReply({ embeds: [new EmbedBuilder().setThumbnail(ProjectAuthorAvatar).setTitle(ProjectAuthor).setDescription(`Repository Name: ${ProjectName}\nWatchers: ${Watchers}\nOpen Issues: ${OpenIssues}\nMost Language: ${MostLanguage}\nVisibility: ${Visibility}\nArchived: ${Archived()}`).setColor(`Blue`)] });
                     }
                 })
             }

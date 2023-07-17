@@ -79,7 +79,7 @@ module.exports = {
             afk.has(message.user.id + `_${message.guildId}`, function(callback) {
                 if (message.options.getSubcommand() === "set") {
                     let user = message.user
-                    if (callback === true) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
+                    if (callback === true) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
                     let reason = message.options.getString("message")
                     afk.set(user.id + `_${message.guildId}`, {
                         ["1"]: Date.now(),
@@ -96,18 +96,18 @@ module.exports = {
                     */
         
                     if (reason) {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk. Message: "${reason}"`).setColor(`Green`)] })
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk. Message: "${reason}"`).setColor(`Green`)] })
                     } else {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk.`).setColor(`Green`)] })
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> <@${user.id}> You are now afk.`).setColor(`Green`)] })
                     }
                 } else if (message.options.getSubcommand() === "remove") {
-                    if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("KickMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("BanMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to do that.`).setColor(`Red`)] })
+                    if (!message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("KickMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("BanMembers") && !message.guild.members.cache.find(user => message.user.id === user.id).permissions.has("Administrator")) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You don't have permission to do that.`).setColor(`Red`)] })
                     let user = message.guild.members.cache.find(user => message.options.getUser("user").id === user.id);
                     let reason = message.options.getString("reason")
                     if (!user) user = message.user
                     if (!user.id) return
                     if (afk.has(user.id + `_${message.guildId}`)) {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Removed <@${user.id}> afk tag, reason: "${reason}"`).setColor(`Green`)] })
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Removed <@${user.id}> afk tag, reason: "${reason}"`).setColor(`Green`)] })
                         try {
                             afkset.delete(user.id + `_${message.guildId}`, function(delafkuser) {});
                             /* Disabled because it laggy
@@ -118,10 +118,10 @@ module.exports = {
                         }
                         catch (error) {
                             console.log(error)
-                            message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't remove <@${user.id}> afk tag.`).setColor(`Red`)] })
+                            message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> I can't remove <@${user.id}> afk tag.`).setColor(`Red`)] })
                         }
                     } else {
-                        message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This user didn't have any afk status to remove.`).setColor(`Red`)] })
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> This user didn't have any afk status to remove.`).setColor(`Red`)] })
                     }
                 }
             })

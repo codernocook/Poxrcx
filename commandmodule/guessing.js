@@ -36,9 +36,9 @@ module.exports = {
             const reqchoice = message.options.getString("choice").trim().charAt(0).toUpperCase() + message.options.getString("choice").trim().slice(1)
 
             if (botguessingrandom === "You win!") {
-                message.reply({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botguessinganswer}**.\n\n**${botguessingrandom}**`).setColor(`Green`)] })
+                message.editReply({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botguessinganswer}**.\n\n**${botguessingrandom}**`).setColor(`Green`)] })
             } else if (botguessingrandom === "You lose!") {
-                message.reply({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botguessinganswer}**.\n\n**${botguessingrandom}**`).setColor(`Red`)] })
+                message.editReply({ embeds: [new EmbedBuilder().setDescription(`You choose: **${reqchoice}**.\nI choose: **${botguessinganswer}**.\n\n**${botguessingrandom}**`).setColor(`Red`)] })
             }
         }
     }

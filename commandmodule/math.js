@@ -20,7 +20,7 @@ module.exports = {
             if (!mathquestion) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please provide a valid equation.`).setColor(`Red`)] })
             if (mathquestion.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please provide a valid equation.`).setColor(`Red`)] })
             
-            message.reply({ embeds: [new EmbedBuilder().setDescription(`${mathquestion} = ${math.evaluate(mathquestion)}`).setColor(`Blue`)] }).catch(err => {message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please provide a valid equation.`).setColor(`Red`)] })})
+            message.editReply({ embeds: [new EmbedBuilder().setDescription(`${mathquestion} = ${math.evaluate(mathquestion)}`).setColor(`Blue`)] }).catch(err => {message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please provide a valid equation.`).setColor(`Red`)] })})
         }
     }
 }
