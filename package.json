@@ -2,6 +2,7 @@
   "dependencies": {
     "@discordjs/collection": "^1.5.1",
     "@iamtraction/google-translate": "^2.0.1",
+    "bard-ai": "^1.5.4",
     "discord-chatbot": "^2.1.0",
     "discord-giveaways": "^6.0.1",
     "discord-tictactoe": "^4.1.1",

@@ -12,15 +12,15 @@ module.exports = {
         if (typeofcommand === "message") {
             let ip = argument.join(" ");
 
-            if (!ip) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You need a ip address to run this command.`).setColor(`Red`)] });
-            if (ip.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You need a ip address to run this command.`).setColor(`Red`)] });
+            if (!ip) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You need an ip address to run this command.`).setColor(`Red`)] });
+            if (ip.trim() === "") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You need an ip address to run this command.`).setColor(`Red`)] });
 
             fetch(`http://ip-api.com/json/${ip}`).then(res => res.json()).then(json => {
                 fetch(`http://ip-api.com/json/`).then(res => res.json()).then(jsoncheck => {
                     if (json) {
                         try {
                             if (json["message"] && json["message"].toLowerCase().trim() === "invalidquery") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid ip address.`).setColor(`Red`)] });
-                            if (json["status"] && json["status"] === "fail" && json["message"] && json["message"].toLowerCase().trim() !== "invalidquery") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
+                            if (json["status"] && json["status"] === "fail" && json["message"] && json["message"].toLowerCase().trim() !== "invalidquery") return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command, please try again later.`).setColor(`Red`)] });
     
                             let country = json["country"] || "None";
                             let country_code = json["countryCode"] || "None";
@@ -37,7 +37,7 @@ module.exports = {
 
                             if (jsoncheck["query"] && json["query"]) {
                                 if (json["query"].trim() === jsoncheck["query"]) {
-                                    return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can not view the discord bot ip address`).setColor(`Red`)] });
+                                    return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You cannot view the discord bot ip address`).setColor(`Red`)] });
                                 }
                             }
     
@@ -51,15 +51,15 @@ module.exports = {
         } else if (typeofcommand === "interaction"){
             let ip = message.options.getString("ip-address");
 
-            if (!ip) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You need a ip address to run this command.`).setColor(`Red`)] });
-            if (ip.trim() === "") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You need a ip address to run this command.`).setColor(`Red`)] });
+            if (!ip) return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You need an ip address to run this command.`).setColor(`Red`)] });
+            if (ip.trim() === "") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You need an ip address to run this command.`).setColor(`Red`)] });
 
             fetch(`http://ip-api.com/json/${ip}`).then(res => res.json()).then(json => {
                 fetch(`http://ip-api.com/json/`).then(res => res.json()).then(jsoncheck => {
                     if (json) {
                         try {
                             if (json["message"] && json["message"].toLowerCase().trim() === "invalidquery") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Please type a valid ip address.`).setColor(`Red`)] });
-                            if (json["status"] && json["status"] === "fail" && json["message"] && json["message"].toLowerCase().trim() !== "invalidquery") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Some thing went wrong with this command, please try again later.`).setColor(`Red`)] });
+                            if (json["status"] && json["status"] === "fail" && json["message"] && json["message"].toLowerCase().trim() !== "invalidquery") return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command, please try again later.`).setColor(`Red`)] });
     
                             let country = json["country"] || "None";
                             let country_code = json["countryCode"] || "None";
@@ -76,7 +76,7 @@ module.exports = {
 
                             if (jsoncheck["query"] && json["query"]) {
                                 if (json["query"].trim() === jsoncheck["query"]) {
-                                    return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can not view the discord bot ip address`).setColor(`Red`)] });
+                                    return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You cannot view the discord bot ip address`).setColor(`Red`)] });
                                 }
                             }
     

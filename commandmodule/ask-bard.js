@@ -1,6 +1,14 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 let delayed = false;
 
+const get_chatAnswer = async function(bardToken, quest) {
+    return import("bard-ai").then(async (bard_module) => {
+        await bard_module.init(bardToken?.toString().trim())
+        
+        return bard_module.askAI(quest?.toString())
+    })
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
 		.setName("ask-bard")
@@ -20,14 +28,11 @@ module.exports = {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription("Please wait, generating ... (It's take 1s - 5s).").setColor(`Blue`)] }).then(currentMessage => {
                     if (!currentMessage) return;
                     try {
-                        fetch(`https://BardAPI.codernocook.repl.co`, { method: "POST", body: JSON.stringify({"key": process.env["bardToken"], "msg": chatmessageget}), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
-                            if (json) {
-                                if (json["error"] && json["error"] === "Message can't be blank") return currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] });
-                                if (json["content"]) {
-                                    currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**Bard**: ${json["content"]}`).setColor(`Green`)] })
-                                } else {
-                                    currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
-                                }
+                        get_chatAnswer(process.env["bardToken"], chatmessageget).then((chatContent) => {
+                            if (chatContent) {
+                                currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**Bard**: ${chatContent?.toString()}`).setColor(`Green`)] })
+                            } else {
+                                currentMessage.edit({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
                             }
                         })
                     } catch {
@@ -49,14 +54,11 @@ module.exports = {
             delayed = true;
 
             try {
-                fetch(`https://BardAPI.codernocook.repl.co`, { method: "POST", body: JSON.stringify({"key": process.env["bardToken"], "msg": chatmessageget}), headers: { 'Content-Type': 'application/json' }}).then(res => res.json()).then(json => {
-                    if (json) {
-                        if (json["error"] && json["error"] === "Message can't be blank") return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] });
-                        if (json["content"]) {
-                            message.editReply({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**Bard**: ${json["content"]}`).setColor(`Green`)] })
-                        } else {
-                            message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
-                        }
+                get_chatAnswer(process.env["bardToken"], chatmessageget).then((chatContent) => {
+                    if (chatContent) {
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**Bard**: ${chatContent?.toString()}`).setColor(`Green`)] })
+                    } else {
+                        message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
                     }
                 })
             } catch {
