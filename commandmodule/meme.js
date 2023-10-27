@@ -1,19 +1,24 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
+const randomIntFromInterval = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
 		.setName("meme")
 		.setDescription("Get a random meme!"),
     execute(argument, message, EmbedBuilder, client, typeofcommand) {
         fetch("https://reddit.com/r/memes/random/.json").then(res => res.json()).then(json => {
-            let permalink = json[0].data.children[0].data.permalink;
+            const randomPosition = randomIntFromInterval(0, json[0].data.children.length || 0);
+            let permalink = json[0].data.children[randomPosition].data.permalink;
             let memeUrl = `https://reddit.com${permalink}`;
-            let memeImage = json[0].data.children[0].data.url;
-            let memeTitle = json[0].data.children[0].data.title;
-            let memeUpvotes = json[0].data.children[0].data.ups;
-            let memeDownvotes = json[0].data.children[0].data.downs;
-            let memeNumComments = json[0].data.children[0].data.num_comments;
+            let memeImage = json[0].data.children[randomPosition].data.url;
+            let memeTitle = json[0].data.children[randomPosition].data.title;
+            let memeUpvotes = json[0].data.children[randomPosition].data.ups;
+            let memeDownvotes = json[0].data.children[randomPosition].data.downs;
+            let memeNumComments = json[0].data.children[randomPosition].data.num_comments;
             if (typeofcommand === "message") {
                 try {
                     //test if the url is safe

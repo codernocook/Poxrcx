@@ -4,9 +4,9 @@ const rpschar = ['Rock', 'Paper', 'Scissor']
 module.exports = {
     data: new SlashCommandBuilder()
 		.setName("rps")
-		.setDescription("Play rock, paper, scissior.")
+		.setDescription("Play rock, paper, scissiors.")
         .addStringOption(option =>
-            option.setName("choice").setDescription("Your choice: Rock, Paper, Scissor.").setRequired(true)
+            option.setName("choice").setDescription("Your choice: Rock, Paper, Scissors.").setRequired(true)
         ),
     async execute(argument, message, EmbedBuilder, client, typeofcommand) {
         if (typeofcommand === "message") {
@@ -19,11 +19,11 @@ module.exports = {
             if (req === bot) botrpsrandom = "Tie!"
 
             // Win
-            if ((req === "rock" && bot === "scissors") || (req === "paper" && bot === "rock" || (req === "scissor" && bot === "paper"))) {
+            if ((req === "rock" && bot?.toString().toLowerCase() === "scissors") || (req === "paper" && bot?.toString().toLowerCase() === "rock" || (req === "scissor" && bot?.toString().toLowerCase() === "paper"))) {
                 botrpsrandom = "You win!"
             }
             //Lose
-            if ((req === "rock" && bot === "paper") || (req === "paper" && bot === "scissors") || (req === "scissor" && bot === "rock")) {
+            if ((req === "rock" && bot?.toString().toLowerCase() === "paper") || (req === "paper" && bot?.toString().toLowerCase() === "scissors") || (req === "scissor" && bot?.toString().toLowerCase() === "rock")) {
                 botrpsrandom = "You lose"
             }
 
@@ -44,11 +44,11 @@ module.exports = {
             if (req === bot) botrpsrandom = "Tie!"
 
             // Win
-            if ((req === "rock" && bot === "scissors") || (req === "paper" && bot === "rock" || (req === "scissor" && bot === "paper"))) {
+            if ((req === "rock" && bot?.toString().toLowerCase() === "scissors") || (req === "paper" && bot?.toString().toLowerCase() === "rock" || (req === "scissor" && bot?.toString().toLowerCase() === "paper"))) {
                 botrpsrandom = "You win!"
             }
             //Lose
-            if ((req === "rock" && bot === "paper") || (req === "paper" && bot === "scissors") || (req === "scissor" && bot === "rock")) {
+            if ((req === "rock" && bot?.toString().toLowerCase() === "paper") || (req === "paper" && bot?.toString().toLowerCase() === "scissors") || (req === "scissor" && bot?.toString().toLowerCase() === "rock")) {
                 botrpsrandom = "You lose"
             }
 

@@ -15,7 +15,7 @@ async function guessinggame(reqsent, botsent) {
 module.exports = {
     data: new SlashCommandBuilder()
 		.setName("guessing")
-		.setDescription("Guess the bot answer")
+		.setDescription("Guess the bot's answer")
         .addStringOption(option =>
             option.setName("choice").setDescription("Your choice: [Rich], [Poor], [Quiet], [Chad]").setRequired(true)
         ),

@@ -80,8 +80,7 @@ module.exports = {
 
                             if (jsoncheck["query"] && json["query"]) {
                                 if (json["query"].trim() === jsoncheck["query"]) {
-                                    return message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You cannot view the discord bot ip address`).setColor(`Red`)] });
-                                    return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can not view the discord bot ip address`).setColor(`Red`)] });
+                                    return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You cannot view the discord bot ip address`).setColor(`Red`)] });
                                 }
                             }
     

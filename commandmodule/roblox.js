@@ -91,7 +91,7 @@ module.exports = {
                                                     return "Offline";
                                                 }
                                             }
-                                            message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${jsoninfo["name"]}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${jsoninfo["name"]}\nDisplay: ${jsoninfo.displayName}\nUserId: ${jsoninfo["id"]}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${IsOnline()}\nLast Online: ${LastOnlineMoment}\nLast Online (System Time): ${jsononline["lastOnlineTimestamps"][0]["lastOnline"]}\nCreated at: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()} (dd/mm/yyyy)\nCreated at (System Time): ${new Date(jsoninfo.created)}\nRoblox Profile: **[${jsoninfo["name"]}](https://www.roblox.com/users/${jsoninfo["id"]}/profile/)**`).setColor(`Blue`)] });
+                                            message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${jsoninfo["name"]}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${jsoninfo["name"]}\nDisplay: ${jsoninfo.displayName}\nUserId: ${jsoninfo["id"]}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${IsOnline()}\nLast Online: ${LastOnlineMoment}\nLast Online (System Time): ${jsononline["lastOnlineTimestamps"][0]["lastOnline"]}\nCreated at: ${new Date(jsoninfo.created).getDate()}/${new Date(jsoninfo.created).getMonth() + 1}/${new Date(jsoninfo.created).getFullYear()} (Date Format: dd/mm/yyyy)\nCreated at (System Time): ${new Date(jsoninfo.created)}\nRoblox Profile: **[${jsoninfo["name"]}](https://www.roblox.com/users/${jsoninfo["id"]}/profile/)**`).setColor(`Blue`)] });
                                         }else {
                                             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                         }
@@ -211,7 +211,7 @@ module.exports = {
                                                     return "Offline";
                                                 }
                                             }
-                                            message.editReply({ embeds: [new EmbedBuilder().setTitle(`${jsoninfo["name"]}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${jsoninfo["name"]}\nDisplay: ${jsoninfo.displayName}\nUserId: ${jsoninfo["id"]}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${IsOnline()}\nLast Online: ${LastOnlineMoment}\nLast Online (System Time): ${jsononline["lastOnlineTimestamps"][0]["lastOnline"]}\nCreated at: ${new Date(jsoninfo.created).getDay()}/${new Date(jsoninfo.created).getMonth()}/${new Date(jsoninfo.created).getFullYear()} (dd/mm/yyyy)\nCreated at (System Time): ${new Date(jsoninfo.created)}\nRoblox Profile: **[${jsoninfo["name"]}](https://www.roblox.com/users/${jsoninfo["id"]}/profile/)**`).setColor(`Blue`)] });
+                                            message.editReply({ embeds: [new EmbedBuilder().setTitle(`${jsoninfo["name"]}`).setThumbnail(jsavatarthumbnail.data[0].imageUrl).setDescription(`Username: ${jsoninfo["name"]}\nDisplay: ${jsoninfo.displayName}\nUserId: ${jsoninfo["id"]}\nVerify: ${Verify()}\nBan: ${Ban()}\nStatus: ${IsOnline()}\nLast Online: ${LastOnlineMoment}\nLast Online (System Time): ${jsononline["lastOnlineTimestamps"][0]["lastOnline"]}\nCreated at: ${new Date(jsoninfo.created).getDate()}/${new Date(jsoninfo.created).getMonth() + 1}/${new Date(jsoninfo.created).getFullYear()} (Date format: dd/mm/yyyy)\nCreated at (System Time): ${new Date(jsoninfo.created)}\nRoblox Profile: **[${jsoninfo["name"]}](https://www.roblox.com/users/${jsoninfo["id"]}/profile/)**`).setColor(`Blue`)] });
                                         }else {
                                             message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Invalid Roblox user!`).setColor(`Red`)] });
                                         }
@@ -253,7 +253,11 @@ module.exports = {
 
                                 function getDescription() {
                                     if (jsondata["description"] !== null) {
-                                        return `{\n"\`${jsondata["description"]}\`"\n}`
+                                        if (jsondata["description"].length > 1000) {
+                                            return `{\n"\`${jsondata["description"].substring(0, 997)}...\`"\n}`
+                                        } else {
+                                            return `{\n"\`${jsondata["description"]}\`"\n}`
+                                        }
                                     } else if (jsondata["description"] === null) {
                                         return `**No description was provided in this experience.**`
                                     }

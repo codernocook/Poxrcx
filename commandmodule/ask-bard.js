@@ -25,7 +25,7 @@ module.exports = {
             delayed = true;
 
             try {
-                message.channel.send({ embeds: [new EmbedBuilder().setDescription("Please wait, generating ... (It's take 1s - 5s).").setColor(`Blue`)] }).then(currentMessage => {
+                message.channel.send({ embeds: [new EmbedBuilder().setDescription("Please wait, generating ... (It's take 5s - 10s).").setColor(`Blue`)] }).then(currentMessage => {
                     if (!currentMessage) return;
                     try {
                         get_chatAnswer(process.env["bardToken"], chatmessageget).then((chatContent) => {
