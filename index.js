@@ -118,7 +118,7 @@ client.on("guildDelete", async (guildDelete) => {
 })
 
 client.on("guildMemberRemove", async (guildMemberRemove) => {
-    // Remove afk when a user leave the user
+    // Remove afk when a user leave the server
     afkset.has(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(callback) {
         afkset.get(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(getcallbackvalue) {
             if (callback === false) return;
