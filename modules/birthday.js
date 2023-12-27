@@ -102,7 +102,7 @@ module.exports = {
 				// Set
 				database_service["personal"].get(`_${message.author.id}`, (personal_has) => {
 					let postedToPublic = [];
-					if (personal_has !== undefined) postedToPublic = personal_has;
+					if (personal_has !== undefined) postedToPublic = personal_has["postedToPublic"];
 
 					// Check
 					database_service["personal"].set(`_${message.author.id}`, {
@@ -174,7 +174,7 @@ module.exports = {
 				// Set
 				database_service["personal"].get(`_${message.user.id}`, (personal_has) => {
 					let postedToPublic = [];
-					if (personal_has !== undefined) postedToPublic = personal_has;
+					if (personal_has !== undefined) postedToPublic = personal_has["postedToPublic"];
 
 					// Check
 					database_service["personal"].set(`_${message.user.id}`, {
