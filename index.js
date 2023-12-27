@@ -223,7 +223,7 @@ client.on("messageCreate", async (message) => {
 								data_personal_stored["postedToPublic"].push(message.guildId);
 
 								databases["personal"].set(`_${message.author.id}`, data_personal_stored, (success_value_personal) => {
-									if (success_value_personal === true) {
+									if (success_value_personal !== false) {
 										message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Today is ${message.author}'s birthday, say "Happy birthday!"`).setColor(`Green`)] })
 									}
 								})
