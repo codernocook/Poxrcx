@@ -110,7 +110,8 @@ module.exports = {
 						"birthday": {
 							"day": day_ofBirth,
 							"month": month_ofBirth,
-							"year": year_ofBirth
+							"year": year_ofBirth,
+							"time_set_birthday": Date.now()
 						},
 						"postedToPublic": postedToPublic || []
 					}, () => {
@@ -128,6 +129,8 @@ module.exports = {
 						return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You haven't set your birthday yet.`).setColor(`Red`)] });
 					}
 				})
+			} else if (argument[0] !== "set" && argument[0] !== "remove") {
+				return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Missing subcommand set/remove. Try again with \`./birthday set\` or \`./birthday remove\``).setColor(`Red`)] });
 			}
 		} else if (typeofcommand === "interaction") {
 			// Variables
@@ -179,7 +182,8 @@ module.exports = {
 						"birthday": {
 							"day": day_ofBirth,
 							"month": month_ofBirth,
-							"year": year_ofBirth
+							"year": year_ofBirth,
+							"time_set_birthday": Date.now()
 						},
 						"postedToPublic": postedToPublic || []
 					}, () => {

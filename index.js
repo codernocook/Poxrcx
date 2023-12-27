@@ -214,7 +214,7 @@ client.on("messageCreate", async (message) => {
 
 					// Check if have enough data
 					if (data_personal["birthday"] && data_personal["birthday"]["day"] && data_personal["birthday"]["month"]) {
-						if (Number(data_personal["birthday"]["day"]) === date_obj.getDay() && Number(data_personal["birthday"]["month"]) === date_obj.getMonth()) {
+						if (Number(data_personal["birthday"]["day"]) === date_obj.getDate() && (Number(data_personal["birthday"]["month"]) - 1) === date_obj.getMonth()) {
 							// Prevent spamming one message
 							if (!data_personal["postedToPublic"].includes(message.guildId)) {
 								const data_personal_stored = data_personal;
@@ -479,7 +479,7 @@ client.on('interactionCreate', async (interaction) => {
 
 				// Check if have enough data
 				if (data_personal["birthday"] && data_personal["birthday"]["day"] && data_personal["birthday"]["month"]) {
-					if (Number(data_personal["birthday"]["day"]) === date_obj.getDay() && Number(data_personal["birthday"]["month"]) === date_obj.getMonth()) {
+					if (Number(data_personal["birthday"]["day"]) === date_obj.getDate() && (Number(data_personal["birthday"]["month"]) - 1) === date_obj.getMonth()) {
 						// Prevent spamming one message
 						if (!data_personal["postedToPublic"].includes(interaction.guildId)) {
 							const data_personal_stored = data_personal;
