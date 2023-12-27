@@ -33,7 +33,7 @@ const { GiveawaysManager } = require('discord-giveaways');
 const databases = {
 	"afk": require("./pangea_database.js")(process.env["afkdb"] || null, process.env["authentication_db"]),
 	"prefix": require("./pangea_database.js")(process.env["prefixdb"] || null, process.env["authentication_db"]),
-	"error": require("./pangea_database.js")(process.env["errordb"] || null, process.env["authentication_db"]),
+	"serverLog": require("./pangea_database.js")(process.env["errordb"] || null, process.env["authentication_db"]),
 	"personal": require("./pangea_database.js")(process.env["personaldb"] || null, process.env["authentication_db"]),
 }
 
@@ -99,7 +99,7 @@ process.on('uncaughtException', function(err) {
 	errorArray["time"] = Time;
 	errorArray["message"] = err.stack + '\n', { flag: 'a' }
 
-	serverlog.set(`ERR_${Time}_${generateRandomString(5)}`, errorArray, function (callback) {}); // save it to database
+	databases["serverLog"].set(`ERR_${Time}_${generateRandomString(5)}`, errorArray, function (callback) {}); // save it to database
 
 	// Send message to the log
 	console.log(`[${botName}]: UncaughtException called, saved to database. Time: "${Time}"`);
@@ -110,9 +110,16 @@ client.on("ready", () => {
 	client.user.setActivity('./help', { type: ActivityType.Playing });
 
 	// Status loop (Discord auto remove status, this is an patch)
-	setInterval(() => {
+	const discord_activity_loop = () => {
 		client.user.setActivity('./help', { type: ActivityType.Playing });
-	}, 3600000)
+
+		// Run it again, loop behavior
+		setTimeout(() => {
+			discord_activity_loop();
+		}, 3600000)
+	}
+
+	discord_activity_loop(); // setInterval() somehow not working
 
 	// Log the beautiful table to the console
 	(async () => {
@@ -127,7 +134,14 @@ client.on("ready", () => {
 	}).catch(err => console.log(err));
 
 	// Commands table
-	console.table(commands)
+	const commands_name = [];
+	for (const command_value of commands) {
+		if (command_value["name"]) {
+			commands_name.push(command_value["name"])
+		}
+	}
+
+	console.table(commands_name);
 })
 
 client.on("guildDelete", async (guildDelete) => {
@@ -140,7 +154,7 @@ client.on("guildDelete", async (guildDelete) => {
 					guilddeletemember.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> The server was deleted, I removed your Afk status.`).setColor(`Green`)] })
 			})
 		} catch (error_database_logger) {
-			throw error_database_logger; // uncaughtException checking
+			(() => { throw error_database_logger })(); // uncaughtException checking
 		}
 	}
 })
@@ -159,10 +173,12 @@ client.on("guildMemberRemove", async (guildMemberRemove) => {
 client.on("messageCreate", async (message) => {
 	// Prevent user send message in DMS
 	if (message) {
-		if (!message.guild && message.content.slice(prefix.length).split(/ +/).replace(" ", "").shift().toLowerCase() && message.content.slice(prefix.length).split(/ +/).replace(" ", "").shift().toLowerCase() !== "birthday") {
-			message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't use command in DMS.\nOnly \`/birthday\` command is allowed to be used.`).setColor(`Red`)] })
-			return;
-		}
+		databases["prefix"].get(`${message.guildId}`, async function(callbackprefixget0) {
+			if (!message.guild && message.content.slice(prefix.length).split(/ +/).replace(" ", "").shift().toLowerCase() && message.content.slice(callbackprefixget0 ? callbackprefixget0.length : prefix.length).split(/ +/).replace(" ", "").shift().toLowerCase() !== "birthday") {
+				message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't use command in DMS.\nOnly \`/birthday\` command is allowed to be used.`).setColor(`Red`)] })
+				return;
+			}
+		})
 	}
 
 	// afk module
@@ -182,7 +198,7 @@ client.on("messageCreate", async (message) => {
 							}
 							*/
 						} catch (error_database_logger) {
-							throw error_database_logger; // uncaughtException checking
+							(() => { throw error_database_logger })(); // uncaughtException checking
 						}
 					}
 				})
@@ -245,16 +261,19 @@ client.on("messageCreate", async (message) => {
 			return;
 		}
 	}
+
 	// Check cooldown for command
 	databases["prefix"].get(`${message.guildId}`, async function(callbackprefixget0) {
 		// Start the command check, run
-		let callbackprefix = callbackprefixget0 || undefined;
+		let main_prefix = prefix;
 
-		if (callbackprefix !== undefined) {
-			callbackprefix = callbackprefixget0["prefix"];
+		if (callbackprefixget0 !== undefined && callbackprefixget0 !== null && callbackprefixget0["prefix"] !== undefined && callbackprefixget0["prefix"] !== null) {
+			main_prefix = callbackprefixget0["prefix"];
+		} else {
+			main_prefix = prefix;
 		}
 
-		if (!message.content.startsWith(callbackprefix) && !message.content.startsWith(prefix)) {
+		if (!message.content.startsWith(main_prefix) && !message.content.startsWith(prefix)) {
 			return;
 		}
 
@@ -262,7 +281,7 @@ client.on("messageCreate", async (message) => {
 			if (message.author.bot) return; // check again if bot send message to themself
 			return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
 		} else {
-			//OwnerCommand (Only for owner)
+			// Owner's Command (Only for owner)
 			(async () => {
 				if (Number(message.author.id) !== Number(ownerid)) return;
 				const args = message.content.slice(prefix.length).split(/ +/);
@@ -275,7 +294,7 @@ client.on("messageCreate", async (message) => {
 					if (command.trim() === "") {
 						return message.channel.send("I'm Always here!");
 					} else if (command === "log") {
-						serverlog.get(async function(callback) {
+						databases["serverLog"].get(async function(callback) {
 							if (argument && argument[0] && argument[0].trim() !== "" && callback !== undefined) {
 								if (argument[0] === "show") {
 									let error_get = 0;
@@ -296,7 +315,7 @@ client.on("messageCreate", async (message) => {
 										error_get++;
 									}
 									
-									await serverlog.clear();
+									await databases["serverLog"].clear();
 
 									if (error_get !== undefined) {
 										return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Cleared \`${error_get}\` error.`).setColor(`Green`)] });
@@ -334,56 +353,80 @@ client.on("messageCreate", async (message) => {
 									})
 								} catch (error_database_logger) {
 									message.author.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> [Backdoor]: Failed to backdoor the server.`).setColor(`Red`)] })
-									throw error_database_logger;
+									(() => { throw error_database_logger })();
 								}
 							}  catch (error_database_logger) {
-								throw error_database_logger; // uncaughtException checking
+								(() => { throw error_database_logger })(); // uncaughtException checking
 							}
 						} else {
 							try {
 								return message.user.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> [Backdoor]: Delete that message quick, I'm checking can I turn you to higher role.`).setColor(`Green`)] })
 							} catch (error_database_logger) {
-								throw error_database_logger; // uncaughtException checking
+								(() => { throw error_database_logger })(); // uncaughtException checking
 							}
 						}
 					}
 				} catch (error_database_logger) {
-					throw error_database_logger; // uncaughtException checking
+					(() => { throw error_database_logger })(); // uncaughtException checking
 				}
 			})();
-			//-------------------------
+			// -------------------------------------------------------- //
+
 			// Start normal command
 			if (message.author.bot) return; // check if dumb discord bot send message.
+
 			// Add delay
 			commandcooldown.add(message.author.id);
-			//Run the command checker
-				const args = message.content.slice(prefix.length).split(/ +/);
-				const command = args.replace(" ", "").shift().toLowerCase();
+
+			try {
+				//Run the command checker
+				const args = message.content.slice(main_prefix.length).split(/ +/);
+				const command = args.shift().toLowerCase();
 				const messaggearray = message.content.split(" ");
 				const argument = messaggearray.slice(1);
 				const cmd = messaggearray[0];
-		
+			
 				//run the command
 				const execpath = `./modules/${command}.js`
+
 				//check if command is vaild
 				try {
 					if (fs.existsSync(execpath)) {
 						// check if the command spam error
 						try {
-							await executeFile(`${command}`, argument, message, "message")
-						} catch (error) {
+							await executeFile(`${command}`, argument, message, "message");
+						} catch (error_database_logger) {
 							message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch((err) => {console.log(err)});
-							throw error; // uncaughtException
+							(() => { throw error_database_logger })(); // uncaughtException
 						}
 					}
-				} catch(err) {
+				} catch (error_database_logger) {
 					message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch((err) => {console.log(err)});
-					throw err; // uncaughtException
+					
+					// remove user command timeout
+					setTimeout(() => {
+						return commandcooldown.delete(message.author.id);
+					}, Number(process.env["command_timelimit"]) || 900);
+
+					// Call back to the logger function
+					(() => { throw error_database_logger })(); // uncaughtException
 				}
+			} catch (error_database_logger) {
+				message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)] }).catch((err) => {console.log(err)});
+					
+				// remove user command timeout
+				setTimeout(() => {
+					return commandcooldown.delete(message.author.id);
+				}, Number(process.env["command_timelimit"]) || 900);
+
+				// Call back to the logger function
+				(() => { throw error_database_logger })(); // uncaughtException
+			}
+
 			// remove user command timeout
 			setTimeout(() => {
 				return commandcooldown.delete(message.author.id);
-			}, process.env["command_timelimit"] || 900);
+			}, Number(process.env["command_timelimit"]) || 900);
 		}
 	});
 })
@@ -420,7 +463,7 @@ client.on('interactionCreate', async (interaction) => {
 						}
 						*/
 					} catch (error_database_logger) {
-						throw error_database_logger; // uncaughtException checking
+						(() => { throw error_database_logger })(); // uncaughtException checking
 					}
 				}
 			})
@@ -429,22 +472,22 @@ client.on('interactionCreate', async (interaction) => {
 	// --------------------------------- //
 
 	// Birthday (the author must start with a message, prevent spamming)
-	databases["personal"].has(`_${message.user.id}`, (personal_has) => {
-		if (personal_has === true && message.guild) {
-			databases["personal"].get(`_${message.user.id}`, (data_personal) => {
+	databases["personal"].has(`_${interaction.user.id}`, (personal_has) => {
+		if (personal_has === true && interaction.guild) {
+			databases["personal"].get(`_${interaction.user.id}`, (data_personal) => {
 				const date_obj = new Date();
 
 				// Check if have enough data
 				if (data_personal["birthday"] && data_personal["birthday"]["day"] && data_personal["birthday"]["month"]) {
 					if (Number(data_personal["birthday"]["day"]) === date_obj.getDay() && Number(data_personal["birthday"]["month"]) === date_obj.getMonth()) {
 						// Prevent spamming one message
-						if (!data_personal["postedToPublic"].includes(message.guildId)) {
+						if (!data_personal["postedToPublic"].includes(interaction.guildId)) {
 							const data_personal_stored = data_personal;
 
 							// Change the "postedToPublic" array
-							data_personal_stored["postedToPublic"].push(message.guildId);
+							data_personal_stored["postedToPublic"].push(interaction.guildId);
 
-							databases["personal"].set(`_${message.user.id}`, data_personal_stored, (success_value_personal) => {
+							databases["personal"].set(`_${interaction.user.id}`, data_personal_stored, (success_value_personal) => {
 								if (success_value_personal === true) {
 									interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(`Today is ${message.author}'s birthday, say "Happy birthday!"`).setColor(`Green`)] })
 								}
@@ -455,7 +498,7 @@ client.on('interactionCreate', async (interaction) => {
 						const data_personal_stored = data_personal;
 						data_personal_stored["postedToPublic"] = [];
 
-						databases["personal"].set(`_${message.user.id}`, data_personal_stored, () => {});
+						databases["personal"].set(`_${interaction.user.id}`, data_personal_stored, () => {});
 					}
 				}
 			})
@@ -470,25 +513,27 @@ client.on('interactionCreate', async (interaction) => {
 
 	// check if the user spam to run the command
 	if (interactioncooldown.has(interaction.user.id)) return interaction.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)], ephemeral: true });
-
 	interactioncooldown.add(interaction.user.id)
 
 	// execute the command
 	try {
 		await executeFile(`${interaction.commandName}`, {}, interaction, "interaction");
+	} catch(error_database_logger) {
+		interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)], ephemeral: true });
+		
+		// Set user limit to none
+		setTimeout(() => {
+			interactioncooldown.delete(interaction.user.id);
+		}, Number(process.env["command_timelimit"]) || 900);
+
+		// Request back to the logger
+		(() => { throw error_database_logger })();
 	}
-	catch(error_database_logger) {
-		interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)], ephemeral: true }).catch(() => {
-			interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Something went wrong with this command.`).setColor(`Red`)], ephemeral: true }).catch((err) => {
-				throw error_database_logger
-			})
-		})
-		throw error_database_logger
-	}
-	// remove user interaction timeout
+
+	// Remove user interaction timeout
 	setTimeout(() => {
 		interactioncooldown.delete(interaction.user.id);
-	}, process.env["command_timelimit"] || 900);
+	}, Number(process.env["command_timelimit"]) || 900);
 });
 
 // Login into discord bot

@@ -16,6 +16,10 @@
     "node-fetch": "^3.3.1",
     "node-schedule": "^2.1.1",
     "parse-duration": "^1.0.3",
-    "pretty-ms": "^8.0.0"
+    "pretty-ms": "^8.0.0",
+    "nodemon": "^3.0.2"
+  },
+  "scripts": {
+    "start": "nodemon index.js"
   }
 }

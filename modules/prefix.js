@@ -17,7 +17,6 @@
 */
 
 const { SlashCommandBuilder } = require("@discordjs/builders")
-require('dotenv').config(); // load the prefix if the new set is the old one
 
 module.exports = {
     data: new SlashCommandBuilder()

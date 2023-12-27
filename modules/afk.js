@@ -93,7 +93,7 @@ module.exports = {
                     }
                 }    
             })
-        } else if (typeofcommand === "interaction"){
+        } else if (typeofcommand === "interaction") {
             database_service["afk"].has(message.user.id + `_${message.guildId}`, function(callback) {
                 if (message.options.getSubcommand() === "set") {
                     let user = message.user

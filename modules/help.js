@@ -25,7 +25,7 @@ module.exports = {
     execute(argument, message, EmbedBuilder, client, typeofcommand, database_service) {
         if (typeofcommand === "message") {
             message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Help page: https://poxrcx.vercel.app/docs/intro/\nSupport Server: https://poxrcx.vercel.app/invite/\nVersion: 4.0\nMade by Itzporium#9655!`).setColor(`Blue`)] })
-        } else if (typeofcommand === "interaction"){
+        } else if (typeofcommand === "interaction") {
             message.editReply({ embeds: [new EmbedBuilder().setDescription(`Help page: https://poxrcx.vercel.app/docs/intro/\nSupport Server: https://poxrcx.vercel.app/invite/\nVersion: 4.0\nMade by Itzporium#9655!`).setColor(`Blue`)] })
         }
     }

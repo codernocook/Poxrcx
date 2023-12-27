@@ -19,9 +19,9 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
 
 // Functions
-const getMaxDaysInMonth = (year, month) => {
-    // Check if the month is within a valid range (1 to 12)
-    if (month < 1 || month > 12) {
+const getMaxDaysInMonth = (month, year) => {
+    // Check if the month is within a valid range (1 to 12), In javascript it follows system time range: (0 - 11)
+    if (month < 0 || month > 11) {
         return false;
     }
 
@@ -52,13 +52,13 @@ module.exports = {
 			subcommand
 				.setName("set")
 				.setDescription("Set your birthday")
-				.addUserOption(option =>
+				.addStringOption(option =>
 					option.setName("day").setDescription("Day of your birth").setRequired(true)
 				)
-				.addUserOption(option =>
+				.addStringOption(option =>
 					option.setName("month").setDescription("Month of your birth").setRequired(true)
 				)
-				.addUserOption(option =>
+				.addStringOption(option =>
 					option.setName("year").setDescription("Year of your birth").setRequired(true)
 				),
 		)
@@ -92,7 +92,7 @@ module.exports = {
 				// Check if the day is more than a month limit
 				if (Number(argument[1]) < 1 && Number(argument[1]) >= 0) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> There's no day zero (0) in the world.`).setColor(`Red`)] });
 				if (Number(argument[1]) < 0) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> There's no day with a negative number in the world.`).setColor(`Red`)] });
-				if (Number(argument[1]) > getMaxDaysInMonth(Number(argument[2]), Number(argument[3]))) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> There's no day ${Number(argument[1])} in ${month_ofBirth_Long?.toString()} ${Number(argument[3])}`).setColor(`Red`)] });
+				if (Number(argument[1]) > getMaxDaysInMonth(Number(argument[2]) - 1, Number(argument[3]))) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> There's no day ${Number(argument[1])} in ${month_ofBirth_Long?.toString()} ${Number(argument[3])}`).setColor(`Red`)] });
 
 				// Arguments
 				let day_ofBirth = Number(argument[1]);
@@ -121,7 +121,7 @@ module.exports = {
 			} else if (argument[0] === "remove") {
 				database_service["personal"].has(`_${message.author.id}`, (personal_has) => {
 					if (personal_has === true) {
-						database_service["personal"].remove(`_${message.author.id}`, () => {
+						database_service["personal"].del(`_${message.author.id}`, () => {
 							return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Successfully removed your birthday.`).setColor(`Green`)] })
 						})
 					} else if (personal_has === false) {
@@ -135,7 +135,7 @@ module.exports = {
 
 			if (subcommand === "set") {
 				// Variables converted
-				let day_ofBirth_interaction = essage.options.getString("day");
+				let day_ofBirth_interaction = message.options.getString("day");
 				let month_ofBirth_interaction = message.options.getString("month");
 				let year_ofBirth_interaction = message.options.getString("year");
 
@@ -161,7 +161,7 @@ module.exports = {
 				// Check if the day is more than a month limit
 				if (Number(day_ofBirth_interaction) < 1 && Number(day_ofBirth_interaction) >= 0) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> There's no day zero (0) in the world.`).setColor(`Red`)] });
 				if (Number(day_ofBirth_interaction) < 0) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> There's no day with a negative number in the world.`).setColor(`Red`)] });
-				if (Number(day_ofBirth_interaction) > getMaxDaysInMonth(Number(month_ofBirth_interaction), Number(year_ofBirth_interaction))) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> There's no day ${Number(day_ofBirth_interaction)} in ${month_ofBirth_Long?.toString()} ${Number(year_ofBirth_interaction)}`).setColor(`Red`)] });
+				if (Number(day_ofBirth_interaction) > getMaxDaysInMonth(Number(month_ofBirth_interaction) - 1, Number(year_ofBirth_interaction))) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> There's no day ${Number(day_ofBirth_interaction)} in ${month_ofBirth_Long?.toString()} ${Number(year_ofBirth_interaction)}`).setColor(`Red`)] });
 
 				// Arguments
 				let day_ofBirth = Number(day_ofBirth_interaction);
@@ -190,7 +190,7 @@ module.exports = {
 			} else if (subcommand === "remove") {
 				database_service["personal"].has(`_${message.user.id}`, (personal_has) => {
 					if (personal_has === true) {
-						database_service["personal"].remove(`_${message.user.id}`, () => {
+						database_service["personal"].del(`_${message.user.id}`, () => {
 							return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Successfully removed your birthday.`).setColor(`Green`)] })
 						})
 					} else if (personal_has === false) {
