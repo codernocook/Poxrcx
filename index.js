@@ -200,7 +200,7 @@ client.on("messageCreate", async (message) => {
 		databases["afk"].has(message.author.id + `_${message.guildId}`, function(callback) {
 			if (callback === true) {
 				databases["afk"].get(message.author.id + `_${message.guildId}`, function(getcallbackvalue) {
-					if (getcallbackvalue === undefined || getcallbackvalue === null) return;
+					if (getcallbackvalue === undefined || getcallbackvalue === null || getcallbackvalue === false) return;
 					if (Number(message.guildId) === Number(getcallbackvalue["3"])) {
 						message.channel.send(`Welcome back <@${message.author.id}>, I removed your Afk status.`)
 						try {
@@ -475,7 +475,7 @@ client.on('interactionCreate', async (interaction) => {
 	databases["afk"].has(interaction.user.id + `_${interaction.guildId}`, function(callback) {
 		if (callback === true) {
 			databases["afk"].get(interaction.user.id + `_${interaction.guildId}`, function(getcallbackvalue) {
-				if (getcallbackvalue === undefined || getcallbackvalue === null) return;
+				if (getcallbackvalue === undefined || getcallbackvalue === null || getcallbackvalue === false) return;
 				if (Number(interaction.guildId) === Number(getcallbackvalue["3"])) {
 					interaction.channel.send(`Welcome back <@${interaction.user.id}>, I removed your Afk status.`)
 					try {
