@@ -31,10 +31,10 @@ const path = require('path');
 const moment = require("moment");
 const { GiveawaysManager } = require('discord-giveaways');
 const databases = {
-	"afk": require("./pangea_database.js")(process.env["afkdb"] || null, process.env["authentication_db"]),
-	"prefix": require("./pangea_database.js")(process.env["prefixdb"] || null, process.env["authentication_db"]),
-	"serverLog": require("./pangea_database.js")(process.env["errordb"] || null, process.env["authentication_db"]),
-	"personal": require("./pangea_database.js")(process.env["personaldb"] || null, process.env["authentication_db"]),
+	"afk": require("./oydsndb_client.js")(process.env["afkdb"] || null, process.env["authentication_db"]),
+	"prefix": require("./oydsndb_client.js")(process.env["prefixdb"] || null, process.env["authentication_db"]),
+	"serverLog": require("./oydsndb_client.js")(process.env["errordb"] || null, process.env["authentication_db"]),
+	"personal": require("./oydsndb_client.js")(process.env["personaldb"] || null, process.env["authentication_db"]),
 }
 
 const executeFile = (filerequire, argumentsend, messagesend, typeofcommand) => {
