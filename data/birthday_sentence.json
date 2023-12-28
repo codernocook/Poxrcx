@@ -1,5 +1,6 @@
 {
 	"spring": [
+		"Today is :{user_author}:'s birthday, says \"Happy birthday!\"",
 	  	"It's :{user_author}:'s birthday – the ultimate New Year's level-up! Say 'Happy Birthday!' now!",
 		"Alert: Today is :{user_author}:'s birthday. Prepare to unleash your \"Happy Birthday\" wishes!",
 		"Springtime cheer alert: :{user_author}: is celebrating their birthday today! Send some \"Happy Birthday\" love their way!",
@@ -12,6 +13,7 @@
 		"Spring has a new reason to celebrate today – it's :{user_author}:'s birthday! Don't miss out on wishing them a 'Happy Birthday!'"
 	],
 	"summer": [
+		"Today is :{user_author}:'s birthday, says \"Happy birthday!\"",
 	  	"Breaking news: Summer vibes are in full swing because it's :{user_author}:'s birthday! Send some sunny \"Happy Birthday\" wishes their way!",
 		"Heat up the birthday wishes for :{user_author}:! It's their special day in the midst of summer's sizzle!",
 		"Summer just got a whole lot brighter – it's :{user_author}:'s birthday today! Share the sunshine with some \"Happy Birthday\" wishes!",
@@ -24,6 +26,7 @@
 		"Summer is officially better because it's the birthday of the one and only :{user_author}:! Let's make it sizzle with \"Happy Birthday\" wishes!"
 	],
 	"autumn": [
+		"Today is :{user_author}:'s birthday, says \"Happy birthday!\"",
 		"As the leaves fall, let's celebrate :{user_author}:'s birthday! Wishing you cozy vibes and a \"Happy Birthday\" filled with warmth and joy.",
 		"Autumn is here, and so is the celebration for :{user_author}:'s birthday! Shower them with \"Happy Birthday\" wishes like falling leaves.",
 		"The colors of autumn are nothing compared to the vibrant spirit of :{user_author}:! Wishing them a \"Happy Birthday\" amidst the fall festivities.",
@@ -36,6 +39,7 @@
 		"Happy Birthday to the one who adds a touch of magic to the autumn air – :{user_author}:! Let's celebrate with \"Happy Birthday\" wishes!"
 	],
 	"winter": [
+		"Today is :{user_author}:'s birthday, says \"Happy birthday!\"",
 		"Santa says: Today is :{user_author}:'s birthday. Say \"Happy Birthday!\" or else I will put you on the naughty list. 🎅🏻",
 		"Santa just confirmed: :{user_author}:'s birthday is today. To stay on the nice list, wish them a frosty \"Happy Birthday\" ASAP!",
 		"Breaking news from the North Pole: :{user_author}: is celebrating a birthday! Don't risk being on the naughty list – wish them \"Happy Birthday\" now!",

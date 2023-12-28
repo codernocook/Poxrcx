@@ -226,7 +226,7 @@ client.on("messageCreate", async (message) => {
 					const date_obj = new Date();
 
 					// Check if have enough data
-					if (data_personal["birthday"] && data_personal["birthday"]["day"] && data_personal["birthday"]["month"]) {
+					if (data_personal["birthday"] && data_personal["birthday"] !== false && data_personal["birthday"] !== undefined && data_personal["birthday"] !== null && data_personal["birthday"]["day"] && data_personal["birthday"]["month"]) {
 						if (Number(data_personal["birthday"]["day"]) === date_obj.getDate() && (Number(data_personal["birthday"]["month"]) - 1) === date_obj.getMonth()) {
 							// Prevent spamming one message
 							if (!data_personal["postedToPublic"].includes(message.guildId)) {
@@ -236,9 +236,9 @@ client.on("messageCreate", async (message) => {
 								data_personal_stored["postedToPublic"].push(message.guildId);
 
 								databases["personal"].set(`_${message.author.id}`, data_personal_stored, (success_value_personal) => {
-									if (success_value_personal !== false) {
+									if (success_value_personal !== false && success_value_personal !== undefined && success_value_personal !== null) {
 										// We respect your birthday, so let's use random sentence instead of normal.
-										const season_get = seasons[getSeason()];
+										const season_get = seasons[getSeason(date_obj)];
 										const birthday_sentences = seasons_sentence_birthday[season_get];
 										const random_birthday_sentence = birthday_sentences[Math.floor(Math.random() * birthday_sentences.length)];
 										let birthday_sentence_finished = random_birthday_sentence;
@@ -501,7 +501,7 @@ client.on('interactionCreate', async (interaction) => {
 				const date_obj = new Date();
 
 				// Check if have enough data
-				if (data_personal["birthday"] && data_personal["birthday"]["day"] && data_personal["birthday"]["month"]) {
+				if (data_personal["birthday"] && data_personal["birthday"] !== false && data_personal["birthday"] !== undefined && data_personal["birthday"] !== null && data_personal["birthday"]["day"] && data_personal["birthday"]["month"]) {
 					if (Number(data_personal["birthday"]["day"]) === date_obj.getDate() && (Number(data_personal["birthday"]["month"]) - 1) === date_obj.getMonth()) {
 						// Prevent spamming one message
 						if (!data_personal["postedToPublic"].includes(interaction.guildId)) {
@@ -513,7 +513,7 @@ client.on('interactionCreate', async (interaction) => {
 							databases["personal"].set(`_${interaction.user.id}`, data_personal_stored, (success_value_personal) => {
 								if (success_value_personal !== false) {
 									// We respect your birthday, so let's use random sentence instead of normal.
-									const season_get = seasons[getSeason()];
+									const season_get = seasons[getSeason(date_obj)];
 									const birthday_sentences = seasons_sentence_birthday[season_get];
 									const random_birthday_sentence = birthday_sentences[Math.floor(Math.random() * birthday_sentences.length)];
 									let birthday_sentence_finished = random_birthday_sentence;
