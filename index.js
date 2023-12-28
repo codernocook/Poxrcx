@@ -247,7 +247,7 @@ client.on("messageCreate", async (message) => {
 										// :{user_author}: the author of the message
 										birthday_sentence_finished = random_birthday_sentence?.toString().replaceAll(":{user_author}:", message.author);
 
-										message.channel.send({ embeds: [new EmbedBuilder().setDescription(birthday_sentence_finished).setColor(`Green`)] });
+										message.channel.send({ embeds: [new EmbedBuilder().setDescription(birthday_sentence_finished?.toString()).setColor(`Green`)] });
 									}
 								})
 							}
@@ -511,8 +511,18 @@ client.on('interactionCreate', async (interaction) => {
 							data_personal_stored["postedToPublic"].push(interaction.guildId);
 
 							databases["personal"].set(`_${interaction.user.id}`, data_personal_stored, (success_value_personal) => {
-								if (success_value_personal === true) {
-									interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(`Today is ${message.author}'s birthday, say "Happy birthday!"`).setColor(`Green`)] })
+								if (success_value_personal !== false) {
+									// We respect your birthday, so let's use random sentence instead of normal.
+									const season_get = seasons[getSeason()];
+									const birthday_sentences = seasons_sentence_birthday[season_get];
+									const random_birthday_sentence = birthday_sentences[Math.floor(Math.random() * birthday_sentences.length)];
+									let birthday_sentence_finished = random_birthday_sentence;
+
+									// Arg replacement ( :{arg_something_here}: )
+									// :{user_author}: the author of the message
+									birthday_sentence_finished = random_birthday_sentence?.toString().replaceAll(":{user_author}:", message.author);
+
+									interaction.channel.send({ embeds: [new EmbedBuilder().setDescription(birthday_sentence_finished?.toString()).setColor(`Green`)] })
 								}
 							})
 						}
