@@ -28,22 +28,21 @@ module.exports = {
 		.setName("meme")
 		.setDescription("Get a random meme!"),
     execute(argument, message, EmbedBuilder, client, typeofcommand, database_service) {
-        fetch("https://reddit.com/r/memes/random/.json").then(res => res.json()).then(json => {
-            const randomPosition = randomIntFromInterval(0, json[0].data.children.length || 0);
-            let permalink = json[0].data.children[randomPosition].data.permalink;
+        fetch("https://reddit.com/r/memes/random/.json").then(res => res.json()).then((json) => {
+            const randomPosition = randomIntFromInterval(0, json.length || 0) || 0;
+            let permalink = json[randomPosition].data.children[0].data.permalink;
             let memeUrl = `https://reddit.com${permalink}`;
-            let memeImage = json[0].data.children[randomPosition].data.url;
-            let memeTitle = json[0].data.children[randomPosition].data.title;
-            let memeUpvotes = json[0].data.children[randomPosition].data.ups;
-            let memeDownvotes = json[0].data.children[randomPosition].data.downs;
-            let memeNumComments = json[0].data.children[randomPosition].data.num_comments;
+            let memeImage = json[randomPosition].data.children[0].data.url;
+            let memeTitle = json[randomPosition].data.children[0].data.title;
+            let memeUpvotes = json[randomPosition].data.children[0].data.ups;
+            let memeDownvotes = json[randomPosition].data.children[0].data.downs;
+            let memeNumComments = json[randomPosition].data.children[0].data.num_comments;
             if (typeofcommand === "message") {
                 try {
                     //test if the url is safe
                     message.channel.send({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `👍 ${memeUpvotes} | 👎 ${memeDownvotes} | ✉️ ${memeNumComments}`}).setColor(`Blue`)] });
                 } catch (err) {
                     //it not safe we may crash from this reddit exploit
-                    console.log(err)
                     message.channel.send({ embeds: [new EmbedBuilder().setDescription("<:PoxError:1025977546019450972> This meme have a bug, please try again.").setColor(`Red`)] }).catch(err => {console.log(err)})
                 }
             } else if (typeofcommand === "interaction"){
@@ -53,7 +52,6 @@ module.exports = {
                     message.editReply({ embeds: [new EmbedBuilder().setTitle(`${memeTitle}`).setURL(`${memeUrl}`).setImage(memeImage).setFooter({ text: `👍 ${memeUpvotes} | 👎 ${memeDownvotes} | ✉️ ${memeNumComments}`}).setColor(`Blue`)] });
                 } catch (err) {
                     //it not safe we may crash from this reddit exploit
-                    console.log(err)
                     message.editReply({ embeds: [new EmbedBuilder().setDescription("<:PoxError:1025977546019450972> This meme have a bug, please try again.").setColor(`Red`)] }).catch(err => {console.log(err)})
                 }
             }

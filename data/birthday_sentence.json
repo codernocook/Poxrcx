@@ -1,0 +1,51 @@
+{
+	"spring": [
+	  	"It's :{user_author}:'s birthday – the ultimate New Year's level-up! Say 'Happy Birthday!' now!",
+		"Alert: Today is :{user_author}:'s birthday. Prepare to unleash your \"Happy Birthday\" wishes!",
+		"Springtime cheer alert: :{user_author}: is celebrating their birthday today! Send some \"Happy Birthday\" love their way!",
+		"Sprouting birthday joy: :{user_author}: is turning another year younger today. Shower them with \"Happy Birthday\" wishes!",
+		"Blossom with joy because it's :{user_author}:'s birthday today! Don't forget to wish them a 'Happy Birthday!'",
+		"Spring has sprung, and so has a new chapter in :{user_author}:'s life! Send your \"Happy Birthday\" wishes now!",
+		"Happy Birthday to the one who brings sunshine to our lives! :{user_author}: is celebrating another trip around the sun today.",
+		"Today marks the birth of a true springtime spirit: :{user_author}:! Let's shower them with \"Happy Birthday\" wishes!",
+		"Join the birthday bloom: :{user_author}: is turning a new leaf today! Say \"Happy Birthday\" and make their day extra special.",
+		"Spring has a new reason to celebrate today – it's :{user_author}:'s birthday! Don't miss out on wishing them a 'Happy Birthday!'"
+	],
+	"summer": [
+	  	"Breaking news: Summer vibes are in full swing because it's :{user_author}:'s birthday! Send some sunny \"Happy Birthday\" wishes their way!",
+		"Heat up the birthday wishes for :{user_author}:! It's their special day in the midst of summer's sizzle!",
+		"Summer just got a whole lot brighter – it's :{user_author}:'s birthday today! Share the sunshine with some \"Happy Birthday\" wishes!",
+		"Grab your sunglasses and get ready to shine – it's :{user_author}:'s birthday, the hottest celebration of the summer!",
+		"The forecast for today? A shower of \"Happy Birthday\" wishes for the sunshine in our lives – :{user_author}:!",
+		"Summer days and birthday rays: Wishing :{user_author}: a fantastic birthday filled with warmth, joy, and cool vibes!",
+		"Summer is in full bloom, and so is the celebration for :{user_author}:'s birthday! Send your \"Happy Birthday\" wishes their way!",
+		"Cue the birthday beach vibes: It's :{user_author}:'s special day in the midst of summer's awesomeness!",
+		"Sizzle, sparkle, and celebrate! It's time to wish :{user_author}: a summer-loaded \"Happy Birthday\"!",
+		"Summer is officially better because it's the birthday of the one and only :{user_author}:! Let's make it sizzle with \"Happy Birthday\" wishes!"
+	],
+	"autumn": [
+		"As the leaves fall, let's celebrate :{user_author}:'s birthday! Wishing you cozy vibes and a \"Happy Birthday\" filled with warmth and joy.",
+		"Autumn is here, and so is the celebration for :{user_author}:'s birthday! Shower them with \"Happy Birthday\" wishes like falling leaves.",
+		"The colors of autumn are nothing compared to the vibrant spirit of :{user_author}:! Wishing them a \"Happy Birthday\" amidst the fall festivities.",
+		"Harvesting joy today because it's :{user_author}:'s birthday! Send your \"Happy Birthday\" wishes and make the celebration as golden as autumn leaves.",
+		"Autumnal bliss alert: Today is the birthday of someone truly special – :{user_author}:! Let's paint the day with \"Happy Birthday\" wishes!",
+		"Fall into celebration mode: It's time to wish :{user_author}: a fantastic \"Happy Birthday\" surrounded by the warmth of autumn.",
+		"The autumn breeze carries birthday cheer for :{user_author}:! Send your \"Happy Birthday\" wishes and let the celebration rustle with joy.",
+		"Gather 'round the cozy fire because it's :{user_author}:'s birthday! Warm wishes and \"Happy Birthday\" cheers are in order.",
+		"Autumn leaves may fall, but the joy of :{user_author}:'s birthday will stay! Shower them with \"Happy Birthday\" wishes.",
+		"Happy Birthday to the one who adds a touch of magic to the autumn air – :{user_author}:! Let's celebrate with \"Happy Birthday\" wishes!"
+	],
+	"winter": [
+		"Santa says: Today is :{user_author}:'s birthday. Say \"Happy Birthday!\" or else I will put you on the naughty list. 🎅🏻",
+		"Santa just confirmed: :{user_author}:'s birthday is today. To stay on the nice list, wish them a frosty \"Happy Birthday\" ASAP!",
+		"Breaking news from the North Pole: :{user_author}: is celebrating a birthday! Don't risk being on the naughty list – wish them \"Happy Birthday\" now!",
+		"Santa says: :{user_author}:'s birthday is today, you have to say 'Happy Birthday!' or else I will put you in the naughty list.",
+		"Snowflakes are falling, and so is the confetti for :{user_author}:'s birthday! Send your \"Happy Birthday\" wishes and make it a winter wonderland of celebration.",
+		"Frosty the Snowman has a message: :{user_author}: is celebrating their birthday! Don't be a Grinch – wish them a \"Happy Birthday\" now!",
+		"Santa's elves just dropped off a special birthday announcement: It's :{user_author}:'s big day! Spread the cheer with \"Happy Birthday\" wishes!",
+		"Breaking icicles: :{user_author}: is turning a year older today! Warm up their day with your coolest \"Happy Birthday\" wishes!",
+		"Snowy greetings: :{user_author}:'s birthday is here! Send \"Happy Birthday\" wishes to make their day as magical as a winter wonderland.",
+		"Chill out and celebrate because it's :{user_author}:'s birthday! Send your \"Happy Birthday\" wishes and make it a cool celebration.",
+		"Winter is merrier because it's the birthday of :{user_author}:! Warm up the day with \"Happy Birthday\" wishes and celebrate in style!"
+	]
+}

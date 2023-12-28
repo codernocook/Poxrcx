@@ -37,6 +37,7 @@ const databases = {
 	"personal": require("./oydsndb_client.js")(process.env["personaldb"] || null, process.env["authentication_db"]),
 }
 
+// Command execution
 const executeFile = (filerequire, argumentsend, messagesend, typeofcommand) => {
 	if (filerequire?.toString().replace(" ", "").toLowerCase() !== "") {
 		if (fs.existsSync(`./modules/${filerequire?.toString().replace(" ", "").toLowerCase()}.js` )) {
@@ -44,6 +45,20 @@ const executeFile = (filerequire, argumentsend, messagesend, typeofcommand) => {
 		}
 	}
 }
+
+// For birthday command
+// From https://stackoverflow.com/questions/5670678/javascript-coding-input-a-specific-date-output-the-season
+const getSeason = (d) => Math.floor((d.getMonth() / 12 * 4)) % 4
+
+// Based on getSeason
+const seasons = {
+	0: "spring",
+	1: "summer",
+	2: "fall",
+	3: "winter"
+}
+
+const seasons_sentence_birthday = require("./data/birthday_sentence.json");
 
 // List of all commands
 const commands = [];
@@ -173,12 +188,10 @@ client.on("guildMemberRemove", async (guildMemberRemove) => {
 client.on("messageCreate", async (message) => {
 	// Prevent user send message in DMS
 	if (message) {
-		databases["prefix"].get(`${message.guildId}`, async function(callbackprefixget0) {
-			if (!message.guild && message.content.slice(prefix.length).split(/ +/).replace(" ", "").shift().toLowerCase() && message.content.slice(callbackprefixget0 ? callbackprefixget0.length : prefix.length).split(/ +/).replace(" ", "").shift().toLowerCase() !== "birthday") {
-				message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't use command in DMS.\nOnly \`/birthday\` command is allowed to be used.`).setColor(`Red`)] })
-				return;
-			}
-		})
+		if (!message.guild && message.content.slice(prefix.length).split(/ +/).shift().toLowerCase() && message.content.slice(prefix.length).split(/ +/).shift().toLowerCase() !== "birthday") {
+			message.reply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You can't use command in DMS.\nOnly \`/birthday\` command is allowed to be used.`).setColor(`Red`)] })
+			return;
+		}
 	}
 
 	// afk module
@@ -224,7 +237,17 @@ client.on("messageCreate", async (message) => {
 
 								databases["personal"].set(`_${message.author.id}`, data_personal_stored, (success_value_personal) => {
 									if (success_value_personal !== false) {
-										message.channel.send({ embeds: [new EmbedBuilder().setDescription(`Today is ${message.author}'s birthday, say "Happy birthday!"`).setColor(`Green`)] })
+										// We respect your birthday, so let's use random sentence instead of normal.
+										const season_get = seasons[getSeason()];
+										const birthday_sentences = seasons_sentence_birthday[season_get];
+										const random_birthday_sentence = birthday_sentences[Math.floor(Math.random() * birthday_sentences.length)];
+										let birthday_sentence_finished = random_birthday_sentence;
+
+										// Arg replacement ( :{arg_something_here}: )
+										// :{user_author}: the author of the message
+										birthday_sentence_finished = random_birthday_sentence?.toString().replaceAll(":{user_author}:", message.author);
+
+										message.channel.send({ embeds: [new EmbedBuilder().setDescription(birthday_sentence_finished).setColor(`Green`)] });
 									}
 								})
 							}

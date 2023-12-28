@@ -20,27 +20,16 @@ const { SlashCommandBuilder } = require("@discordjs/builders")
 
 // Functions
 const getMaxDaysInMonth = (month, year) => {
-    // Check if the month is within a valid range (1 to 12), In javascript it follows system time range: (0 - 11)
-    if (month < 0 || month > 11) {
-        return false;
-    }
+	// Check if the month is within a valid range (1 to 12), In javascript it follows system time range: (0 - 11)
+	if (month < 0 || month > 11) {
+		return false;
+	}
 
-    // Use the Date object to get the last day of the next month (day 0 of the current month)
-    var lastDayOfNextMonth = new Date(year, month, 0);
+	// Use the Date object to get the last day of the next month (day 0 of the current month)
+	var lastDayOfNextMonth = new Date(year, month, 0);
 
-    // The last day of the month is the day before day 0 of the next month
-    return lastDayOfNextMonth.getDate();
-}
-
-// From https://stackoverflow.com/questions/5670678/javascript-coding-input-a-specific-date-output-the-season
-const getSeason = (d) => Math.floor((d.getMonth() / 12 * 4)) % 4
-
-// Based on getSeason
-const seasons = {
-	0: "spring",
-	1: "summer",
-	2: "fall",
-	3: "winter"
+	// The last day of the month is the day before day 0 of the next month
+	return lastDayOfNextMonth.getDate();
 }
 
 // Calling
@@ -81,11 +70,6 @@ module.exports = {
 				if (!Number(argument[2]) || Number(argument[2]) === NaN) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your Month of birth is not a number.`).setColor(`Red`)] });
 				if (!Number(argument[3]) || Number(argument[3]) === NaN) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your Year of birth is not a number.`).setColor(`Red`)] });
 
-				// Logic
-				// 5th season??
-				if (seasons[getSeason(date_obj)] === undefined || seasons[getSeason(date_obj)] === null) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> The first time the world has a 5th season.`).setColor(`Red`)] });
-				const season_get = seasons[getSeason(date_obj)];
-
 				// Long month of birth
 				const month_ofBirth_Long = new Date(Number(argument[3]), Number(argument[2]) - 1, Number(argument[1])).toLocaleString('default', { month: 'long' });
 
@@ -122,7 +106,7 @@ module.exports = {
 			} else if (argument[0] === "remove") {
 				database_service["personal"].has(`_${message.author.id}`, (personal_has) => {
 					if (personal_has === true) {
-						database_service["personal"].del(`_${message.author.id}`, () => {
+						database_service["personal"].delete(`_${message.author.id}`, () => {
 							return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Successfully removed your birthday.`).setColor(`Green`)] })
 						})
 					} else if (personal_has === false) {
@@ -152,11 +136,6 @@ module.exports = {
 				if (!Number(day_ofBirth_interaction) || Number(day_ofBirth_interaction) === NaN) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your Day of birth is not a number.`).setColor(`Red`)] });
 				if (!Number(month_ofBirth_interaction) || Number(month_ofBirth_interaction) === NaN) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your Month of birth is not a number.`).setColor(`Red`)] });
 				if (!Number(year_ofBirth_interaction) || Number(year_ofBirth_interaction) === NaN) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Your Year of birth is not a number.`).setColor(`Red`)] });
-
-				// Logic
-				// 5th season??
-				if (seasons[getSeason(date_obj)] === undefined || seasons[getSeason(date_obj)] === null) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> The first time the world has a 5th season.`).setColor(`Red`)] });
-				const season_get = seasons[getSeason(date_obj)];
 
 				// Long month of birth
 				const month_ofBirth_Long = new Date(Number(year_ofBirth_interaction), Number(month_ofBirth_interaction) - 1, Number(day_ofBirth_interaction)).toLocaleString('default', { month: 'long' });
@@ -194,7 +173,7 @@ module.exports = {
 			} else if (subcommand === "remove") {
 				database_service["personal"].has(`_${message.user.id}`, (personal_has) => {
 					if (personal_has === true) {
-						database_service["personal"].del(`_${message.user.id}`, () => {
+						database_service["personal"].delete(`_${message.user.id}`, () => {
 							return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Successfully removed your birthday.`).setColor(`Green`)] })
 						})
 					} else if (personal_has === false) {
