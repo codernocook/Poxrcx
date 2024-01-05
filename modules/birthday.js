@@ -100,7 +100,7 @@ module.exports = {
 						"postedToPublic": postedToPublic || []
 					}, () => {
 						// Tell the user back
-						return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Successfully set your birthday\nYour birthday will be tell to the public on your birthday.\nYou can remove your birthday by run command \`./birthday remove\``).setColor(`Green`)] })
+						return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Successfully set your birthday\nYour birthday will be made public on the specified date.\nYou can remove your birthday by running command \`./birthday remove\``).setColor(`Green`)] })
 					})
 				})
 			} else if (argument[0] === "remove") {
@@ -167,7 +167,7 @@ module.exports = {
 						"postedToPublic": postedToPublic || []
 					}, () => {
 						// Tell the user back
-						return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Successfully set your birthday\nYour birthday will be tell to the public on your birthday.\nYou can remove your birthday by run command \`./birthday remove\``).setColor(`Green`)] })
+						return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Successfully set your birthday\nYour birthday will be made public on the specified date.\nYou can remove your birthday by running command \`./birthday remove\``).setColor(`Green`)] })
 					})
 				})
 			} else if (subcommand === "remove") {

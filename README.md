@@ -2,7 +2,9 @@
 Poxrcx Source code.
 
 # How to host?
-Check `.env` and fill it out.
+Check `.env` and fill it out.\
+Install packages, type: `npm install` or `npm i`.\
+To start the bot, type: `npm start`.
 
 .env file with explainations:
 ```env
@@ -20,5 +22,5 @@ command_timelimit=900   Limit user from spamming command, normal 900 millisecond
 ```
 
 # Database
-Database project: https://github.com/codernocook/PangeaDB
-This database make for project like Poxrcx, to use read "README.md" file in the (PangeaDB)[https://github.com/codernocook/PangeaDB]'s repo.
+Database project: https://github.com/codernocook/OydsnDB/
+This database make for project like Poxrcx, to use read "README.md" file in the [PangeaDB](https://github.com/codernocook/OydsnDB/)'s repo.
