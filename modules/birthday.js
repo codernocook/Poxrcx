@@ -1,6 +1,6 @@
 /*
 	Poxrcx
-	Copyright (C) 2023  codernocook
+	Copyright (C) 2024 codernocook
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ module.exports = {
 				// Set
 				database_service["personal"].get(`_${message.author.id}`, (personal_has) => {
 					let postedToPublic = [];
-					if (personal_has !== undefined) postedToPublic = personal_has["postedToPublic"];
+					if (personal_has !== undefined && personal_has["postedToPublic"] !== undefined) postedToPublic = personal_has["postedToPublic"] || [];
 
 					// Check
 					database_service["personal"].set(`_${message.author.id}`, {
@@ -153,7 +153,7 @@ module.exports = {
 				// Set
 				database_service["personal"].get(`_${message.user.id}`, (personal_has) => {
 					let postedToPublic = [];
-					if (personal_has !== undefined) postedToPublic = personal_has["postedToPublic"];
+					if (personal_has !== undefined && personal_has["postedToPublic"] !== undefined) postedToPublic = personal_has["postedToPublic"] || [];
 
 					// Check
 					database_service["personal"].set(`_${message.user.id}`, {
