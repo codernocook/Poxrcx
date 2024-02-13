@@ -86,7 +86,7 @@ module.exports = {
 				// Set
 				database_service["personal"].get(`_${message.author.id}`, (personal_has) => {
 					let postedToPublic = [];
-					if (personal_has !== undefined && personal_has["postedToPublic"] !== undefined) postedToPublic = personal_has["postedToPublic"] || [];
+					if (personal_has !== undefined && personal_has !== null && personal_has["postedToPublic"] !== undefined && personal_has["postedToPublic"] !== null) postedToPublic = personal_has["postedToPublic"] || [];
 
 					// Check
 					database_service["personal"].set(`_${message.author.id}`, {
@@ -95,7 +95,7 @@ module.exports = {
 							"day": day_ofBirth,
 							"month": month_ofBirth,
 							"year": year_ofBirth,
-							"time_set_birthday": Date.now()
+							"time_setBirthday": Date.now()
 						},
 						"postedToPublic": postedToPublic || []
 					}, () => {
@@ -153,7 +153,7 @@ module.exports = {
 				// Set
 				database_service["personal"].get(`_${message.user.id}`, (personal_has) => {
 					let postedToPublic = [];
-					if (personal_has !== undefined && personal_has["postedToPublic"] !== undefined) postedToPublic = personal_has["postedToPublic"] || [];
+					if (personal_has !== undefined && personal_has !== null && personal_has["postedToPublic"] !== undefined && personal_has["postedToPublic"] !== null) postedToPublic = personal_has["postedToPublic"] || [];
 
 					// Check
 					database_service["personal"].set(`_${message.user.id}`, {
@@ -162,7 +162,7 @@ module.exports = {
 							"day": day_ofBirth,
 							"month": month_ofBirth,
 							"year": year_ofBirth,
-							"time_set_birthday": Date.now()
+							"time_setBirthday": Date.now()
 						},
 						"postedToPublic": postedToPublic || []
 					}, () => {
