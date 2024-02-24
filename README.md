@@ -18,6 +18,7 @@ afkdb=                  The database key (Use OydsnDB) for AFK command.
 prefixdb=               The database key (Use OydsnDB) for prefix command.
 errordb=                The database key (Use OydsnDB) for logging error into database.
 personaldb=             The database key (Use OydsnDB) for birthday command.
+gemini_ai=              Gemini AI token, you can get it from: https://aistudio.google.com/app/apikey/
 command_timelimit=900   Limit user from spamming command, normally it's 900 milliseconds.
 ```
 
