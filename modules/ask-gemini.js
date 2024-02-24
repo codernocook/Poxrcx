@@ -42,11 +42,9 @@ const get_chatAnswer = async function(promptRequest, returnResponseFunction) {
     }
 }
 
-(() => {
-    setInterval(() => {
-        maxCallRequest = 0;
-    }, Number(requestInterval) || 60000)
-})()
+setInterval(() => {
+    maxCallRequest = 0;
+}, Number(requestInterval) || 60000)
 
 module.exports = {
     data: new SlashCommandBuilder()
