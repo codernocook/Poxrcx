@@ -30,7 +30,7 @@ let callRequest = 0;
 const get_chatAnswer = async function(promptRequest, returnResponseFunction) {
     // Prevent error and bugs wasting request resource
     if (promptRequest && typeof(promptRequest) === "string" && promptRequest?.toString() && typeof(promptRequest?.toString()) === "string" && promptRequest?.toString().replace(" ", "") !== "" && returnResponseFunction !== undefined && returnResponseFunction !== null && returnResponseFunction && typeof(returnResponseFunction) === "function") {
-        const result = await generationModel.generateContent(quest?.toString());
+        const result = await generationModel.generateContent(promptRequest?.toString());
         const response = await result["response"];
         
         if (response && response["text"] && typeof(response["text"]) === "function") {
@@ -43,7 +43,7 @@ const get_chatAnswer = async function(promptRequest, returnResponseFunction) {
 }
 
 setInterval(() => {
-    maxCallRequest = 0;
+    callRequest = 0;
 }, Number(requestInterval) || 60000)
 
 module.exports = {
