@@ -45,7 +45,7 @@ module.exports = {
                     return;
                 }
                 database_service["prefix"].add(`${message.guildId}`, {
-                    "time": Date.now(),
+                    "timestamp": Date.now(),
                     "prefix": prefixtype.trim(),
                     "serverinfo": message.guild,
                     "changedby": message.author
@@ -71,7 +71,7 @@ module.exports = {
                     return;
                 }
                 database_service["prefix"].add(`${message.guildId}`, {
-                    "time": Date.now(),
+                    "timestamp": Date.now(),
                     "prefix": prefixtype.trim(),
                     "serverinfo": message.guild,
                     "changedby": message.user

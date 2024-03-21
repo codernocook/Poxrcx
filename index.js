@@ -30,110 +30,144 @@ const fs = require('fs');
 const path = require('path');
 const moment = require("moment");
 const { GiveawaysManager } = require('discord-giveaways');
+const { MongoClient } = require("mongodb");
 
 // Cluster steal from the Obsition project
 class mongo_cluster {
-    cluster_env = "";
-    cluster_url = "";
-    cluster_client = undefined;
-    cluster_node = undefined;
+	cluster_env = "";
+	cluster_url = "";
+	cluster_client = undefined;
+	cluster_node = undefined;
 
-    constructor(url, cluster_environment) {
-        this.cluster_url = url;
-        this.cluster_env = cluster_environment;
-    }
+	constructor(url, cluster_environment) {
+		this.cluster_url = url;
+		this.cluster_env = cluster_environment;
+	}
 
-    async connect() {
-        try {
-            this.cluster_client = new MongoClient(this.cluster_url);
-            output_log("[MongoDB]: Connecting to MongoDB cluster", false);
-            await this.cluster_client.connect();
-            output_log("[MongoDB]: Connected to MongoDB cluster", false);
+	async connect() {
+		try {
+			this.cluster_client = new MongoClient(this.cluster_url);
+			console.log("[MongoDB]: Connecting to MongoDB cluster");
+			await this.cluster_client.connect();
+			console.log("[MongoDB]: Connected to MongoDB cluster");
 
-            const database_env = this.cluster_client.db(process.env["mongoDB_database"]);
-            this.cluster_node = database_env.collection(this.cluster_env);
+			const database_env = this.cluster_client.db(process.env["mongoDB_database"]);
+			this.cluster_node = database_env.collection(this.cluster_env);
 
-            return this.cluster_node;
-        } catch (error) {
-            // Log it out
-            output_log("[MongoDB]: Failed to connect to MongoDB cluster", false);
+			return this.cluster_node;
+		} catch (error) {
+			// Log it out
+			console.log("[MongoDB]: Failed to connect to MongoDB cluster");
 
-            // Caught error on the monitor
-            throw error;
-        }
-    }
+			// Caught error on the monitor
+			throw error;
+		}
+	}
 
-    async add(key, data) {
-        if (this.cluster_node) {
-            // Inserting
-            await this.cluster_node.insertOne({
-                "name": key,
-                "data": data
-            })
-        }
-    }
+	async add(key, data, callback) {
+		if (this.cluster_node) {
+			// Inserting
+			await this.cluster_node.insertOne({
+				"name": key,
+				"data": data
+			})
 
-    async has(key) {
-        // Invalid data => nothing
-        if (key === undefined || key === null) return false;
+			// Callback patch
+			if (typeof callback === "function") {
+				return callback(true)
+			}
+		}
+	}
 
-        // Fetching
-        if (this.cluster_node) {
-            // Find all data has this key
-            const dataArr = await this.cluster_node.find({ "name": key }).toArray();
+	async has(key, callback) {
+		// Invalid data => nothing
+		if (key === undefined || key === null) return false;
 
-            // Check if it has key
-            if (dataArr.length > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+		// Fetching
+		if (this.cluster_node) {
+			// Find all data has this key
+			const dataArr = await this.cluster_node.find({ "name": key }).toArray();
 
-        // Nothing => return false
-        return false;
-    }
+			// Check if it has key
+			if (dataArr.length > 0) {
+				// Callback patch
+				if (typeof callback === "function") {
+					return callback(true)
+				}
+			} else {
+				// Callback patch
+				if (typeof callback === "function") {
+					return callback(false)
+				}
+			}
+		}
 
-    async get(key) {
-        if (this.cluster_node) {
-            // Find all data has this key
-            const dataArr = await this.cluster_node.find({ "name": key }).toArray();
+		// Nothing => return false
+		// Callback patch
+		if (typeof callback === "function") {
+			return callback(false)
+		}
+	}
 
-            // Return data
-            return dataArr[0];
-        }
-    }
+	async get(key, callback) {
+		if (this.cluster_node) {
+			// Find all data has this key
+			const dataArr = await this.cluster_node.find({ "name": key }).toArray();
 
-    async getAll() {
-        if (this.cluster_node) {
-            // Get all data
-            const dataArr = await this.cluster_node.find({}).toArray();
+			// Return data
+			if (typeof callback === "function") {
+				return callback(dataArr[0])
+			}
+		}
+	}
 
-            // Return data
-            return dataArr;
-        }
-    }
+	async getAll(callback) {
+		if (this.cluster_node) {
+			// Get all data
+			const dataArr = await this.cluster_node.find({}).toArray();
 
-    async remove(key) {
-        if (this.cluster_node) {
-            // Delete from cluster
-            await this.cluster_node.deleteMany({ "name": key })
-        }
-    }
+			// Return data
+			if (typeof callback === "function") {
+				return callback(dataArr)
+			}
+		}
+	}
 
-    async update(key, data) {
-        if (this.cluster_node) {
-            // Update data
-            await this.cluster_node.updateMany({ "name": key }, { $set: { "name": key, "data": data } })
-        }
-    }
+	async remove(key, callback) {
+		if (this.cluster_node) {
+			// Delete from cluster
+			await this.cluster_node.deleteMany({ "name": key })
 
-    async update_withNewName(key, new_key, data) {
-        if (this.cluster_node) {
-            // Update data
-            await this.cluster_node.updateMany({ "name": key }, { $set: { "name": new_key, "data": data } })
-        }
-    }
+			// Callback patch
+			if (typeof callback === "function") {
+				return callback(true)
+			}
+		}
+	}
+
+	async update(key, data, callback) {
+		if (this.cluster_node) {
+			// Update data
+			await this.cluster_node.updateMany({ "name": key }, { $set: { "name": key, "data": data } })
+			
+			// Callback patch
+			if (typeof callback === "function") {
+				return callback(true)
+			}
+		}
+	}
+
+	async update_withNewName(key, new_key, data, callback) {
+		if (this.cluster_node) {
+			// Update data
+			await this.cluster_node.updateMany({ "name": key }, { $set: { "name": new_key, "data": data } })
+
+			// Callback patch
+			if (typeof callback === "function") {
+				return callback(true)
+			}
+		}
+	}
 }
 
 // Cluster
