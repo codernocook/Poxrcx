@@ -66,16 +66,35 @@ class mongo_cluster {
 
 	async add(key, data, callback) {
 		if (this.cluster_node) {
-			// Inserting
-			await this.cluster_node.insertOne({
-				"name": key,
-				"data": data
-			})
+			// Fetching for current data
+			const finding_data = await this.cluster_node.find({ "name": key }).toArray();
+			
+			// Make sure the data is not exist
+			if (finding_data.length <= 0) {
+				// Inserting
+				await this.cluster_node.insertOne({
+					"name": key,
+					"data": data
+				})
 
-			// Callback patch
-			if (typeof callback === "function") {
-				return callback(true)
+				// Callback patch
+				if (typeof callback === "function") {
+					return callback(true)
+				}
+			} else {
+				// If it has => update
+				await this.cluster_node.updateMany({ "name": key }, { $set: { "name": key, "data": data } })
+
+				// Callback patch
+				if (typeof callback === "function") {
+					return callback(true)
+				}
 			}
+		}
+
+		// Callback patch
+		if (typeof callback === "function") {
+			return callback(true)
 		}
 	}
 
@@ -116,7 +135,11 @@ class mongo_cluster {
 
 			// Return data
 			if (typeof callback === "function") {
-				return callback(dataArr[0])
+				if (dataArr !== undefined && dataArr !== null && dataArr[0] !== undefined && dataArr[0] !== null && dataArr[0]["data"] !== undefined) {
+					return callback(dataArr[0]["data"]);
+				} else {
+					return callback(undefined);
+				}
 			}
 		}
 	}
