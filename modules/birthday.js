@@ -89,7 +89,7 @@ module.exports = {
 					if (personal_has !== undefined && personal_has !== null && personal_has["postedToPublic"] !== undefined && personal_has["postedToPublic"] !== null) postedToPublic = personal_has["postedToPublic"] || [];
 
 					// Check
-					database_service["personal"].set(`_${message.author.id}`, {
+					database_service["personal"].add(`_${message.author.id}`, {
 						"userid": message.author.id,
 						"birthday": {
 							"day": day_ofBirth,
@@ -106,7 +106,7 @@ module.exports = {
 			} else if (argument[0] === "remove") {
 				database_service["personal"].has(`_${message.author.id}`, (personal_has) => {
 					if (personal_has === true) {
-						database_service["personal"].delete(`_${message.author.id}`, () => {
+						database_service["personal"].remove(`_${message.author.id}`, () => {
 							return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Successfully removed your birthday.`).setColor(`Green`)] })
 						})
 					} else if (personal_has === false) {
@@ -156,7 +156,7 @@ module.exports = {
 					if (personal_has !== undefined && personal_has !== null && personal_has["postedToPublic"] !== undefined && personal_has["postedToPublic"] !== null) postedToPublic = personal_has["postedToPublic"] || [];
 
 					// Check
-					database_service["personal"].set(`_${message.user.id}`, {
+					database_service["personal"].add(`_${message.user.id}`, {
 						"userid": message.user.id,
 						"birthday": {
 							"day": day_ofBirth,
@@ -173,7 +173,7 @@ module.exports = {
 			} else if (subcommand === "remove") {
 				database_service["personal"].has(`_${message.user.id}`, (personal_has) => {
 					if (personal_has === true) {
-						database_service["personal"].delete(`_${message.user.id}`, () => {
+						database_service["personal"].remove(`_${message.user.id}`, () => {
 							return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Successfully removed your birthday.`).setColor(`Green`)] })
 						})
 					} else if (personal_has === false) {

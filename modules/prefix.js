@@ -39,12 +39,12 @@ module.exports = {
                     message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Changed the prefix to \`${prefixtype.trim()}\``).setColor(`Green`)] });
                     database_service["prefix"].has(`${message.guildId}`, function(callback) {
                         if (callback === true) {
-                            database_service["prefix"].delete(`${message.guildId}`, function(prefixdel) {});
+                            database_service["prefix"].remove(`${message.guildId}`, function(prefixdel) {});
                         }
                     })
                     return;
                 }
-                database_service["prefix"].set(`${message.guildId}`, {
+                database_service["prefix"].add(`${message.guildId}`, {
                     "time": Date.now(),
                     "prefix": prefixtype.trim(),
                     "serverinfo": message.guild,
@@ -65,12 +65,12 @@ module.exports = {
                     message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> Changed the prefix to \`${prefixtype.trim()}\``).setColor(`Green`)] });
                     database_service["prefix"].has(`${message.guildId}`, function(callback) {
                         if (callback === true) {
-                            database_service["prefix"].delete(`${message.guildId}`, function(prefixdel) {});
+                            database_service["prefix"].remove(`${message.guildId}`, function(prefixdel) {});
                         }
                     })
                     return;
                 }
-                database_service["prefix"].set(`${message.guildId}`, {
+                database_service["prefix"].add(`${message.guildId}`, {
                     "time": Date.now(),
                     "prefix": prefixtype.trim(),
                     "serverinfo": message.guild,

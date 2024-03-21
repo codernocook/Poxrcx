@@ -30,11 +30,124 @@ const fs = require('fs');
 const path = require('path');
 const moment = require("moment");
 const { GiveawaysManager } = require('discord-giveaways');
+
+// Cluster steal from the Obsition project
+class mongo_cluster {
+    cluster_env = "";
+    cluster_url = "";
+    cluster_client = undefined;
+    cluster_node = undefined;
+
+    constructor(url, cluster_environment) {
+        this.cluster_url = url;
+        this.cluster_env = cluster_environment;
+    }
+
+    async connect() {
+        try {
+            this.cluster_client = new MongoClient(this.cluster_url);
+            output_log("[MongoDB]: Connecting to MongoDB cluster", false);
+            await this.cluster_client.connect();
+            output_log("[MongoDB]: Connected to MongoDB cluster", false);
+
+            const database_env = this.cluster_client.db(process.env["mongoDB_database"]);
+            this.cluster_node = database_env.collection(this.cluster_env);
+
+            return this.cluster_node;
+        } catch (error) {
+            // Log it out
+            output_log("[MongoDB]: Failed to connect to MongoDB cluster", false);
+
+            // Caught error on the monitor
+            throw error;
+        }
+    }
+
+    async add(key, data) {
+        if (this.cluster_node) {
+            // Inserting
+            await this.cluster_node.insertOne({
+                "name": key,
+                "data": data
+            })
+        }
+    }
+
+    async has(key) {
+        // Invalid data => nothing
+        if (key === undefined || key === null) return false;
+
+        // Fetching
+        if (this.cluster_node) {
+            // Find all data has this key
+            const dataArr = await this.cluster_node.find({ "name": key }).toArray();
+
+            // Check if it has key
+            if (dataArr.length > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Nothing => return false
+        return false;
+    }
+
+    async get(key) {
+        if (this.cluster_node) {
+            // Find all data has this key
+            const dataArr = await this.cluster_node.find({ "name": key }).toArray();
+
+            // Return data
+            return dataArr[0];
+        }
+    }
+
+    async getAll() {
+        if (this.cluster_node) {
+            // Get all data
+            const dataArr = await this.cluster_node.find({}).toArray();
+
+            // Return data
+            return dataArr;
+        }
+    }
+
+    async remove(key) {
+        if (this.cluster_node) {
+            // Delete from cluster
+            await this.cluster_node.deleteMany({ "name": key })
+        }
+    }
+
+    async update(key, data) {
+        if (this.cluster_node) {
+            // Update data
+            await this.cluster_node.updateMany({ "name": key }, { $set: { "name": key, "data": data } })
+        }
+    }
+
+    async update_withNewName(key, new_key, data) {
+        if (this.cluster_node) {
+            // Update data
+            await this.cluster_node.updateMany({ "name": key }, { $set: { "name": new_key, "data": data } })
+        }
+    }
+}
+
+// Cluster
 const databases = {
-	"afk": require("./oydsndb_client.js")(process.env["afkdb"] || null, process.env["authentication_db"]),
-	"prefix": require("./oydsndb_client.js")(process.env["prefixdb"] || null, process.env["authentication_db"]),
-	"serverLog": require("./oydsndb_client.js")(process.env["errordb"] || null, process.env["authentication_db"]),
-	"personal": require("./oydsndb_client.js")(process.env["personaldb"] || null, process.env["authentication_db"]),
+	"afk": new mongo_cluster(process.env["mongoDB_url"] ? process.env["mongoDB_url"] : "", "afk"),
+	"prefix": new mongo_cluster(process.env["mongoDB_url"] ? process.env["mongoDB_url"] : "", "prefix"),
+	"serverLog": new mongo_cluster(process.env["mongoDB_url"] ? process.env["mongoDB_url"] : "", "serverLog"),
+	"personal": new mongo_cluster(process.env["mongoDB_url"] ? process.env["mongoDB_url"] : "", "personal")
+}
+
+// Connect to all cluster
+for (let i = 0; i < Object.keys(databases).length; i++) {
+	const data = databases[Object.keys(databases)[i]];
+	data.connect();
 }
 
 // Command execution
@@ -114,7 +227,7 @@ process.on('uncaughtException', function(err) {
 	errorArray["time"] = Time;
 	errorArray["message"] = err.stack + '\n', { flag: 'a' }
 
-	databases["serverLog"].set(`ERR_${Time}_${generateRandomString(5)}`, errorArray, function (callback) {}); // save it to database
+	databases["serverLog"].add(`ERR_${Time}_${generateRandomString(5)}`, errorArray, function (callback) {}); // save it to database
 
 	// Send message to the log
 	console.log(`[${botName}]: UncaughtException called, saved to database. Time: "${Time}"`);
@@ -165,7 +278,7 @@ client.on("guildDelete", async (guildDelete) => {
 		try {
 			databases["afk"].has(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(callback) {
 				if (callback === false) return;
-					databases["afk"].delete(guilddeletemember.id + `_${guilddeletemember.guild.id}`, function(del) {});
+					databases["afk"].remove(guilddeletemember.id + `_${guilddeletemember.guild.id}`, function(del) {});
 					guilddeletemember.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> The server was deleted, I removed your Afk status.`).setColor(`Green`)] })
 			})
 		} catch (error_database_logger) {
@@ -179,7 +292,7 @@ client.on("guildMemberRemove", async (guildMemberRemove) => {
 	databases["afk"].has(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(callback) {
 		databases["afk"].get(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(getcallbackvalue) {
 			if (callback === false) return;
-			databases["afk"].delete(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(del) {});
+			databases["afk"].remove(guildMemberRemove.id + `_${guildMemberRemove.guild.id}`, function(del) {});
 			guildMemberRemove.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxSuccess:1027083813123268618> You left the server, I removed your Afk status.`).setColor(`Green`)] })
 		})
 	})
@@ -204,7 +317,7 @@ client.on("messageCreate", async (message) => {
 					if (Number(message.guildId) === Number(getcallbackvalue["3"])) {
 						message.channel.send(`Welcome back <@${message.author.id}>, I removed your Afk status.`)
 						try {
-							databases["afk"].delete(message.author.id + `_${message.guildId}`, function(delafkuser) {});
+							databases["afk"].remove(message.author.id + `_${message.guildId}`, function(delafkuser) {});
 							/* Disabled because it laggy
 							if (message.guild.members.me.roles.highest.permissions > message.guild.members.cache.find(user => message.author.id === user.id).roles.highest.permissions) {
 								message.guild.members.cache.find(user => message.author.id === user.id).setNickname(`${databases["afk"].get(message.author.id)["4"]}`)
@@ -235,7 +348,7 @@ client.on("messageCreate", async (message) => {
 								// Change the "postedToPublic" array
 								data_personal_stored["postedToPublic"].push(message.guildId);
 
-								databases["personal"].set(`_${message.author.id}`, data_personal_stored, (success_value_personal) => {
+								databases["personal"].add(`_${message.author.id}`, data_personal_stored, (success_value_personal) => {
 									if (success_value_personal !== false && success_value_personal !== undefined && success_value_personal !== null) {
 										// We respect your birthday, so let's use random sentence instead of normal.
 										const season_get = seasons[getSeason(date_obj)];
@@ -256,7 +369,7 @@ client.on("messageCreate", async (message) => {
 							const data_personal_stored = data_personal;
 							data_personal_stored["postedToPublic"] = [];
 
-							databases["personal"].set(`_${message.author.id}`, data_personal_stored, () => {});
+							databases["personal"].add(`_${message.author.id}`, data_personal_stored, () => {});
 						}
 					}
 				})
@@ -479,7 +592,7 @@ client.on('interactionCreate', async (interaction) => {
 				if (Number(interaction.guildId) === Number(getcallbackvalue["3"])) {
 					interaction.channel.send(`Welcome back <@${interaction.user.id}>, I removed your Afk status.`)
 					try {
-						databases["afk"].delete(interaction.user.id + `_${interaction.guildId}`, function(delafkuser) {});
+						databases["afk"].remove(interaction.user.id + `_${interaction.guildId}`, function(delafkuser) {});
 						/* Disabled because it laggy
 						if (interaction.guild.members.me.roles.highest.permissions > interaction.guild.members.cache.find(user => interaction.author.id === user.id).roles.highest.permissions) {
 							interaction.guild.members.cache.find(user => interaction.author.id === user.id).setNickname(`${databases["afk"].get(interaction.author.id)["4"]}`)
@@ -510,7 +623,7 @@ client.on('interactionCreate', async (interaction) => {
 							// Change the "postedToPublic" array
 							data_personal_stored["postedToPublic"].push(interaction.guildId);
 
-							databases["personal"].set(`_${interaction.user.id}`, data_personal_stored, (success_value_personal) => {
+							databases["personal"].add(`_${interaction.user.id}`, data_personal_stored, (success_value_personal) => {
 								if (success_value_personal !== false) {
 									// We respect your birthday, so let's use random sentence instead of normal.
 									const season_get = seasons[getSeason(date_obj)];
@@ -531,7 +644,7 @@ client.on('interactionCreate', async (interaction) => {
 						const data_personal_stored = data_personal;
 						data_personal_stored["postedToPublic"] = [];
 
-						databases["personal"].set(`_${interaction.user.id}`, data_personal_stored, () => {});
+						databases["personal"].add(`_${interaction.user.id}`, data_personal_stored, () => {});
 					}
 				}
 			})

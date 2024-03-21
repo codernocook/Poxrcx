@@ -49,7 +49,7 @@ module.exports = {
                     let user = message.author;
                     if (callback === true) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
                     let reason = argument.slice(1).join(" ");
-                    database_service["afk"].set(user.id + `_${message.guildId}`, {
+                    database_service["afk"].add(user.id + `_${message.guildId}`, {
                         "1": Date.now(),
                         "2": reason,
                         "3": message.guild.id,
@@ -99,7 +99,7 @@ module.exports = {
                     let user = message.user
                     if (callback === true) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> You already use this command in this server.`).setColor(`Red`)] })
                     let reason = message.options.getString("message")
-                    database_service["afk"].set(user.id + `_${message.guildId}`, {
+                    database_service["afk"].add(user.id + `_${message.guildId}`, {
                         ["1"]: Date.now(),
                         ["2"]: reason,
                         ["3"]: message.guild.id,
