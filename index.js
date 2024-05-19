@@ -281,21 +281,6 @@ const gemini_requestInterval = 60000; // Interval run to reset call request
 const gemini_maxCallRequest = 60; // x request per minute
 let gemini_callRequest = 0;
 
-const get_chatAnswer = async function(promptRequest, returnResponseFunction) {
-    // Prevent error and bugs wasting request resource
-    if (promptRequest && typeof(promptRequest) === "string" && promptRequest?.toString() && typeof(promptRequest?.toString()) === "string" && promptRequest?.toString().replace(" ", "") !== "" && returnResponseFunction !== undefined && returnResponseFunction !== null && returnResponseFunction && typeof(returnResponseFunction) === "function") {
-        const result = await generationModel.generateContent(promptRequest?.toString());
-        const response = await result["response"];
-        
-        if (response && response["text"] && typeof(response["text"]) === "function") {
-            const response_text = response["text"]();
-
-            // Return data back
-            return returnResponseFunction(response_text)
-        }
-    }
-}
-
 // Prevent from uncaughtException crashing
 process.on('uncaughtException', function(err) {
 	let botName = client.user.username;
@@ -380,6 +365,24 @@ client.on("guildMemberRemove", async (guildMemberRemove) => {
 	})
 })
 
+// Detect user typing
+const userMessages = new Map();
+const newMessageChecking = (message, sentTimestamp) => {
+  if (!message || !message.author || !message.channel) return false;
+  const messages_arr = userMessages.get(`${message.author.id}_${message.channel.id}`) || [{ "timestamp": null, "message": { "id": null } }];
+  const latestData = messages_arr[messages_arr.length - 1] || { "timestamp": null, "message": { "id": null } };
+
+  // Return data
+  if (latestData["timestamp"] === sentTimestamp && latestData["message"]["id"] === message.id) {
+    // Clear map to prevent data issue
+    userMessages.delete(`${message.author.id}_${message.channel.id}`);
+    return false;
+  } else {
+    return true;
+  }
+}
+
+// Message create event
 client.on("messageCreate", async (message) => {
 	// Prevent user send message in DMS
 	if (message) {
@@ -388,13 +391,74 @@ client.on("messageCreate", async (message) => {
 			return;
 		}
 	}
-  
+
   // Message in thread for the gemini-conversation command
   const conversation_pattern = /^gemini-conversation-\d+-[a-zA-Z0-9]+$/;
   if (message && message.channel && !message.author.bot && (message?.channel?.type === ChannelType.PublicThread || message?.channel?.type === ChannelType.PrivateThread) && conversation_pattern.test(message.channel.name?.toString())) {
-    get_chatAnswer(message.content?.toString(), (ai_res) => {
-      message.reply(ai_res)
-    })
+    // timestamp
+    const currentTimestamp = Date.now();
+
+    // Set messages array
+    let messages = userMessages.get(`${message.author.id}_${message.channel.id}`);
+    if (!Array.isArray(messages)) {
+      messages = [];
+    }
+
+    // Pushing
+    messages.push({ "timestamp": currentTimestamp, "message": message })
+
+    // Add into userMessages
+    userMessages.set(`${message.author.id}_${message.channel.id}`, messages);
+
+    // Make fake typing
+    message.channel.sendTyping();
+
+    // Wait 5 seconds to see if user still continue to send message
+    setTimeout(async () => {
+      const messageChecking = newMessageChecking(message, currentTimestamp)
+      if (messageChecking === true) return;
+
+      const chatHistory = [];
+      const fetched_message = await message.channel.messages.fetch();
+
+      let lastRole = "";
+      let lastMessage = "";
+      for (const msg of fetched_message.values()) {
+        const current_role = ((msg.author.id?.toString() === process.env["client_id"]?.toString()) ? "model" : "user");
+
+        // Check role
+        if (current_role === lastRole) {
+          lastMessage += msg.content?.toString() + "\\n"
+        } else {
+          // Reset variable
+          lastRole = current_role
+          lastMessage = ""
+
+          // Pushing
+          chatHistory.push({
+            "role": current_role,
+            "parts": [{ "text": (lastMessage || "")?.toString().replace(" ", "") === "" ? msg.content?.toString() : lastMessage }]
+          })
+        }
+
+        // Set last role
+        lastRole = current_role;
+      }
+
+      const ai_conversation = generationModel.startChat({
+        history: chatHistory,
+        generationConfig: {
+          maxOutputTokens: 1000
+        }
+      })
+
+      const result = await ai_conversation.sendMessage(message.content?.toString());
+      const raw_response = await result.response;
+      const response = raw_response.text();
+
+      // Send back to user
+      message.reply(response?.toString());
+    }, 5000)
   }
 
 	// afk module
