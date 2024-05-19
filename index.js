@@ -445,6 +445,9 @@ client.on("messageCreate", async (message) => {
         lastRole = current_role;
       }
 
+      // Reverse the chat conversation, because they count from bottom to top. But we need to count from top to bottom
+      chatHistory = chatHistory.reverse()
+
       const ai_conversation = generationModel.startChat({
         history: chatHistory,
         generationConfig: {
