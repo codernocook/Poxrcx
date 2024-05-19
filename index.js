@@ -418,7 +418,7 @@ client.on("messageCreate", async (message) => {
       const messageChecking = newMessageChecking(message, currentTimestamp)
       if (messageChecking === true) return;
 
-      const chatHistory = [];
+      let chatHistory = [];
       const fetched_message = await message.channel.messages.fetch();
 
       let lastRole = "";
