@@ -16,7 +16,7 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const { Client, REST, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions, Guild, GuildMember, Routes, ActivityType, Collection } = require('discord.js');
+const { Client, REST, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions, Guild, GuildMember, Routes, ActivityType, Collection, ChannelType } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMembers] });
 require('dotenv').config(); // load the env
 const token = process.env["token"];
@@ -24,13 +24,14 @@ const clientid = process.env["client_id"];
 const prefix = process.env["prefix"];
 const ownerid = process.env["ownerid"];
 const rest = new REST({ version: '10' }).setToken(token);
-let commandcooldown = new Set();
-let interactioncooldown = new Set();
+let command_coolDown = new Set();
+let interaction_coolDown = new Set();
 const fs = require('fs');
 const path = require('path');
 const moment = require("moment");
 const { GiveawaysManager } = require('discord-giveaways');
 const { MongoClient } = require("mongodb");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Cluster steal from the Obsition project
 class mongo_cluster {
@@ -271,6 +272,30 @@ const generateRandomString = (length) => {
 // Put the permission for moderation command
 client.Permissions = PermissionsBitField
 
+const genAI = new GoogleGenerativeAI(process.env["gemini_ai"]);
+const generationModel = genAI.getGenerativeModel({ model: "gemini-pro" })
+
+// Delay (prevent abusing AI)
+let gemini_globalDelay = false;
+const gemini_requestInterval = 60000; // Interval run to reset call request
+const gemini_maxCallRequest = 60; // x request per minute
+let gemini_callRequest = 0;
+
+const get_chatAnswer = async function(promptRequest, returnResponseFunction) {
+    // Prevent error and bugs wasting request resource
+    if (promptRequest && typeof(promptRequest) === "string" && promptRequest?.toString() && typeof(promptRequest?.toString()) === "string" && promptRequest?.toString().replace(" ", "") !== "" && returnResponseFunction !== undefined && returnResponseFunction !== null && returnResponseFunction && typeof(returnResponseFunction) === "function") {
+        const result = await generationModel.generateContent(promptRequest?.toString());
+        const response = await result["response"];
+        
+        if (response && response["text"] && typeof(response["text"]) === "function") {
+            const response_text = response["text"]();
+
+            // Return data back
+            return returnResponseFunction(response_text)
+        }
+    }
+}
+
 // Prevent from uncaughtException crashing
 process.on('uncaughtException', function(err) {
 	let botName = client.user.username;
@@ -363,6 +388,14 @@ client.on("messageCreate", async (message) => {
 			return;
 		}
 	}
+  
+  // Message in thread for the gemini-conversation command
+  const conversation_pattern = /^gemini-conversation-\d+-[a-zA-Z0-9]+$/;
+  if (message && message.channel && !message.author.bot && (message?.channel?.type === ChannelType.PublicThread || message?.channel?.type === ChannelType.PrivateThread) && conversation_pattern.test(message.channel.name?.toString())) {
+    get_chatAnswer(message.content?.toString(), (ai_res) => {
+      message.reply(ai_res)
+    })
+  }
 
 	// afk module
 	if (!message.author.bot) {
@@ -470,7 +503,7 @@ client.on("messageCreate", async (message) => {
 			return;
 		}
 
-		if(commandcooldown.has(message.author.id)) {
+		if(command_coolDown.has(message.author.id)) {
 			if (message.author.bot) return; // check again if bot send message to themself
 			return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)] })
 		} else {
@@ -569,7 +602,7 @@ client.on("messageCreate", async (message) => {
 			if (message.author.bot) return; // check if dumb discord bot send message.
 
 			// Add delay
-			commandcooldown.add(message.author.id);
+			command_coolDown.add(message.author.id);
 
 			try {
 				//Run the command checker
@@ -598,7 +631,7 @@ client.on("messageCreate", async (message) => {
 					
 					// remove user command timeout
 					setTimeout(() => {
-						return commandcooldown.delete(message.author.id);
+						return command_coolDown.delete(message.author.id);
 					}, Number(process.env["command_timelimit"]) || 900);
 
 					// Call back to the logger function
@@ -609,7 +642,7 @@ client.on("messageCreate", async (message) => {
 					
 				// remove user command timeout
 				setTimeout(() => {
-					return commandcooldown.delete(message.author.id);
+					return command_coolDown.delete(message.author.id);
 				}, Number(process.env["command_timelimit"]) || 900);
 
 				// Call back to the logger function
@@ -618,7 +651,7 @@ client.on("messageCreate", async (message) => {
 
 			// remove user command timeout
 			setTimeout(() => {
-				return commandcooldown.delete(message.author.id);
+				return command_coolDown.delete(message.author.id);
 			}, Number(process.env["command_timelimit"]) || 900);
 		}
 	});
@@ -715,8 +748,8 @@ client.on('interactionCreate', async (interaction) => {
 	if (!command) return
 
 	// check if the user spam to run the command
-	if (interactioncooldown.has(interaction.user.id)) return interaction.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)], ephemeral: true });
-	interactioncooldown.add(interaction.user.id)
+	if (interaction_coolDown.has(interaction.user.id)) return interaction.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Wah slow down you are too fast!`).setColor(`Red`)], ephemeral: true });
+	interaction_coolDown.add(interaction.user.id)
 
 	// execute the command
 	try {
@@ -726,7 +759,7 @@ client.on('interactionCreate', async (interaction) => {
 		
 		// Set user limit to none
 		setTimeout(() => {
-			interactioncooldown.delete(interaction.user.id);
+			interaction_coolDown.delete(interaction.user.id);
 		}, Number(process.env["command_timelimit"]) || 900);
 
 		// Request back to the logger
@@ -735,7 +768,7 @@ client.on('interactionCreate', async (interaction) => {
 
 	// Remove user interaction timeout
 	setTimeout(() => {
-		interactioncooldown.delete(interaction.user.id);
+		interaction_coolDown.delete(interaction.user.id);
 	}, Number(process.env["command_timelimit"]) || 900);
 });
 

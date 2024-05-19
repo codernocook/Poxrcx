@@ -22,10 +22,10 @@ const genAI = new GoogleGenerativeAI(process.env["gemini_ai"]);
 const generationModel = genAI.getGenerativeModel({ model: "gemini-pro" })
 
 // Delay (prevent abusing AI)
-let globalDelay = false;
-const requestInterval = 60000; // Interval run to reset call request
-const maxCallRequest = 60; // x request per minute
-let callRequest = 0;
+let gemini_globalDelay = false;
+const gemini_requestInterval = 60000; // Interval run to reset call request
+const gemini_maxCallRequest = 60; // x request per minute
+let gemini_callRequest = 0;
 
 const get_chatAnswer = async function(promptRequest, returnResponseFunction) {
     // Prevent error and bugs wasting request resource
@@ -43,8 +43,8 @@ const get_chatAnswer = async function(promptRequest, returnResponseFunction) {
 }
 
 setInterval(() => {
-    callRequest = 0;
-}, Number(requestInterval) || 60000)
+    gemini_callRequest = 0;
+}, Number(gemini_requestInterval) || 60000)
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -59,13 +59,13 @@ module.exports = {
             if (!chatmessageget) return;
             
             // Max request respond
-            if (callRequest >= maxCallRequest) {
+            if (gemini_callRequest >= gemini_maxCallRequest) {
                 return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Sorry, we reached the API call limit. Please wait 5 seconds, and try again.`).setColor(`Red`)] })
             }
 
             // Slowdown
-            if (globalDelay === true) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Sorry, You need to slowdown.`).setColor(`Red`)] })
-            globalDelay = true;
+            if (gemini_globalDelay === true) return message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Sorry, You need to slowdown.`).setColor(`Red`)] })
+            gemini_globalDelay = true;
 
             try {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription("Please wait, generating ... (It will take 5s - 10s).").setColor(`Blue`)] }).then(currentMessage => {
@@ -73,7 +73,7 @@ module.exports = {
                     try {
                         get_chatAnswer(chatmessageget, (chatContent) => {
                             // Set call request
-                            callRequest++;
+                            gemini_callRequest++;
 
                             // Send back
                             if (chatContent) {
@@ -90,19 +90,19 @@ module.exports = {
                 message.channel.send({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Can't get the answer, please try again.`).setColor(`Red`)] })
             }
             setTimeout(() => {
-                globalDelay = false;
+                gemini_globalDelay = false;
             }, 3000);
         } else if (typeofcommand === "interaction"){
             let chatmessageget = message.options.getString("prompt");
             if (!chatmessageget) return;
 
-            if (globalDelay === true) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Sorry, You need to slowdown.`).setColor(`Red`)] })
-            globalDelay = true;
+            if (gemini_globalDelay === true) return message.editReply({ embeds: [new EmbedBuilder().setDescription(`<:PoxError:1025977546019450972> Sorry, You need to slowdown.`).setColor(`Red`)] })
+            gemini_globalDelay = true;
 
             try {
                 get_chatAnswer(chatmessageget, (chatContent) => {
                     // Set call request
-                    callRequest++;
+                    gemini_callRequest++;
                     
                     if (chatContent) {
                         message.editReply({ embeds: [new EmbedBuilder().setDescription(`**Prompt**: ${chatmessageget}\n\n**Gemini**: ${chatContent?.toString()}`).setColor(`Green`)] })
@@ -115,7 +115,7 @@ module.exports = {
             }
 
             setTimeout(() => {
-                globalDelay = false;
+                gemini_globalDelay = false;
             }, 3000);
         }
     }
