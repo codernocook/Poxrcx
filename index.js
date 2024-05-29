@@ -283,6 +283,10 @@ let gemini_callRequest = 0;
 
 // Prevent from uncaughtException crashing
 process.on('uncaughtException', function(err) {
+  // Make sure not interaction issue spamming
+  if ((err.stack + "\n", { flag: 'a' })?.toString().includes("40060")) return;
+
+  // Variables
 	let botName = client.user.username;
 	const Time = new Date().getTime();
 	let errorArray = {
@@ -382,6 +386,9 @@ const newMessageChecking = (message, sentTimestamp) => {
   }
 }
 
+// Checking number is float function
+const isFloat = (num) => !(parseFloat(num) === parseInt(num));
+
 // Message create event
 client.on("messageCreate", async (message) => {
 	// Prevent user send message in DMS
@@ -418,35 +425,50 @@ client.on("messageCreate", async (message) => {
       const messageChecking = newMessageChecking(message, currentTimestamp)
       if (messageChecking === true) return;
 
+      // Chat history array
       let chatHistory = [];
-      const fetched_message = await message.channel.messages.fetch();
 
+      // Message fetch
+      const fetched_message_map = await message.channel.messages.fetch();
+      const fetched_message = await Array.from(fetched_message_map.values()).reverse(); // Reverse here, because messages must read from top to bottom
+
+      // Variables to detect lines
       let lastRole = "";
       let lastMessage = "";
-      for (const msg of fetched_message.values()) {
+      for (let i = 0; i < fetched_message.length; i++) {
+        const msg = fetched_message[i];
         const current_role = ((msg.author.id?.toString() === process.env["client_id"]?.toString()) ? "model" : "user");
+
+        // Set lastRole if role is invalid or null
+        if (lastRole !== "model" && lastRole !== "user") {
+          lastRole = current_role;
+        }
 
         // Check role
         if (current_role === lastRole) {
-          lastMessage += msg.content?.toString() + "\\n"
-        } else {
-          // Reset variable
-          lastRole = current_role
-          lastMessage = ""
+          // Set message
+          lastMessage += msg.content?.toString() + (i <= (fetched_message.length - 1) ? "\n" : "")
 
-          // Pushing
+          // Save if it's the last time
+          if (i >= fetched_message.length - 1) {
+            chatHistory.push({
+              "role": current_role,
+              "parts": [{ "text": (lastMessage || "")?.toString().replace(" ", "") === "" ? msg.content?.toString() : lastMessage }]
+            })
+          }
+        } else {
           chatHistory.push({
-            "role": current_role,
+            "role": lastRole,
             "parts": [{ "text": (lastMessage || "")?.toString().replace(" ", "") === "" ? msg.content?.toString() : lastMessage }]
           })
+
+          // Clear lastMessage
+          lastMessage = "";
         }
 
         // Set last role
         lastRole = current_role;
       }
-
-      // Reverse the chat conversation, because they count from bottom to top. But we need to count from top to bottom
-      chatHistory = chatHistory.reverse()
 
       const ai_conversation = generationModel.startChat({
         history: chatHistory,
@@ -459,8 +481,22 @@ client.on("messageCreate", async (message) => {
       const raw_response = await result.response;
       const response = raw_response.text();
 
-      // Send back to user
-      message.reply(response?.toString());
+      // Send back to user (Bypass discord length limit method)
+      const original_length = response?.toString().length / 2000;
+      const sendBack_length = isFloat(original_length) === true ? Math.floor(original_length) + 1 : Math.floor(original_length);
+      for (let i = 0; i < (Math.floor(sendBack_length) > 0 ? sendBack_length : 1); i++) {
+        setTimeout(() => {
+          // Limit is 8, to prevent discord slowdown
+          if (i > 8) return;
+
+          // Reply on first message, and send on later message
+          if (i <= 0) {
+            message.reply(response?.toString().slice(i * 2000, 2000 * (i + 1)) || "Something went wrong");
+          } else {
+            message.channel.send(response?.toString().slice(i * 2000, 2000 * (i + 1)) || "Something went wrong");
+          }
+        }, i)
+      }
     }, 5000)
   }
 
